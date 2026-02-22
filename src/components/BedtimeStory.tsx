@@ -327,12 +327,14 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
             
             {/* Story Text with highlighting */}
             <div style={{
-              fontSize:18,
-              lineHeight:'1.8',
+              fontSize:20,
+              lineHeight:'1.9',
               color:warmText,
               minHeight:300,
               marginBottom:20,
-              fontStyle:'italic'
+              fontFamily:"'Nunito', 'Quicksand', sans-serif",
+              fontWeight:600,
+              letterSpacing:'0.02em'
             }}>
               {story.words.map((word, idx) => (
                 <span key={idx} style={{

@@ -72,7 +72,7 @@ export default function Stories({ onBack, pet }: Props) {
       <div style={{
         minHeight: '100vh',
         background: 'linear-gradient(135deg, #FFF8E7 0%, #FFE4B5 50%, #FFDAB9 100%)',
-        padding: '16px', fontFamily: '"Comic Sans MS", cursive'
+        padding: '16px', fontFamily: "'Nunito', 'Quicksand', sans-serif"
       }}>
         {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
 
@@ -89,9 +89,11 @@ export default function Stories({ onBack, pet }: Props) {
 
         {/* Story page */}
         <div style={{
-          background: 'white', borderRadius: 16, padding: 20, minHeight: 250,
+          background: 'white', borderRadius: 16, padding: 22, minHeight: 250,
           boxShadow: '0 2px 8px rgba(0,0,0,.1)', marginBottom: 12,
-          fontSize: 17, lineHeight: 1.7, color: '#3E2723', whiteSpace: 'pre-line'
+          fontSize: 19, lineHeight: 1.85, color: '#3E2723', whiteSpace: 'pre-line',
+          fontFamily: "'Nunito', 'Quicksand', sans-serif", fontWeight: 600,
+          letterSpacing: '0.02em'
         }}>
           {pages[page]}
         </div>
@@ -123,7 +125,7 @@ export default function Stories({ onBack, pet }: Props) {
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #FFF8E7 0%, #FFE4B5 50%, #FFDAB9 100%)',
-      padding: '16px', fontFamily: '"Comic Sans MS", cursive'
+      padding: '16px', fontFamily: "'Nunito', 'Quicksand', sans-serif"
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
 
@@ -170,10 +172,10 @@ export default function Stories({ onBack, pet }: Props) {
 const backBtn: React.CSSProperties = {
   border: 'none', borderRadius: 20, padding: '12px 20px', fontSize: 16,
   background: 'linear-gradient(135deg, #FF8F00, #FFB74D)', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: '"Comic Sans MS", cursive'
+  fontFamily: "'Nunito', 'Quicksand', sans-serif"
 };
 const pageBtn: React.CSSProperties = {
   border: 'none', borderRadius: 16, padding: '12px 22px', fontSize: 17,
   background: '#FF8F00', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: '"Comic Sans MS", cursive'
+  fontFamily: "'Nunito', 'Quicksand', sans-serif"
 };

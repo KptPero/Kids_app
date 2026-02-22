@@ -340,7 +340,7 @@ export default function Drawing({ onBack, pet }: Props) {
   // ===== MENU =====
   if (mode === 'menu') return (
     <div style={{
-      minHeight: '100vh', padding: 16, fontFamily: '"Comic Sans MS", cursive',
+      minHeight: '100vh', padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif",
       background: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%)'
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
@@ -377,7 +377,7 @@ export default function Drawing({ onBack, pet }: Props) {
   return (
     <div style={{
       height: '100vh', display: 'flex', flexDirection: 'column',
-      background: '#F5F5F5', fontFamily: '"Comic Sans MS", cursive'
+      background: '#F5F5F5', fontFamily: "'Nunito', 'Quicksand', sans-serif"
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
 
@@ -465,12 +465,12 @@ export default function Drawing({ onBack, pet }: Props) {
 const backBtn: React.CSSProperties = {
   border: 'none', borderRadius: 20, padding: '12px 20px', fontSize: 16,
   background: 'linear-gradient(135deg, #43A047, #66BB6A)', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: '"Comic Sans MS", cursive'
+  fontFamily: "'Nunito', 'Quicksand', sans-serif"
 };
 
 const menuCard: React.CSSProperties = {
   border: 'none', borderRadius: 16, padding: 16, cursor: 'pointer',
   color: 'white', display: 'flex', alignItems: 'center', gap: 14,
-  fontFamily: '"Comic Sans MS", cursive', width: '100%', textAlign: 'left',
+  fontFamily: "'Nunito', 'Quicksand', sans-serif", width: '100%', textAlign: 'left',
   marginBottom: 0
 };

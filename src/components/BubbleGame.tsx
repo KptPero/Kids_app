@@ -176,12 +176,12 @@ export default function BubbleGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
         <button onClick={()=>{playSound('click');onBack()}} style={{
           background:'linear-gradient(135deg, #fff, #E1F5FE)', border:'2px solid #0288D1',
           borderRadius:'20px', padding:'10px 18px', cursor:'pointer',
-          fontSize:16, fontWeight:'bold', color:'#0288D1', fontFamily:'"Comic Sans MS", cursive'
+          fontSize:16, fontWeight:'bold', color:'#0288D1', fontFamily: "'Nunito', 'Quicksand', sans-serif"
         }}>← Back</button>
         <div style={{display:'flex', alignItems:'center', gap:8}}>
           <span style={{fontSize:28}}>🫧</span>
           <span style={{fontSize:22, fontWeight:'bold', color:'#0288D1',
-            fontFamily:'"Comic Sans MS", cursive'}}>{score}</span>
+            fontFamily: "'Nunito', 'Quicksand', sans-serif"}}>{score}</span>
         </div>
         {pet && <div style={{fontSize:36}}>{pet}</div>}
       </div>
@@ -193,7 +193,7 @@ export default function BubbleGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
           fontSize:48, fontWeight:'bold', color:'#FF6B9D', zIndex:20,
           textShadow:'0 2px 8px rgba(255,107,157,0.5)',
           animation:'comboPopIn 0.4s ease-out',
-          fontFamily:'"Comic Sans MS", cursive', pointerEvents:'none'
+          fontFamily: "'Nunito', 'Quicksand', sans-serif", pointerEvents:'none'
         }}>
           {combo}x Combo! 🎉
         </div>
@@ -225,7 +225,7 @@ export default function BubbleGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
           textShadow: b.letter ? '1px 1px 2px rgba(0,0,0,0.3)' : 'none',
           transition:'transform 0.15s',
           zIndex:5,
-          fontFamily:'"Comic Sans MS", cursive'
+          fontFamily: "'Nunito', 'Quicksand', sans-serif"
         }}>
           {b.letter || b.emoji || ''}
         </div>

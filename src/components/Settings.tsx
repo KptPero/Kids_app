@@ -64,7 +64,7 @@ export default function Settings({ onBack, pet }: Props) {
 
   return (
     <div style={{
-      minHeight: '100vh', padding: 16, fontFamily: '"Comic Sans MS", cursive',
+      minHeight: '100vh', padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif",
       background: 'linear-gradient(135deg, #E8F5E9 0%, #FFF9C4 50%, #F3E5F5 100%)'
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
@@ -233,7 +233,7 @@ export default function Settings({ onBack, pet }: Props) {
 const backBtn: React.CSSProperties = {
   border: 'none', borderRadius: 20, padding: '12px 20px', fontSize: 16,
   background: 'linear-gradient(135deg, #FF6B9D, #FFB6D9)', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: '"Comic Sans MS", cursive'
+  fontFamily: "'Nunito', 'Quicksand', sans-serif"
 };
 
 const card: React.CSSProperties = {

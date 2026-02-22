@@ -37,7 +37,7 @@ export default function Home({ onNavigate, onPetChange, pet }: Props) {
 
   if (showCharSelect) {
     return (
-      <div style={{background:'linear-gradient(135deg, #FFB6D9 0%, #FFE4E1 100%)', minHeight:'100vh', padding:'20px', textAlign:'center', display:'flex',flexDirection:'column', justifyContent:'center', fontFamily:'"Comic Sans MS", cursive'}}>
+      <div style={{background:'linear-gradient(135deg, #FFB6D9 0%, #FFE4E1 100%)', minHeight:'100vh', padding:'20px', textAlign:'center', display:'flex',flexDirection:'column', justifyContent:'center', fontFamily: "'Nunito', 'Quicksand', sans-serif"}}>
         <h1 style={{fontSize:42,color:'#fff',textShadow:'2px 2px 4px rgba(0,0,0,0.2)',marginBottom:10}}>🌈 Welcome! 🌈</h1>
         <p style={{fontSize:18,color:'#fff',marginBottom:40,textShadow:'1px 1px 2px rgba(0,0,0,0.1)'}}>Pick your learning buddy!</p>
         
@@ -71,7 +71,7 @@ export default function Home({ onNavigate, onPetChange, pet }: Props) {
   const charName = characters.find(c => c.id === selectedChar)?.name || 'Friend'
 
   return (
-    <div style={{background:'linear-gradient(135deg, #FFB6D9 0%, #FFE4E1 100%)', minHeight:'100vh', padding:'20px', paddingTop:0, fontFamily:'"Comic Sans MS", cursive'}}>
+    <div style={{background:'linear-gradient(135deg, #FFB6D9 0%, #FFE4E1 100%)', minHeight:'100vh', padding:'20px', paddingTop:0, fontFamily: "'Nunito', 'Quicksand', sans-serif"}}>
       {/* Header */}
       <div style={{background:'linear-gradient(90deg, #FF6B9D 0%, #FFB6D9 100%)', padding:'16px 20px', borderRadius:'0 0 30px 30px', marginBottom:16, color:'#fff', textAlign:'center', boxShadow:'0 4px 12px rgba(0,0,0,0.1)', display:'flex', alignItems:'center', justifyContent:'center', gap:10}}>
         <span style={{fontSize:32}}>{PET_EMOJIS[selectedChar] || '🌟'}</span>
@@ -158,7 +158,7 @@ function GameBtn({ icon, label, onClick, bg, border, fullWidth }: {
       background: `linear-gradient(135deg, ${bg} 0%, ${bg}99 100%)`,
       border: `3px solid ${border}`, borderRadius: 20, padding: 14,
       fontSize: 15, fontWeight: 'bold', color: '#333', cursor: 'pointer',
-      fontFamily: '"Comic Sans MS", cursive', textAlign: 'center',
+      fontFamily: "'Nunito', 'Quicksand', sans-serif", textAlign: 'center',
       transition: 'transform .15s', lineHeight: 1.3
     }}>
       <span style={{fontSize:24, display:'block', marginBottom:4}}>{icon}</span>

@@ -229,7 +229,7 @@ export default function Calming({ onBack, pet }: Props) {
   const bg = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)';
 
   if (mode === 'lullabies') return (
-    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: '"Comic Sans MS", cursive' }}>
+    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif" }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
         <button onClick={() => { cancelTokenRef.current++; setPlayingIdx(null); setMode('menu'); }} style={backBtnStyle}>⬅️ Back</button>
@@ -257,7 +257,7 @@ export default function Calming({ onBack, pet }: Props) {
     const circleColor = breathPhase === 'inhale' ? '#81D4FA' : breathPhase === 'hold' ? '#CE93D8' : '#A5D6A7';
     const label = breathPhase === 'inhale' ? 'Breathe In...' : breathPhase === 'hold' ? 'Hold...' : 'Breathe Out...';
     return (
-      <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: '"Comic Sans MS", cursive', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, width: '100%' }}>
           <button onClick={() => { clearTimeout(breathTimerRef.current); setMode('menu'); }} style={backBtnStyle}>⬅️ Back</button>
@@ -280,7 +280,7 @@ export default function Calming({ onBack, pet }: Props) {
   }
 
   if (mode === 'soothing') return (
-    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: '"Comic Sans MS", cursive', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, width: '100%' }}>
         <button onClick={() => { stopSoothing(); setMode('menu'); }} style={backBtnStyle}>⬅️ Back</button>
@@ -307,7 +307,7 @@ export default function Calming({ onBack, pet }: Props) {
 
   // ===== MENU =====
   return (
-    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: '"Comic Sans MS", cursive' }}>
+    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif" }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
         <button onClick={onBack} style={backBtnStyle}>⬅️ Back</button>
@@ -339,5 +339,5 @@ export default function Calming({ onBack, pet }: Props) {
 const backBtnStyle: React.CSSProperties = {
   border: 'none', borderRadius: 20, padding: '12px 20px', fontSize: 16,
   background: 'linear-gradient(135deg, #5C6BC0, #7986CB)', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: '"Comic Sans MS", cursive'
+  fontFamily: "'Nunito', 'Quicksand', sans-serif"
 };
