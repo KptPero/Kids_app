@@ -48,8 +48,8 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
 
   function flipCard(id: number){
     if (locked) return
-    const card = cards[id]
-    if (card.flipped || card.matched) return
+    const card = cards.find(c => c.id === id)
+    if (!card || card.flipped || card.matched) return
     if (flipped.length >= 2) return
 
     playSound('click')
@@ -62,7 +62,9 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
       setMoves(m => m + 1)
       setLocked(true)
       const [a, b] = newFlipped
-      if (newCards[a].emoji === newCards[b].emoji) {
+      const cardA = newCards.find(c => c.id === a)!
+      const cardB = newCards.find(c => c.id === b)!
+      if (cardA.emoji === cardB.emoji) {
         playSound('tada')
         safeTimeout(() => {
           setCards(prev => prev.map(c => c.id === a || c.id === b ? {...c, matched:true} : c))
