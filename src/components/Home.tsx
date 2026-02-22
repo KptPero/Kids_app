@@ -99,6 +99,7 @@ export default function Home({ onNavigate, onPetChange, pet }: Props) {
         <Section title="🎯 Fun Games" color="#FF6F00">
           <GameBtn icon="🧩" label="Memory Match" onClick={() => handleNav('memory')} bg="#FFE0B2" border="#FF6F00" />
           <GameBtn icon="🫧" label="Pop Bubbles" onClick={() => handleNav('bubble')} bg="#E1F5FE" border="#039BE5" />
+          <GameBtn icon="🚒" label="Fire Fighter" onClick={() => handleNav('firefighter')} bg="#FFCCBC" border="#FF6B35" />
           <GameBtn icon="🌀" label="Fidget Spinner" onClick={() => handleNav('fidget')} bg="#F3E5F5" border="#9C27B0" />
           <GameBtn icon="🎹" label="Music Piano" onClick={() => handleNav('music')} bg="#E8EAF6" border="#3F51B5" />
         </Section>

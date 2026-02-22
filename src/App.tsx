@@ -12,8 +12,9 @@ import FidgetSpinner from './components/FidgetSpinner'
 import MusicKeyboard from './components/MusicKeyboard'
 import Settings from './components/Settings'
 import Drawing from './components/Drawing'
+import FireFighter from './components/FireFighter'
 
-type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'
+type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'|'firefighter'
 
 export default function App() {
   const [route, setRoute] = useState<Route>('home')
@@ -37,6 +38,7 @@ export default function App() {
         {route === 'music' && <MusicKeyboard onBack={back} pet={pet} />}
         {route === 'settings' && <Settings onBack={back} pet={pet} />}
         {route === 'drawing' && <Drawing onBack={back} pet={pet} />}
+        {route === 'firefighter' && <FireFighter onBack={back} pet={pet} />}
       </main>
       <footer className="nav">
         <button onClick={() => setRoute('home')}>🏠</button>
