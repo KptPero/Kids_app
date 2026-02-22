@@ -17,10 +17,9 @@ import AnimalSounds from './components/AnimalSounds'
 import ShapeSorter from './components/ShapeSorter'
 import ColorMixer from './components/ColorMixer'
 import CatchStars from './components/CatchStars'
-import PeekaBoo from './components/PeekaBoo'
 import StickerBook from './components/StickerBook'
 
-type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'|'firefighter'|'animalsounds'|'shapesorter'|'colormixer'|'catchstars'|'peekaboo'|'stickerbook'
+type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'|'firefighter'|'animalsounds'|'shapesorter'|'colormixer'|'catchstars'|'stickerbook'
 
 export default function App() {
   const [route, setRoute] = useState<Route>('home')
@@ -49,7 +48,6 @@ export default function App() {
         {route === 'shapesorter' && <ShapeSorter onBack={back} pet={pet} />}
         {route === 'colormixer' && <ColorMixer onBack={back} pet={pet} />}
         {route === 'catchstars' && <CatchStars onBack={back} pet={pet} />}
-        {route === 'peekaboo' && <PeekaBoo onBack={back} pet={pet} />}
         {route === 'stickerbook' && <StickerBook onBack={back} pet={pet} />}
       </main>
       <footer className="nav">
