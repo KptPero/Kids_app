@@ -87,21 +87,30 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   const nextId = useRef(0)
   const splashId = useRef(0)
   const trailId = useRef(0)
-  const spawnTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+  const spawnTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const comboTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const scoreRef = useRef(0)
   const slicedRef = useRef(0)
   const gameRef = useRef<HTMLDivElement>(null)
 
-  const gameWidth = Math.min(400, typeof window !== 'undefined' ? window.innerWidth - 16 : 400)
-  const gameHeight = Math.min(560, typeof window !== 'undefined' ? window.innerHeight - 100 : 560)
+  const [gameWidth, setGameWidth] = useState(() => Math.min(400, typeof window !== 'undefined' ? window.innerWidth - 16 : 400))
+  const [gameHeight, setGameHeight] = useState(() => Math.min(560, typeof window !== 'undefined' ? window.innerHeight - 100 : 560))
+
+  useEffect(() => {
+    const onResize = () => {
+      setGameWidth(Math.min(400, window.innerWidth - 16))
+      setGameHeight(Math.min(560, window.innerHeight - 100))
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   const safeTimeout = useSafeTimeout()
 
   useEffect(() => {
     return () => {
       cancelAnimationFrame(frameRef.current)
-      if (spawnTimer.current) clearInterval(spawnTimer.current)
+      if (spawnTimer.current) clearTimeout(spawnTimer.current)
       if (comboTimer.current) clearTimeout(comboTimer.current)
     }
   }, [])
@@ -161,14 +170,14 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
     speakText(`${lv.name}! ${lv.desc}`)
 
     // Wave-based spawn loop like real Fruit Ninja
-    if (spawnTimer.current) clearInterval(spawnTimer.current)
+    if (spawnTimer.current) clearTimeout(spawnTimer.current)
     const scheduleWave = () => {
       const pause = lv.wavePause[0] + Math.random() * (lv.wavePause[1] - lv.wavePause[0])
       spawnTimer.current = setTimeout(() => {
         const count = lv.waveSize[0] + Math.floor(Math.random() * (lv.waveSize[1] - lv.waveSize[0] + 1))
         spawnWave(count)
         scheduleWave()
-      }, pause) as unknown as ReturnType<typeof setInterval>
+      }, pause)
     }
     // First wave comes quickly
     safeTimeout(() => {
@@ -184,7 +193,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
       setTimeLeft(tl => {
         if (tl <= 1) {
           clearInterval(t)
-          if (spawnTimer.current) { clearInterval(spawnTimer.current); spawnTimer.current = null }
+          if (spawnTimer.current) { clearTimeout(spawnTimer.current); spawnTimer.current = null }
           const lv = LEVELS[levelIdx]
           if (slicedRef.current >= lv.target) {
             const s = scoreRef.current >= lv.target * 3 ? 3 : scoreRef.current >= lv.target * 2 ? 2 : 1
@@ -198,7 +207,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
             playSound('click')
             speakText("Time's up!")
           }
-          if (scoreRef.current > bestScore) setBestScore(scoreRef.current)
+          setBestScore(prev => Math.max(prev, scoreRef.current))
           return 0
         }
         return tl - 1
@@ -387,7 +396,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
     <div className="page" style={{ background: 'linear-gradient(180deg, #1B5E20 0%, #2E7D32 30%, #388E3C 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* HUD */}
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: gameWidth, padding: '10px 14px', boxSizing: 'border-box', alignItems: 'center' }}>
-        <button onClick={() => { if (spawnTimer.current) clearInterval(spawnTimer.current); setScreen('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 15, padding: '6px 12px', color: '#A5D6A7', fontSize: 13, cursor: 'pointer' }}>← Back</button>
+        <button onClick={() => { if (spawnTimer.current) clearTimeout(spawnTimer.current); setScreen('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 15, padding: '6px 12px', color: '#A5D6A7', fontSize: 13, cursor: 'pointer' }}>← Back</button>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <span style={{ color: '#FFA726', fontSize: 18, fontWeight: 700 }}>🍉 {score}</span>
         </div>

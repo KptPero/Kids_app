@@ -118,11 +118,15 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
 
     // Powerup spawn
     const powerInt = setInterval(() => {
-      if (powerupBubble || activePowerRef.current) return
+      if (activePowerRef.current) return
       if (Math.random() < 0.3) {
         const pw = POWERUPS[Math.floor(Math.random() * POWERUPS.length)]
-        setPowerupBubble({ id: Date.now(), x: Math.random() * 70 + 15, y: Math.random() * 60 + 10, power: pw })
-        setTimeout(() => setPowerupBubble(p => p?.id === Date.now() ? null : p), 5000)
+        const id = Date.now()
+        setPowerupBubble(prev => {
+          if (prev) return prev // don't overwrite existing powerup
+          setTimeout(() => setPowerupBubble(p => p?.id === id ? null : p), 5000)
+          return { id, x: Math.random() * 70 + 15, y: Math.random() * 60 + 10, power: pw }
+        })
       }
     }, 8000)
 

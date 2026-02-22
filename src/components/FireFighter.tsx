@@ -45,6 +45,11 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
   const gameLoopRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const powerupTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const comboTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const powerupExpireRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const flamesRef = useRef<Flame[]>([])
+
+  // Keep ref in sync for interval-based reads
+  useEffect(() => { flamesRef.current = flames }, [flames])
 
   const level = LEVELS[levelIdx]
 
@@ -102,7 +107,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
     safeTimeout(() => { for (let i = 0; i < 3; i++) safeTimeout(() => spawnFlame(), i * 300) }, 500)
 
     spawnTimerRef.current = setInterval(() => {
-      setFlames(prev => { if (prev.length < lv.maxFlames) safeTimeout(() => spawnFlame(), 0); return prev })
+      if (flamesRef.current.length < lv.maxFlames) safeTimeout(() => spawnFlame(), 0)
     }, lv.spawnMs)
 
     // Powerup spawner
@@ -111,12 +116,9 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
     }, 5000)
 
     gameLoopRef.current = setInterval(() => {
-      setFlames(prev => {
-        if (prev.length >= lv.maxFlames + 3) {
-          setLives(l => { const nl = l - 1; if (nl <= 0) safeTimeout(() => setGameState('gameover'), 100); return nl })
-        }
-        return prev
-      })
+      if (flamesRef.current.length >= lv.maxFlames + 3) {
+        setLives(l => { const nl = l - 1; if (nl <= 0) safeTimeout(() => setGameState('gameover'), 100); return nl })
+      }
     }, 5000)
   }
 
@@ -129,7 +131,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
       setUnlockedLevels(u => Math.max(u, levelIdx + 2))
       safeTimeout(() => setGameState('levelcomplete'), 500)
     }
-  }, [flamePut, gameState])
+  }, [flamePut, gameState, level.target, levelIdx, cleanup, safeTimeout])
 
   function collectPowerup(p: Powerup) {
     setPowerups(prev => prev.filter(pp => pp.id !== p.id))
@@ -149,7 +151,8 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
 
       case 'superhose':
         setActivePowerup('superhose'); setPowerupTime(8); setSprayRadius(120); setSprayDamage(3)
-        safeTimeout(() => { setActivePowerup(null); setSprayRadius(55); setSprayDamage(1) }, 8000)
+        if (powerupExpireRef.current) clearTimeout(powerupExpireRef.current)
+        powerupExpireRef.current = safeTimeout(() => { setActivePowerup(null); setSprayRadius(55); setSprayDamage(1); powerupExpireRef.current = null }, 8000)
         speakText('Super hose!')
         break
       case 'extralife':

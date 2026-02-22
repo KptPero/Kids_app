@@ -52,8 +52,17 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   const caughtRef = useRef(0)
   const missedRef = useRef(0)
 
-  const gameWidth = Math.min(360, typeof window !== 'undefined' ? window.innerWidth - 16 : 360)
-  const gameHeight = Math.min(500, typeof window !== 'undefined' ? window.innerHeight - 120 : 500)
+  const [gameWidth, setGameWidth] = useState(() => Math.min(360, typeof window !== 'undefined' ? window.innerWidth - 16 : 360))
+  const [gameHeight, setGameHeight] = useState(() => Math.min(500, typeof window !== 'undefined' ? window.innerHeight - 120 : 500))
+
+  useEffect(() => {
+    const onResize = () => {
+      setGameWidth(Math.min(360, window.innerWidth - 16))
+      setGameHeight(Math.min(500, window.innerHeight - 120))
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   const safeTimeout = useSafeTimeout()
 

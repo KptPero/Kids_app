@@ -53,6 +53,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
   const [stars, setStars] = useState(0)
   const [hints, setHints] = useState(3)
   const [hintShape, setHintShape] = useState<string | null>(null)
+  const streakRef = useRef(0)
   const safeTimeout = useSafeTimeout()
 
   function startLevel(idx: number) {
@@ -65,6 +66,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
     setDragging(null)
     setFeedback('')
     setStreak(0)
+    setHints(3)
     setHintShape(null)
     setTimeLeft(lv.timeLimit ?? null)
     setScreen('play')
@@ -100,7 +102,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
       setFeedback('✅ ' + (shape?.name || '') + '!')
       const ns = [...sorted, dragging]
       setSorted(ns)
-      setStreak(s => { const n = s + 1; if (n > bestStreak) setBestStreak(n); return n })
+      setStreak(s => { const n = s + 1; streakRef.current = n; if (n > bestStreak) setBestStreak(n); return n })
       if (ns.length === picked.length) {
         safeTimeout(() => {
           const lv = LEVELS[levelIdx]
@@ -109,7 +111,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
             if (timeLeft < lv.timeLimit * 0.3) s = 1
             else if (timeLeft < lv.timeLimit * 0.6) s = 2
           }
-          if (streak < picked.length * 0.5) s = Math.max(1, s - 1)
+          if (streakRef.current < picked.length * 0.5) s = Math.max(1, s - 1)
           setStars(s)
           setScreen('complete')
           // Unlock next

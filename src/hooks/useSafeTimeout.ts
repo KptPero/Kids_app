@@ -15,7 +15,10 @@ export function useSafeTimeout() {
   }, [])
 
   const safeTimeout = useCallback((fn: () => void, ms: number) => {
-    const id = setTimeout(fn, ms)
+    const id = setTimeout(() => {
+      timers.current = timers.current.filter(t => t !== id)
+      fn()
+    }, ms)
     timers.current.push(id)
     return id
   }, [])

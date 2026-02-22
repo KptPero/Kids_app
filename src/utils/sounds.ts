@@ -223,12 +223,9 @@ function speakWithWebSpeechAPI(text: string, rate: number, pitch: number, callba
  * This fixes mobile browsers silently stopping speech after a short amount of text.
  * Returns a cancel function.
  */
-let _longTextCancelled = false
-let _longTextTimeout: ReturnType<typeof setTimeout> | null = null
-
 export function speakLongText(text: string, onEnd?: () => void): () => void {
-  _longTextCancelled = false
-  if (_longTextTimeout) { clearTimeout(_longTextTimeout); _longTextTimeout = null }
+  let cancelled = false
+  let timeout: ReturnType<typeof setTimeout> | null = null
   if (isMuted) { if (onEnd) onEnd(); return () => {} }
 
   // Split into sentences (by . ! ? or newlines), keeping delimiters
@@ -241,22 +238,22 @@ export function speakLongText(text: string, onEnd?: () => void): () => void {
 
   let idx = 0
   function speakNext() {
-    if (_longTextCancelled || idx >= chunks.length) {
-      if (onEnd && !_longTextCancelled) onEnd()
+    if (cancelled || idx >= chunks.length) {
+      if (onEnd && !cancelled) onEnd()
       return
     }
     const chunk = chunks[idx]
     idx++
     speakText(chunk, () => {
       // Small gap between sentences for naturalness
-      _longTextTimeout = setTimeout(speakNext, 150)
+      timeout = setTimeout(speakNext, 150)
     })
   }
   speakNext()
 
   return () => {
-    _longTextCancelled = true
-    if (_longTextTimeout) { clearTimeout(_longTextTimeout); _longTextTimeout = null }
+    cancelled = true
+    if (timeout) { clearTimeout(timeout); timeout = null }
     cancelSpeech()
   }
 }
