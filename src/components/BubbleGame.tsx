@@ -232,7 +232,7 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
   // Level Select
   if (screen === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(180deg, #eaf6ff 0%, #f0f8ff 40%, #faf0ff 80%, #fff0f5 100%)', minHeight: '100vh', padding: 20 }}>
+      <div className="page" style={{ background: 'linear-gradient(180deg, #eaf6ff 0%, #f0f8ff 40%, #faf0ff 80%, #fff0f5 100%)', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
           <button onClick={() => { playSound('click'); onBack() }} style={backBtn}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
@@ -248,7 +248,7 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? lv.icon : '🔒'}</div>
               <div style={{ fontSize: 15, fontWeight: 'bold', color: '#333', marginTop: 4 }}>{lv.name}</div>
-              <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>Pop {lv.target} bubbles</div>
+              <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>Pop {lv.target} bubbles</div>
             </button>
           ))}
         </div>
@@ -259,7 +259,7 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
   // Level Complete
   if (screen === 'complete') {
     return (
-      <div style={{ background: 'linear-gradient(180deg, #eaf6ff 0%, #faf0ff 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="page" style={{ background: 'linear-gradient(180deg, #eaf6ff 0%, #faf0ff 100%)', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 35, textAlign: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', maxWidth: 380 }}>
           <div style={{ fontSize: 55 }}>🎉</div>
           <h2 style={{ color: '#0984e3', margin: '8px 0' }}>Level Complete!</h2>
@@ -281,7 +281,7 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
   return (
     <div style={{
       background: 'linear-gradient(180deg, #eaf6ff 0%, #f0f8ff 40%, #faf0ff 80%, #fff0f5 100%)',
-      minHeight: '100vh', position: 'relative', overflow: 'hidden', touchAction: 'none'
+      minHeight: '100dvh', position: 'relative', overflow: 'hidden', touchAction: 'none'
     }}>
       {/* Top bar */}
       <div style={{
@@ -289,7 +289,7 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
         background: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '0 0 18px 18px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
       }}>
         <button onClick={() => { setScreen('select'); playSound('click') }} style={{
-          background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '8px 14px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436'
+          background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '8px 14px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436'
         }}>← Levels</button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 22 }}>🫧</span>

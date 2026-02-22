@@ -197,7 +197,7 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
   const freeName = findClosestName(freeR, freeG, freeB)
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #fce4ec 0%, #f3eeff 50%, #eef0ff 100%)', minHeight: '100vh', padding: 20 }}>
+    <div className="page" style={{ background: 'linear-gradient(135deg, #fce4ec 0%, #f3eeff 50%, #eef0ff 100%)', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
         <div style={{ display: 'flex', gap: 6 }}>
@@ -253,7 +253,7 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
                     transform: selCount > 0 ? 'scale(1.1)' : 'scale(1)',
                     boxShadow: selCount > 0 ? `0 4px 16px ${hex}88` : `0 2px 8px ${hex}44`
                   }}>
-                    {selCount > 1 && <span style={{ position: 'absolute', top: -6, right: -6, background: '#2d3436', color: '#fff', borderRadius: '50%', width: 20, height: 20, fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>x{selCount}</span>}
+                    {selCount > 1 && <span style={{ position: 'absolute', top: -6, right: -6, background: '#2d3436', color: '#fff', borderRadius: '50%', width: 20, height: 20, fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>x{selCount}</span>}
                   </button>
                 )
               })}
@@ -298,12 +298,12 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
           <div style={{ display: 'flex', gap: 6, justifyContent: 'center', flexWrap: 'wrap' }}>
             {NAMED_COLORS.map(nc => (
               <div key={nc.name} title={nc.name} style={{
-                width: 32, height: 32, borderRadius: '50%',
+                width: 36, height: 36, borderRadius: '50%',
                 background: discovered.includes(nc.name) ? toHex(nc.r, nc.g, nc.b) : '#E0E0E0',
                 border: '2px solid #fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 12, transition: 'all 0.3s'
+                fontSize: 13, transition: 'all 0.3s'
               }}>
-                {discovered.includes(nc.name) ? <span style={{ fontSize: 10 }}>✓</span> : '?'}
+                {discovered.includes(nc.name) ? <span style={{ fontSize: 12 }}>✓</span> : '?'}
               </div>
             ))}
           </div>

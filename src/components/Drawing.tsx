@@ -853,7 +853,7 @@ export default function Drawing({ onBack, pet }: Props) {
   // ===== DRAWING CANVAS =====
   return (
     <div style={{
-      height: '100vh', display: 'flex', flexDirection: 'column',
+      height: '100dvh', display: 'flex', flexDirection: 'column',
       background: '#F5F5F5'
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
@@ -895,7 +895,7 @@ export default function Drawing({ onBack, pet }: Props) {
       }}>
         {COLORS.map(c => (
           <button key={c} onClick={() => { setColor(c); if (tool === 'eraser') setTool('brush'); }} style={{
-            width: 32, height: 32, borderRadius: '50%', border: color === c && tool !== 'eraser' ? '2px solid #2d3436' : '1px solid #b2bec3',
+            width: 40, height: 40, borderRadius: '50%', border: color === c && tool !== 'eraser' ? '2px solid #2d3436' : '1px solid #b2bec3',
             background: c, cursor: 'pointer', flexShrink: 0
           }} />
         ))}
@@ -910,7 +910,7 @@ export default function Drawing({ onBack, pet }: Props) {
           <span style={{ fontSize: 12 }}>Size:</span>
           {BRUSH_SIZES.map(s => (
             <button key={s} onClick={() => setBrushSize(s)} style={{
-              width: 36, height: 36, borderRadius: 8, border: brushSize === s ? '2px solid #2d3436' : '1px solid #b2bec3',
+              width: 44, height: 44, borderRadius: 8, border: brushSize === s ? '2px solid #2d3436' : '1px solid #b2bec3',
               background: brushSize === s ? '#dfe6e9' : 'white', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>

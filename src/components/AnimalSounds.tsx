@@ -165,7 +165,7 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
 
   if (mode === 'quiz' && quizAnimal) {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 100%)', minHeight: '100vh', padding: 20 }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 100%)', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
           <button onClick={() => setMode('browse')} style={backBtn}>← Back</button>
           <span style={{ fontSize: 14, fontWeight: 700, color: '#00b894' }}>Round {quizRound}/{quizTotal} | ⭐{quizScore} | 🔥{streak}</span>
@@ -204,7 +204,7 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
   }
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 50%, #f0faf0 100%)', minHeight: '100vh', padding: 20 }}>
+    <div className="page" style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 50%, #f0faf0 100%)', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
         <button onClick={() => { playSound('click'); onBack() }} style={backBtn}>← Back</button>
         {pet && <div style={{ fontSize: 32 }}>{pet}</div>}
@@ -223,7 +223,7 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
             }}>
               <div style={{ fontSize: 36, marginBottom: 2 }}>{animal.emoji}</div>
               <div style={{ fontSize: 12, fontWeight: 'bold', color: '#333' }}>{animal.name}</div>
-              {active === i && <div style={{ fontSize: 10, color: '#E65100', marginTop: 1 }}>"{animal.sound}"</div>}
+              {active === i && <div style={{ fontSize: 12, color: '#E65100', marginTop: 1 }}>"{animal.sound}"</div>}
             </button>
           ))}
         </div>

@@ -174,7 +174,7 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   // Level select
   if (gameState === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20 }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
           <button onClick={() => { playSound('click'); onBack() }} style={backBtnDark}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
@@ -190,7 +190,7 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? w.icon : '🔒'}</div>
               <div style={{ fontSize: 14, fontWeight: 700, color: '#FFD54F', marginTop: 4 }}>{w.name}</div>
-              <div style={{ fontSize: 11, color: '#78909C', marginTop: 2 }}>{w.duration}s • Speed ×{w.speedMul}</div>
+              <div style={{ fontSize: 12, color: '#78909C', marginTop: 2 }}>{w.duration}s • Speed ×{w.speedMul}</div>
             </button>
           ))}
         </div>
@@ -201,8 +201,8 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   // Wave Complete
   if (gameState === 'waveComplete') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div style={{ fontSize: 55 }}>🎉</div>
           <h2 style={{ color: '#FFD54F', margin: '8px 0', fontWeight: 800 }}>Wave Complete!</h2>
           <div style={{ fontSize: 36, marginBottom: 5 }}>{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</div>
@@ -220,8 +220,8 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   // Done (failed)
   if (gameState === 'done') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div style={{ fontSize: 55 }}>⏰</div>
           <h2 style={{ color: '#FFD54F', margin: '8px 0', fontWeight: 800 }}>Time's Up!</h2>
           <div style={{ fontSize: 40, color: '#FFF', fontWeight: 700, marginBottom: 5 }}>{score}</div>
@@ -237,7 +237,7 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
 
   const wave = WAVES[waveIdx]
   return (
-    <div style={{ background: 'linear-gradient(180deg, #0D1B2A 0%, #1B2838 60%, #263238 100%)', minHeight: '100vh', padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div className="page" style={{ background: 'linear-gradient(180deg, #0D1B2A 0%, #1B2838 60%, #263238 100%)', padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* HUD */}
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: gameWidth, padding: '10px 14px', boxSizing: 'border-box', alignItems: 'center' }}>
         <button onClick={() => { setGameState('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 15, padding: '6px 12px', color: '#B0BEC5', fontSize: 13, cursor: 'pointer' }}>← Back</button>

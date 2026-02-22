@@ -184,7 +184,7 @@ export default function Letters({ onBack, pet }:{onBack:()=>void, pet?:string}){
   function toggleCase(){ const newUpper = !isUpper; setIsUpper(newUpper); const idx = Math.max(0, currentIndex); setLetter((newUpper ? upperLetters : lowerLetters)[idx]); clearCanvas() }
 
   return (
-    <div style={{background:'linear-gradient(135deg, #fce4ec 0%, #fff0f5 50%, #e8f8f5 100%)', minHeight:'100vh', padding:'15px', position:'relative', overflow:'hidden'}}>
+    <div className="page" style={{background:'linear-gradient(135deg, #fce4ec 0%, #fff0f5 50%, #e8f8f5 100%)', padding:'15px', position:'relative', overflow:'hidden'}}>
 
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12, position:'relative', zIndex:2}}>
         <button onClick={() => { playSound('click'); onBack() }} style={backBtn}>← Back</button>
@@ -203,9 +203,9 @@ export default function Letters({ onBack, pet }:{onBack:()=>void, pet?:string}){
         <div style={{display:'flex', gap:4, overflowX:'auto', justifyContent:'center', flexWrap:'wrap'}}>
           {allLetters.map(l => (
             <button key={l} onClick={() => { playSound('click'); setLetter(l); clearCanvas() }} style={{
-              padding:'6px 9px', fontSize:14, fontWeight:letter===l?700:500,
+              padding:'8px 10px', fontSize:14, fontWeight:letter===l?700:500,
               background:letter===l?'#e84393':'rgba(255,255,255,0.5)', color:letter===l?'#fff':'#636e72',
-              border:'none', borderRadius:12, cursor:'pointer', minWidth:32
+              border:'none', borderRadius:12, cursor:'pointer', minWidth:36, minHeight:36
             }}>{l}</button>
           ))}
         </div>

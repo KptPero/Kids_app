@@ -45,7 +45,7 @@ export default function Home({ onNavigate, onPetChange, pet }: Props) {
 
   if (showMoodPicker) {
     return (
-      <div style={{ background: 'linear-gradient(160deg, #ffecd2 0%, #fcb69f 50%, #ffeaa7 100%)', minHeight: '100vh', padding: 24, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', fontFamily: 'var(--font)' }}>
+      <div className="page" style={{ background: 'linear-gradient(160deg, #ffecd2 0%, #fcb69f 50%, #ffeaa7 100%)', padding: 24, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', fontFamily: 'var(--font)' }}>
         <h1 style={{ fontSize: 32, color: '#2d3436', margin: '0 0 4px 0', fontWeight: 800 }}>🌈 Hello! 🌈</h1>
         <p style={{ fontSize: 17, color: '#636e72', marginBottom: 28, fontWeight: 600 }}>How do you feel today?</p>
         
@@ -70,7 +70,7 @@ export default function Home({ onNavigate, onPetChange, pet }: Props) {
   }
 
   return (
-    <div style={{ background: 'linear-gradient(160deg, #fce4ec 0%, #fff0f5 40%, #faf0ff 100%)', minHeight: '100vh', padding: '0 16px 20px', fontFamily: 'var(--font)' }}>
+    <div className="page" style={{ background: 'linear-gradient(160deg, #fce4ec 0%, #fff0f5 40%, #faf0ff 100%)', padding: '0 16px 20px', fontFamily: 'var(--font)' }}>
       {/* Header */}
       <div style={{
         ...glass,

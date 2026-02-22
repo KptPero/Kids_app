@@ -316,7 +316,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   // ── Level Select ──
   if (screen === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%)', minHeight: '100vh', padding: 20 }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%)', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
           <button onClick={() => { playSound('click'); onBack() }} style={{ ...backBtnDark, color: '#C8E6C9' }}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
@@ -332,8 +332,8 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? lv.icon : '🔒'}</div>
               <div style={{ fontSize: 14, fontWeight: 700, color: '#C8E6C9', marginTop: 4 }}>{lv.name}</div>
-              <div style={{ fontSize: 11, color: '#A5D6A7', marginTop: 2 }}>{lv.desc}</div>
-              <div style={{ fontSize: 10, color: '#81C784', marginTop: 4 }}>⏱ {lv.duration}s • 🎯 {lv.target}</div>
+              <div style={{ fontSize: 12, color: '#A5D6A7', marginTop: 2 }}>{lv.desc}</div>
+              <div style={{ fontSize: 12, color: '#81C784', marginTop: 4 }}>⏱ {lv.duration}s • 🎯 {lv.target}</div>
             </button>
           ))}
         </div>
@@ -344,8 +344,8 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   // ── Level Complete ──
   if (screen === 'complete') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
           <div style={{ fontSize: 55 }}>🎉</div>
           <h2 style={{ color: '#C8E6C9', margin: '8px 0', fontWeight: 800 }}>Level Complete!</h2>
           <div style={{ fontSize: 36, marginBottom: 5 }}>{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</div>
@@ -363,8 +363,8 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   // ── Time's Up ──
   if (screen === 'timeup') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
           <div style={{ fontSize: 55 }}>⏰</div>
           <h2 style={{ color: '#C8E6C9', margin: '8px 0', fontWeight: 800 }}>Time's Up!</h2>
           <div style={{ fontSize: 40, color: '#fff', fontWeight: 700, marginBottom: 5 }}>{score}</div>
@@ -384,7 +384,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   const progress = Math.min(100, (sliced / lv.target) * 100)
 
   return (
-    <div style={{ background: 'linear-gradient(180deg, #1B5E20 0%, #2E7D32 30%, #388E3C 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div className="page" style={{ background: 'linear-gradient(180deg, #1B5E20 0%, #2E7D32 30%, #388E3C 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* HUD */}
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: gameWidth, padding: '10px 14px', boxSizing: 'border-box', alignItems: 'center' }}>
         <button onClick={() => { if (spawnTimer.current) clearInterval(spawnTimer.current); setScreen('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 15, padding: '6px 12px', color: '#A5D6A7', fontSize: 13, cursor: 'pointer' }}>← Back</button>

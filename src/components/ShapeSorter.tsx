@@ -151,7 +151,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
   // Level Select
   if (screen === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 50%, #f3eeff 100%)', minHeight: '100vh', padding: 20 }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 50%, #f3eeff 100%)', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
           <button onClick={() => { playSound('click'); onBack() }} style={backBtn}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
@@ -166,8 +166,8 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? lv.icon : '🔒'}</div>
               <div style={{ fontSize: 15, fontWeight: 700, color: '#2d3436', marginTop: 4 }}>{lv.name}</div>
-              <div style={{ fontSize: 11, color: '#636e72', marginTop: 2 }}>{lv.desc}</div>
-              {lv.timeLimit && <div style={{ fontSize: 10, color: '#e17055', marginTop: 4 }}>⏱ {lv.timeLimit}s</div>}
+              <div style={{ fontSize: 12, color: '#636e72', marginTop: 2 }}>{lv.desc}</div>
+              {lv.timeLimit && <div style={{ fontSize: 12, color: '#e17055', marginTop: 4 }}>⏱ {lv.timeLimit}s</div>}
             </button>
           ))}
         </div>
@@ -179,7 +179,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
   // Level Complete
   if (screen === 'complete') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="page" style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 100%)', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 35, textAlign: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', maxWidth: 380 }}>
           <div style={{ fontSize: 55 }}>{stars > 0 ? '🎉' : '⏰'}</div>
           <h2 style={{ color: '#0984e3', margin: '8px 0', fontWeight: 800 }}>{stars > 0 ? 'Level Complete!' : "Time's Up!"}</h2>
@@ -198,7 +198,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
   // Gameplay
   const lv = LEVELS[levelIdx]
   return (
-    <div style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 50%, #f3eeff 100%)', minHeight: '100vh', padding: 20 }}>
+    <div className="page" style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 50%, #f3eeff 100%)', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
         <button onClick={() => { setScreen('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 16px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Levels</button>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -230,7 +230,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
               animation: hintShape === shape.id ? 'hintPulse 0.6s ease infinite' : undefined
             }}>
               {renderSvg(shape, shape.color, 48)}
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#636e72', marginTop: 2 }}>{shape.name}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#636e72', marginTop: 2 }}>{shape.name}</div>
             </button>
           ))}
           {picked.filter(s => !sorted.includes(s.id)).length === 0 && <div style={{ fontSize: 14, color: '#999', padding: 15 }}>All sorted! 🎉</div>}
@@ -252,7 +252,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
                 animation: isHint ? 'hintPulse 0.6s ease infinite' : undefined
               }}>
                 {renderSvg(shape, done ? shape.color : '#E0E0E0', 44, holeRotations[i])}
-                {done && <div style={{ fontSize: 10, color: shape.color, fontWeight: 'bold', marginTop: 2 }}>✓</div>}
+                {done && <div style={{ fontSize: 12, color: shape.color, fontWeight: 'bold', marginTop: 2 }}>✓</div>}
               </button>
             )
           })}

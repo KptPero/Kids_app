@@ -147,7 +147,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
   const sel = stickers.find(s => s.id === selectedStickerId)
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #f3eeff 0%, #eef0ff 50%, #eaf6ff 100%)', minHeight: '100vh', padding: 12 }}>
+    <div className="page" style={{ background: 'linear-gradient(135deg, #f3eeff 0%, #eef0ff 50%, #eaf6ff 100%)', padding: 12 }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
         <button onClick={() => { playSound('click'); onBack() }} style={{ ...backBtn, padding: '8px 14px' }}>← Back</button>
@@ -161,7 +161,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
           {SCENES.map((scene, i) => (
             <button key={scene.name} onClick={() => { setSceneIdx(i); playSound('click') }} style={{
               background: sceneIdx === i ? '#6c5ce7' : 'rgba(108,92,231,0.12)', color: sceneIdx === i ? '#fff' : '#6c5ce7',
-              border: 'none', borderRadius: 10, padding: '4px 8px', fontSize: 11, fontWeight: 700, cursor: 'pointer'
+              border: 'none', borderRadius: 10, padding: '6px 10px', fontSize: 13, fontWeight: 700, cursor: 'pointer', minHeight: 36
             }}>{scene.icon}</button>
           ))}
         </div>
@@ -170,7 +170,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
         <div ref={canvasRef}
           onClick={handleCanvasTap}
           onMouseMove={handleCanvasMove} onMouseUp={handleCanvasEnd} onMouseLeave={handleCanvasEnd}
-          onTouchStart={handleCanvasTap} onTouchMove={handleCanvasMove} onTouchEnd={handleCanvasEnd}
+          onTouchStart={(e) => { e.preventDefault(); handleCanvasTap(e); }} onTouchMove={handleCanvasMove} onTouchEnd={handleCanvasEnd}
           style={{
             width: canvasW, height: canvasH, margin: '0 auto', borderRadius: 18,
             background: SCENES[sceneIdx].bg, position: 'relative', overflow: 'hidden',
@@ -223,7 +223,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
           {CATEGORIES.map((cat, i) => (
             <button key={cat} onClick={() => setCatIdx(i)} style={{
               background: catIdx === i ? '#6c5ce7' : 'rgba(255,255,255,0.7)', color: catIdx === i ? '#fff' : '#6c5ce7',
-              border: 'none', borderRadius: 10, padding: '4px 10px', fontSize: 11, fontWeight: 700, cursor: 'pointer'
+              border: 'none', borderRadius: 10, padding: '6px 12px', fontSize: 13, fontWeight: 700, cursor: 'pointer', minHeight: 36
             }}>{cat}</button>
           ))}
         </div>
@@ -251,7 +251,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
             background: stickers.length === 0 ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.06)',
             borderRadius: 12, padding: '6px 12px', fontSize: 12, fontWeight: 700, color: '#636e72', cursor: stickers.length === 0 ? 'not-allowed' : 'pointer'
           }}>🗑️ Clear</button>
-          <div style={{ color: '#b2bec3', fontSize: 11, alignSelf: 'center' }}>
+          <div style={{ color: '#b2bec3', fontSize: 12, alignSelf: 'center' }}>
             {stickers.length} sticker{stickers.length !== 1 ? 's' : ''}
           </div>
         </div>
@@ -262,5 +262,5 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
 
 const editBtnStyle: React.CSSProperties = {
   background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(108,92,231,0.2)', borderRadius: 10,
-  padding: '4px 10px', fontSize: 14, fontWeight: 700, color: '#636e72', cursor: 'pointer'
+  padding: '8px 14px', fontSize: 16, fontWeight: 700, color: '#636e72', cursor: 'pointer', minHeight: 40
 }

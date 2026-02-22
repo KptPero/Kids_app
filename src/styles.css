@@ -56,6 +56,12 @@ main {
   position: relative;
 }
 
+/* ── Full-height page wrapper (dvh fallback for mobile Safari) ── */
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 /* ── Bottom Nav ── */
 .nav {
   display: flex;
