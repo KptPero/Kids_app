@@ -225,6 +225,14 @@ export default function Settings({ onBack, pet }: Props) {
             </div>
           )}
         </div>
+
+        {/* ResponsiveVoice Attribution (required for free tier) */}
+        <div style={{ textAlign: 'center', marginTop: 20, marginBottom: 8 }}>
+          <a href="https://responsivevoice.org" target="_blank" rel="noopener noreferrer"
+            style={{ fontSize: 12, color: '#90A4AE', textDecoration: 'none' }}>
+            Powered by ResponsiveVoice
+          </a>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,21 @@
 import { logError, logWarn, logInfo, ErrorCode } from './errorLogger'
 
+// ── ResponsiveVoice global type ──────────
+declare global {
+  interface Window {
+    responsiveVoice?: {
+      speak: (text: string, voice: string, params?: {
+        pitch?: number; rate?: number; volume?: number;
+        onstart?: () => void; onend?: () => void; onerror?: (e: any) => void
+      }) => void
+      cancel: () => void
+      isPlaying: () => boolean
+      voiceSupport: () => boolean
+      getVoices: () => { name: string }[]
+    }
+  }
+}
+
 let audioContext: AudioContext | null = null
 let backgroundOsc: OscillatorNode | null = null
 let isMuted = false
@@ -10,9 +26,17 @@ try {
 }
 let ttsRate = 0.85
 let ttsPitch = 1.2
-let cachedVoices: SpeechSynthesisVoice[] = []
 
-// Pre-load voices (they load async on many browsers)
+// ResponsiveVoice preferred voice
+const RV_VOICE = 'Australian Female'
+
+// Check if ResponsiveVoice is available
+function hasResponsiveVoice(): boolean {
+  return typeof window !== 'undefined' && !!window.responsiveVoice && typeof window.responsiveVoice.speak === 'function'
+}
+
+// ── Web Speech API fallback voice selection ──────────
+let cachedVoices: SpeechSynthesisVoice[] = []
 if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
   try {
     cachedVoices = window.speechSynthesis.getVoices()
@@ -22,6 +46,21 @@ if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
   } catch (e) {
     logWarn(ErrorCode.SPK_VOICES, 'Failed to pre-load speech voices', { error: e })
   }
+}
+
+function selectNaturalVoice() {
+  if (!('speechSynthesis' in window)) return null
+  const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices()
+  if (voices.length === 0) return null
+  let preferred = voices.find(v => v.lang === 'en-AU' && v.name.includes('Karen')) ||
+                  voices.find(v => v.lang === 'en-AU' && v.name.includes('Catherine')) ||
+                  voices.find(v => v.lang === 'en-AU' && v.name.includes('Google')) ||
+                  voices.find(v => v.lang === 'en-AU') ||
+                  voices.find(v => v.name.includes('Google UK English Female')) ||
+                  voices.find(v => v.name.includes('Victoria')) ||
+                  voices.find(v => v.name.includes('Google Neural')) ||
+                  voices[0]
+  return preferred || null
 }
 
 /** Create / resume AudioContext. Returns a Promise that resolves with the running context. */
@@ -75,59 +114,81 @@ if (typeof window !== 'undefined') {
   window.addEventListener('keydown', _initAudio, true)
 }
 
-function selectNaturalVoice() {
-  if (!('speechSynthesis' in window)) return null
-  
-  // Use cached voices (handles async loading)
-  const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices()
-  if (voices.length === 0) return null
-  // Prioritize Australian English voices
-  let preferred = voices.find(v => v.lang === 'en-AU' && v.name.includes('Karen')) ||
-                  voices.find(v => v.lang === 'en-AU' && v.name.includes('Catherine')) ||
-                  voices.find(v => v.lang === 'en-AU' && v.name.includes('Google')) ||
-                  voices.find(v => v.lang === 'en-AU') ||
-                  voices.find(v => v.name.includes('Google UK English Female')) ||
-                  voices.find(v => v.name.includes('Victoria')) ||
-                  voices.find(v => v.name.includes('Google Neural')) ||
-                  voices[0]
-  return preferred || null
-}
-
 export function setTTSParams(rate: number, pitch: number) {
   ttsRate = rate
   ttsPitch = pitch
 }
 
+/** Cancel any in-progress speech (works with both ResponsiveVoice and Web Speech API) */
+export function cancelSpeech() {
+  try {
+    if (hasResponsiveVoice()) window.responsiveVoice!.cancel()
+  } catch (_) { /* ignore */ }
+  try {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel()
+  } catch (_) { /* ignore */ }
+}
+
 /**
- * High-quality humanized speech synthesis
- * Improved voice characteristics for professional narration
- * @param onEnd - optional callback when speech finishes
+ * Speak text using ResponsiveVoice.js (preferred) with Web Speech API fallback.
+ * Supports both (text, callback) and (text, rate, pitch) signatures.
  */
 export function speakText(text: string, onEnd?: (() => void) | number, pitch?: number) {
-  if (!('speechSynthesis' in window) || isMuted) return
-  
+  if (isMuted) return
+
+  // Resolve overloaded params
+  let rate = ttsRate
+  let p = ttsPitch
+  let callback: (() => void) | undefined
+  if (typeof onEnd === 'function') {
+    callback = onEnd
+  } else if (typeof onEnd === 'number') {
+    rate = onEnd
+    p = pitch ?? ttsPitch
+  }
+
+  // Cancel any in-progress speech
+  cancelSpeech()
+
+  // ── Try ResponsiveVoice first ──────────
+  if (hasResponsiveVoice()) {
+    try {
+      window.responsiveVoice!.speak(text, RV_VOICE, {
+        pitch: p,
+        rate,
+        volume: 1,
+        onend: () => { if (callback) callback() },
+        onerror: (e: any) => {
+          logWarn(ErrorCode.SPK_UTTERANCE, 'ResponsiveVoice error, falling back', { detail: e })
+          speakWithWebSpeechAPI(text, rate, p, callback)
+        }
+      })
+      return
+    } catch (e) {
+      logWarn(ErrorCode.SPK_SYNTH, 'ResponsiveVoice.speak() threw, falling back', { error: e })
+    }
+  }
+
+  // ── Fallback: Web Speech API ──────────
+  speakWithWebSpeechAPI(text, rate, p, callback)
+}
+
+/** Internal Web Speech API fallback */
+function speakWithWebSpeechAPI(text: string, rate: number, pitch: number, callback?: () => void) {
+  if (!('speechSynthesis' in window)) return
   try { window.speechSynthesis.cancel() } catch (e) {
     logWarn(ErrorCode.SPK_CANCEL, 'speechSynthesis.cancel() failed', { error: e })
   }
   const u = new SpeechSynthesisUtterance(text)
-  
-  // Support both (text, callback) and (text, rate, pitch) signatures
-  if (typeof onEnd === 'function') {
-    u.rate = ttsRate
-    u.pitch = ttsPitch
-    u.onend = onEnd
-  } else {
-    u.rate = onEnd ?? ttsRate
-    u.pitch = pitch ?? ttsPitch
-  }
+  u.rate = rate
+  u.pitch = pitch
   u.volume = 1
   u.lang = 'en-AU'
-  
+  if (callback) u.onend = () => callback()
+
   const voice = selectNaturalVoice()
-  if (voice) {
-    u.voice = voice
-  }
-  
+  if (voice) u.voice = voice
+
   // Chrome stops speech after ~15s; keepalive workaround
   let keepAlive: ReturnType<typeof setInterval> | null = null
   u.onstart = () => {
@@ -138,26 +199,23 @@ export function speakText(text: string, onEnd?: (() => void) | number, pitch?: n
       }
     }, 10000)
   }
-  const originalOnEnd = u.onend
+  const origEnd = u.onend
   u.onend = (ev) => {
     if (keepAlive) clearInterval(keepAlive)
-    if (typeof originalOnEnd === 'function') (originalOnEnd as (ev: SpeechSynthesisEvent) => void)(ev)
+    if (typeof origEnd === 'function') (origEnd as (ev: SpeechSynthesisEvent) => void)(ev)
   }
   u.onerror = (ev) => {
     if (keepAlive) clearInterval(keepAlive)
     const errType = (ev as any)?.error || 'unknown'
-    // "interrupted" and "canceled" are normal (e.g. user navigated away) — don't log as errors
     if (errType === 'interrupted' || errType === 'canceled') return
-    // On mobile standalone mode, speech may not be available — log as warning not error
     logWarn(ErrorCode.SPK_UTTERANCE, 'SpeechSynthesisUtterance error', { detail: errType })
   }
-  
+
   try {
     window.speechSynthesis.speak(u)
   } catch (e) {
     logError(ErrorCode.SPK_SYNTH, 'speechSynthesis.speak() threw', { error: e })
   }
-  return u
 }
 
 export function playPhoneticSound(letter: string) {
@@ -299,9 +357,7 @@ export function toggleMute() {
     logWarn(ErrorCode.STR_WRITE, 'Failed to persist mute state', { error: e })
   }
   if (isMuted) {
-    try { window.speechSynthesis?.cancel() } catch (e) {
-      logWarn(ErrorCode.SPK_CANCEL, 'speechSynthesis.cancel() failed on mute', { error: e })
-    }
+    cancelSpeech()
     stopBackgroundMusic()
   }
   return isMuted

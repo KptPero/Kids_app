@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { playSound, speakText } from '../utils/sounds'
+import { playSound, speakText, cancelSpeech } from '../utils/sounds'
 
 interface Animal {
   emoji: string
@@ -38,7 +38,7 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
   useEffect(() => {
     return () => {
       timersRef.current.forEach(t => clearTimeout(t))
-      window.speechSynthesis?.cancel()
+      cancelSpeech()
     }
   }, [])
 

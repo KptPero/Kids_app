@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { playSound, speakText } from '../utils/sounds'
+import { playSound, speakText, cancelSpeech } from '../utils/sounds'
 
 interface HidingSpot {
   id: number
@@ -57,7 +57,7 @@ export default function PeekaBoo({ onBack, pet }: { onBack: () => void; pet?: st
   useEffect(() => {
     return () => {
       timersRef.current.forEach(t => clearTimeout(t))
-      window.speechSynthesis?.cancel()
+      cancelSpeech()
     }
   }, [])
 

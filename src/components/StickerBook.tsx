@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { playSound, speakText } from '../utils/sounds'
+import { playSound, speakText, cancelSpeech } from '../utils/sounds'
 
 interface Sticker {
   id: number
@@ -68,7 +68,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
   const justDragged = useRef(false)
 
   useEffect(() => {
-    return () => { window.speechSynthesis?.cancel() }
+    return () => { cancelSpeech() }
   }, [])
 
   const canvasW = Math.min(360, typeof window !== 'undefined' ? window.innerWidth - 40 : 360)
