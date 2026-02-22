@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { playSound, speakText } from '../utils/sounds'
 import { BEDTIME_STORIES } from '../data/bedtimeStories'
 import { logError, ErrorCode } from '../utils/errorLogger'
+import { backBtn } from '../utils/sharedStyles'
 
 export default function BedtimeStory({ onBack }:{onBack:()=>void}){
   const [screen, setScreen] = useState<'select'|'story'|'settings'|'progress'>('select')
@@ -129,19 +130,7 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
   if (screen === 'progress') {
     return (
       <div style={{background:`linear-gradient(135deg, ${eggsPink} 0%, ${eggsLightPink} 100%)`, minHeight:'100vh', padding:'20px'}}>
-        <button onClick={() => setScreen('select')} style={{
-          background:'rgba(255,255,255,0.55)',
-          backdropFilter:'blur(16px)',
-          WebkitBackdropFilter:'blur(16px)',
-          border:'1px solid rgba(255,255,255,0.4)',
-          color:'#2d3436',
-          padding:'10px 18px',
-          borderRadius:16,
-          cursor:'pointer',
-          marginBottom:20,
-          fontSize:14,
-          fontWeight:700
-        }}>← Back</button>
+        <button onClick={() => setScreen('select')} style={{...backBtn, marginBottom:20}}>← Back</button>
 
         <div style={{maxWidth:500, margin:'0 auto', textAlign:'center'}}>
           <h2 style={{fontSize:28, color:eggsCoral, marginTop:0, fontWeight:800}}>📚 My Stories</h2>
@@ -180,19 +169,7 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
   if (screen === 'settings') {
     return (
       <div style={{background:`linear-gradient(135deg, ${eggsPink} 0%, ${eggsLightPink} 100%)`, minHeight:'100vh', padding:'20px'}}>
-        <button onClick={() => setScreen('select')} style={{
-          background:'rgba(255,255,255,0.55)',
-          backdropFilter:'blur(16px)',
-          WebkitBackdropFilter:'blur(16px)',
-          border:'1px solid rgba(255,255,255,0.4)',
-          color:'#2d3436',
-          padding:'10px 18px',
-          borderRadius:16,
-          cursor:'pointer',
-          marginBottom:20,
-          fontSize:14,
-          fontWeight:700
-        }}>← Back</button>
+        <button onClick={() => setScreen('select')} style={{...backBtn, marginBottom:20}}>← Back</button>
 
         <div style={{maxWidth:500, margin:'0 auto', textAlign:'center'}}>
           {!settingsUnlocked ? (

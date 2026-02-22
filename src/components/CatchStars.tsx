@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { playSound, speakText } from '../utils/sounds'
+import { backBtnDark } from '../utils/sharedStyles'
+import { useSafeTimeout } from '../hooks/useSafeTimeout'
 
 interface FallingItem {
   id: number; x: number; y: number; emoji: string; speed: number; size: number; points: number; type: 'good' | 'power'
@@ -46,7 +48,6 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   const nextId = useRef(0)
   const frameRef = useRef<number>(0)
   const lastSpawn = useRef(0)
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const activePowerRef = useRef<string | null>(null)
   const caughtRef = useRef(0)
   const missedRef = useRef(0)
@@ -54,9 +55,9 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   const gameWidth = Math.min(360, typeof window !== 'undefined' ? window.innerWidth - 16 : 360)
   const gameHeight = Math.min(500, typeof window !== 'undefined' ? window.innerHeight - 120 : 500)
 
-  useEffect(() => { return () => { cancelAnimationFrame(frameRef.current); timersRef.current.forEach(t => clearTimeout(t)) } }, [])
+  const safeTimeout = useSafeTimeout()
 
-  function safeTimeout(fn: () => void, ms: number) { const id = setTimeout(fn, ms); timersRef.current.push(id); return id }
+  useEffect(() => { return () => { cancelAnimationFrame(frameRef.current) } }, [])
 
   const spawn = useCallback((wave: WaveDef) => {
     const r = Math.random()
@@ -175,7 +176,7 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
     return (
       <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.08)', color: '#B0BEC5', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, padding: '10px 18px', fontSize: 14, cursor: 'pointer', fontWeight: 700 }}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={backBtnDark}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
         </div>
         <h2 style={{ textAlign: 'center', color: '#FFD54F', fontSize: 24, margin: '0 0 8px 0' }}>⭐ Catch the Stars</h2>
@@ -273,7 +274,6 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
         </div>
       </div>
 
-      <style>{`@keyframes floatUp { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-40px) scale(1.3)} }`}</style>
     </div>
   )
 }

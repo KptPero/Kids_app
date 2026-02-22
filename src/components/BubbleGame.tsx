@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { playSound, speakText } from '../utils/sounds'
+import { backBtn } from '../utils/sharedStyles'
 
 type BubbleType = 'normal' | 'golden' | 'rainbow' | 'armored' | 'bomb'
 
@@ -233,7 +234,7 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
     return (
       <div style={{ background: 'linear-gradient(180deg, #eaf6ff 0%, #f0f8ff 40%, #faf0ff 80%, #fff0f5 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={backBtn}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
         </div>
         <h2 style={{ textAlign: 'center', color: '#0984e3', fontSize: 22, margin: '0 0 20px 0', fontWeight: 800 }}>🫧 Bubble Pop</h2>
@@ -349,11 +350,6 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
         }}>{b.emoji || b.letter || ''}</div>
       ))}
 
-      <style>{`
-        @keyframes comboPopIn { 0%{transform:translate(-50%,-50%) scale(0.3);opacity:0} 60%{transform:translate(-50%,-50%) scale(1.2);opacity:1} 100%{transform:translate(-50%,-50%) scale(1);opacity:1} }
-        @keyframes popBurst { 0%{transform:scale(1);opacity:1} 100%{transform:scale(2.5) translateY(-20px);opacity:0} }
-        @keyframes powerFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-      `}</style>
     </div>
   )
 }

@@ -1,5 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { getAudioContext } from '../utils/sounds';
 import { logError, logWarn, ErrorCode } from '../utils/errorLogger';
+import { backBtnDark } from '../utils/sharedStyles';
 
 interface Props { onBack: () => void; pet?: string }
 
@@ -94,27 +96,15 @@ export default function Calming({ onBack, pet }: Props) {
   const [breathPhase, setBreathPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [breathCount, setBreathCount] = useState(0);
   const [soothingOn, setSoothingOn] = useState(false);
-  const audioCtxRef = useRef<AudioContext | null>(null);
   const cancelTokenRef = useRef(0);
   const soothingNodesRef = useRef<{ osc: OscillatorNode[]; gain: GainNode } | null>(null);
   const breathTimerRef = useRef<number>(0);
-
-  const getCtx = useCallback(() => {
-    if (!audioCtxRef.current || audioCtxRef.current.state === 'closed') {
-      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-    }
-    if (audioCtxRef.current.state === 'suspended') {
-      audioCtxRef.current.resume().catch(() => {});
-    }
-    return audioCtxRef.current;
-  }, []);
 
   useEffect(() => {
     return () => {
       cancelTokenRef.current++;
       clearTimeout(breathTimerRef.current);
       stopSoothing();
-      audioCtxRef.current?.close();
     };
   }, []);
 
@@ -126,7 +116,8 @@ export default function Calming({ onBack, pet }: Props) {
     await new Promise(r => setTimeout(r, 100));
     if (token !== cancelTokenRef.current) return; // another call happened
     setPlayingIdx(idx);
-    const ctx = getCtx();
+    const ctx = getAudioContext();
+    if (!ctx) { setPlayingIdx(null); return; }
     const lull = LULLABIES[idx];
 
     try {
@@ -154,7 +145,8 @@ export default function Calming({ onBack, pet }: Props) {
   // ===== SOOTHING AMBIENT =====
   function startSoothing() {
     try {
-    const ctx = getCtx();
+    const ctx = getAudioContext();
+    if (!ctx) return;
     const master = ctx.createGain();
     master.gain.value = 0.08;
     master.connect(ctx.destination);
@@ -336,7 +328,4 @@ export default function Calming({ onBack, pet }: Props) {
   );
 }
 
-const backBtnStyle: React.CSSProperties = {
-  border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, padding: '10px 18px', fontSize: 14,
-  background: 'rgba(255,255,255,0.08)', color: '#B0BEC5', fontWeight: 700, cursor: 'pointer'
-};
+const backBtnStyle = backBtnDark;

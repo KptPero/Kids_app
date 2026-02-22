@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { playSound } from '../utils/sounds'
+import { backBtn } from '../utils/sharedStyles'
+import { useSafeTimeout } from '../hooks/useSafeTimeout'
 
 const emojiSets = [
   ['🐶','🐱','🐰','🦊','🐻','🐼'],
@@ -19,17 +21,7 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
   const [setIdx, setSetIdx] = useState(0)
   const [gameStarted, setGameStarted] = useState(false)
   const [locked, setLocked] = useState(false)
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
-
-  useEffect(() => {
-    return () => { timersRef.current.forEach(t => clearTimeout(t)) }
-  }, [])
-
-  function safeTimeout(fn: () => void, ms: number) {
-    const id = setTimeout(fn, ms)
-    timersRef.current.push(id)
-    return id
-  }
+  const safeTimeout = useSafeTimeout()
 
   const pairCount = difficulty === 'easy' ? 3 : difficulty === 'medium' ? 4 : 6
 
@@ -90,7 +82,7 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
       <div style={{background:'linear-gradient(135deg, #f3eeff 0%, #faf0ff 50%, #fff0f5 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
 
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20, position:'relative', zIndex:2}}>
-          <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.55)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:16, padding:'10px 18px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#2d3436'}}>← Back</button>
+          <button onClick={()=>{playSound('click');onBack()}} style={backBtn}>← Back</button>
           {pet && <div style={{fontSize:32}}>{pet}</div>}
         </div>
 
@@ -146,7 +138,7 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
   return (
     <div style={{background:'linear-gradient(135deg, #f3eeff 0%, #faf0ff 50%, #fff0f5 100%)', minHeight:'100vh', padding:'15px', position:'relative', overflow:'hidden'}}>
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12, position:'relative', zIndex:2}}>
-        <button onClick={()=>{playSound('click');setGameStarted(false)}} style={{background:'rgba(255,255,255,0.55)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:16, padding:'10px 16px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#2d3436'}}>← Menu</button>
+        <button onClick={()=>{playSound('click');setGameStarted(false)}} style={{...backBtn, padding:'10px 16px'}}>← Menu</button>
         <span style={{fontSize:14, fontWeight:700, color:'#636e72'}}>Moves: {moves} | Pairs: {matches}/{pairCount}</span>
         {pet && <div style={{fontSize:28}}>{pet}</div>}
       </div>

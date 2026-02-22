@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { playSound, speakText, cancelSpeech } from '../utils/sounds'
+import { backBtn } from '../utils/sharedStyles'
 
 interface Sticker {
   id: number; emoji: string; x: number; y: number; size: number; rotation: number
@@ -142,14 +143,14 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
 
   function clearAll() { pushHistory(); setStickers([]); setSelectedStickerId(null); playSound('click'); speakText('All clear!') }
 
-  const filteredStickers = STICKER_OPTIONS.filter(s => s.category === CATEGORIES[catIdx])
+  const filteredStickers = useMemo(() => STICKER_OPTIONS.filter(s => s.category === CATEGORIES[catIdx]), [catIdx])
   const sel = stickers.find(s => s.id === selectedStickerId)
 
   return (
     <div style={{ background: 'linear-gradient(135deg, #f3eeff 0%, #eef0ff 50%, #eaf6ff 100%)', minHeight: '100vh', padding: 12 }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '8px 14px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
+        <button onClick={() => { playSound('click'); onBack() }} style={{ ...backBtn, padding: '8px 14px' }}>← Back</button>
         <h2 style={{ fontSize: 18, color: '#6c5ce7', margin: 0, fontWeight: 800 }}>📒 Sticker Book</h2>
         {pet && <div style={{ fontSize: 24 }}>{pet}</div>}
       </div>

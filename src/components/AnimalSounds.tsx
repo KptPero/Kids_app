@@ -1,5 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { playSound, speakText, cancelSpeech } from '../utils/sounds'
+import React, { useState, useRef, useEffect } from 'react'
+import { playSound, speakText, cancelSpeech, getAudioContext } from '../utils/sounds'
+import { backBtn } from '../utils/sharedStyles'
+import { useSafeTimeout } from '../hooks/useSafeTimeout'
 
 interface Animal {
   emoji: string; name: string; sound: string; soundText: string; bg: string
@@ -41,15 +43,9 @@ const ANIMALS: Animal[] = [
     freq: 1200, dur: 0.12, type: 'square', reps: 3, gap: 0.1, freqEnd: 800 },
 ]
 
-let audioCtx: AudioContext | null = null
-function getCtx(): AudioContext {
-  if (!audioCtx) audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)()
-  if (audioCtx.state === 'suspended') audioCtx.resume()
-  return audioCtx
-}
-
 function playAnimalSound(animal: Animal) {
-  const ctx = getCtx()
+  const ctx = getAudioContext()
+  if (!ctx) return
   const reps = animal.reps || 1
   for (let r = 0; r < reps; r++) {
     const offset = r * (animal.dur + (animal.gap || 0))
@@ -114,15 +110,11 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
   const [answered, setAnswered] = useState(false)
   const [streak, setStreak] = useState(0)
   const [bestStreak, setBestStreak] = useState(0)
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const safeTimeout = useSafeTimeout()
 
   useEffect(() => {
-    return () => { timersRef.current.forEach(t => clearTimeout(t)); cancelSpeech() }
+    return () => { cancelSpeech() }
   }, [])
-
-  function safeTimeout(fn: () => void, ms: number) {
-    const id = setTimeout(fn, ms); timersRef.current.push(id); return id
-  }
 
   function tapAnimal(idx: number) {
     const animal = ANIMALS[idx]
@@ -137,14 +129,14 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
     nextQuizRound()
   }
 
-  const nextQuizRound = useCallback(() => {
+  function nextQuizRound() {
     const correct = ANIMALS[Math.floor(Math.random() * ANIMALS.length)]
     const opts = new Set<Animal>([correct])
     while (opts.size < 4) opts.add(ANIMALS[Math.floor(Math.random() * ANIMALS.length)])
     setQuizAnimal(correct); setQuizOptions(Array.from(opts).sort(() => Math.random() - 0.5))
     setFeedback(''); setAnswered(false); setQuizRound(r => r + 1)
     safeTimeout(() => playAnimalSound(correct), 500)
-  }, [])
+  }
 
   function answerQuiz(animal: Animal) {
     if (answered) return
@@ -175,7 +167,7 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
     return (
       <div style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => setMode('browse')} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
+          <button onClick={() => setMode('browse')} style={backBtn}>← Back</button>
           <span style={{ fontSize: 14, fontWeight: 700, color: '#00b894' }}>Round {quizRound}/{quizTotal} | ⭐{quizScore} | 🔥{streak}</span>
         </div>
         <div style={{ maxWidth: 400, margin: '0 auto', textAlign: 'center' }}>
@@ -214,7 +206,7 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
   return (
     <div style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 50%, #f0faf0 100%)', minHeight: '100vh', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
+        <button onClick={() => { playSound('click'); onBack() }} style={backBtn}>← Back</button>
         {pet && <div style={{ fontSize: 32 }}>{pet}</div>}
       </div>
       <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center' }}>

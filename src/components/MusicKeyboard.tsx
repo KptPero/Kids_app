@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { playSound } from '../utils/sounds'
-import { logError, logWarn, ErrorCode } from '../utils/errorLogger'
+import { playSound, getAudioContext } from '../utils/sounds'
+import { logError, ErrorCode } from '../utils/errorLogger'
+import { backBtnDark } from '../utils/sharedStyles'
 
 const instruments: Record<string, { type: OscillatorType; name: string; icon: string }> = {
   piano: { type: 'sine', name: 'Piano', icon: '🎹' },
@@ -26,7 +27,6 @@ export default function MusicKeyboard({ onBack, pet }:{ onBack:()=>void, pet?:st
   const [recording, setRecording] = useState(false)
   const [recorded, setRecorded] = useState<{note:string, time:number}[]>([])
   const [playing, setPlaying] = useState(false)
-  const audioCtxRef = useRef<AudioContext|null>(null)
   const startTime = useRef(0)
   const playbackTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const noteTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -37,30 +37,11 @@ export default function MusicKeyboard({ onBack, pet }:{ onBack:()=>void, pet?:st
     return () => {
       playbackTimers.current.forEach(t => clearTimeout(t))
       if (noteTimer.current) clearTimeout(noteTimer.current)
-      audioCtxRef.current?.close()
     }
   }, [])
 
-  function getAudioCtx(): AudioContext | null {
-    if (!audioCtxRef.current) {
-      try {
-        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
-      } catch (e) {
-        logError(ErrorCode.AUD_CTX_CREATE, 'MusicKeyboard AudioContext creation failed', { error: e, component: 'MusicKeyboard' })
-        return null
-      }
-    }
-    // iOS requires resume after user gesture
-    if (audioCtxRef.current.state === 'suspended') {
-      audioCtxRef.current.resume().catch((e: unknown) => {
-        logWarn(ErrorCode.AUD_CTX_RESUME, 'MusicKeyboard AudioContext.resume() failed', { detail: String(e), component: 'MusicKeyboard' })
-      })
-    }
-    return audioCtxRef.current
-  }
-
   function playNote(freq: number, noteName: string) {
-    const ctx = getAudioCtx()
+    const ctx = getAudioContext()
     if (!ctx) return
     try {
     const osc = ctx.createOscillator()
@@ -128,7 +109,7 @@ export default function MusicKeyboard({ onBack, pet }:{ onBack:()=>void, pet?:st
     <div style={{background:'linear-gradient(135deg, #1A237E 0%, #283593 50%, #3F51B5 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
 
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:15, position:'relative', zIndex:2}}>
-        <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.08)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:16, padding:'8px 16px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#B0BEC5'}}>← Back</button>
+        <button onClick={()=>{playSound('click');onBack()}} style={{...backBtnDark, padding:'8px 16px'}}>← Back</button>
         <h2 style={{margin:0, fontSize:18, color:'#fff', fontWeight:800}}>🎹 Music Studio</h2>
         {pet && <div style={{fontSize:32}}>{pet}</div>}
       </div>

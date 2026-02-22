@@ -84,8 +84,8 @@ async function ensureAudioContext(): Promise<AudioContext | null> {
   return audioContext
 }
 
-/** Synchronous getter (for callers that already ensured audio is running). */
-function getAudioContext() {
+/** Synchronous getter (for callers that already ensured audio is running). Exported for shared use. */
+export function getAudioContext() {
   if (!audioContext && typeof window !== 'undefined') {
     try {
       audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()

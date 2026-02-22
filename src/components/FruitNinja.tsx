@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { playSound, speakText } from '../utils/sounds'
+import { backBtnDark } from '../utils/sharedStyles'
+import { useSafeTimeout } from '../hooks/useSafeTimeout'
 
 interface Fruit {
   id: number
@@ -87,7 +89,6 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   const trailId = useRef(0)
   const spawnTimer = useRef<ReturnType<typeof setInterval> | null>(null)
   const comboTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([])
   const scoreRef = useRef(0)
   const slicedRef = useRef(0)
   const gameRef = useRef<HTMLDivElement>(null)
@@ -95,20 +96,15 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   const gameWidth = Math.min(400, typeof window !== 'undefined' ? window.innerWidth - 16 : 400)
   const gameHeight = Math.min(560, typeof window !== 'undefined' ? window.innerHeight - 100 : 560)
 
+  const safeTimeout = useSafeTimeout()
+
   useEffect(() => {
     return () => {
       cancelAnimationFrame(frameRef.current)
       if (spawnTimer.current) clearInterval(spawnTimer.current)
       if (comboTimer.current) clearTimeout(comboTimer.current)
-      timers.current.forEach(t => clearTimeout(t))
     }
   }, [])
-
-  function safeTimeout(fn: () => void, ms: number) {
-    const id = setTimeout(fn, ms)
-    timers.current.push(id)
-    return id
-  }
 
   // Spawn patterns like real Fruit Ninja: fruits thrown up from bottom in bursts
   const spawnWave = useCallback((count: number) => {
@@ -322,7 +318,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
     return (
       <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.08)', color: '#C8E6C9', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, padding: '10px 18px', fontSize: 14, cursor: 'pointer', fontWeight: 700 }}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={{ ...backBtnDark, color: '#C8E6C9' }}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
         </div>
         <h2 style={{ textAlign: 'center', color: '#C8E6C9', fontSize: 24, margin: '0 0 5px 0', fontWeight: 800 }}>🍉 Fruit Ninja</h2>
@@ -464,7 +460,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
             position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)',
             fontSize: 42, fontWeight: 'bold', color: '#FFA726', zIndex: 20,
             textShadow: '0 2px 10px rgba(255,167,38,0.6)',
-            animation: 'comboIn 0.4s ease-out', pointerEvents: 'none',
+            animation: 'comboPopIn 0.4s ease-out', pointerEvents: 'none',
           }}>
             {combo}x Combo! 🔥
           </div>
@@ -493,25 +489,6 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
         {pet && <div style={{ position: 'absolute', bottom: 10, right: 10, fontSize: 28, opacity: 0.7, pointerEvents: 'none' }}>{pet}</div>}
       </div>
 
-      <style>{`
-        @keyframes fruitSplashL {
-          0% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
-          100% { transform: translateX(-30px) rotate(-45deg) scale(0.5); opacity: 0; }
-        }
-        @keyframes fruitSplashR {
-          0% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
-          100% { transform: translateX(30px) rotate(45deg) scale(0.5); opacity: 0; }
-        }
-        @keyframes splashGrow {
-          0% { transform: scale(0); opacity: 1; }
-          100% { transform: scale(2.5); opacity: 0; }
-        }
-        @keyframes comboIn {
-          0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
-          60% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-          100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-      `}</style>
     </div>
   )
 }

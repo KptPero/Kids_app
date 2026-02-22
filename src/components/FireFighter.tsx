@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { playSound, speakText } from '../utils/sounds'
+import { backBtn } from '../utils/sharedStyles'
+import { useSafeTimeout } from '../hooks/useSafeTimeout'
 
 interface Flame {
   id: number; x: number; y: number; size: number; health: number; maxHealth: number
@@ -43,21 +45,16 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
   const gameLoopRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const powerupTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const comboTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
   const level = LEVELS[levelIdx]
 
-  function safeTimeout(fn: () => void, ms: number) {
-    const id = setTimeout(fn, ms); timersRef.current.push(id); return id
-  }
+  const safeTimeout = useSafeTimeout()
 
   const cleanup = useCallback(() => {
     if (spawnTimerRef.current) clearInterval(spawnTimerRef.current)
     if (gameLoopRef.current) clearInterval(gameLoopRef.current)
     if (powerupTimerRef.current) clearInterval(powerupTimerRef.current)
     if (comboTimerRef.current) clearTimeout(comboTimerRef.current)
-    timersRef.current.forEach(t => clearTimeout(t))
-    timersRef.current = []
     spawnTimerRef.current = null; gameLoopRef.current = null; powerupTimerRef.current = null
   }, [])
 
@@ -234,7 +231,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
     return (
       <div style={{ background: 'linear-gradient(135deg, #fef5e7 0%, #ffecd2 50%, #fffde8 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={btnStyle('#e17055')}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={backBtn}>← Back</button>
           {pet && <span style={{ fontSize: 32 }}>{pet}</span>}
         </div>
         <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
@@ -264,7 +261,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
     return (
       <div style={{ background: 'linear-gradient(135deg, #fef5e7 0%, #ffecd2 50%, #fffde8 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-          <button onClick={() => setGameState('menu')} style={btnStyle('#e17055')}>← Back</button>
+          <button onClick={() => setGameState('menu')} style={backBtn}>← Back</button>
           <h2 style={{ color: '#2d3436', margin: 0, flex: 1, textAlign: 'center', fontSize: 20, fontWeight: 800 }}>Choose Level</h2>
         </div>
         <div style={{ maxWidth: 400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -408,7 +405,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
 
       {/* Combo */}
       {showCombo && combo > 1 && (
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 28, fontWeight: 'bold', color: '#FFD700', textShadow: '0 0 10px rgba(255,215,0,0.8)', pointerEvents: 'none', zIndex: 10, animation: 'comboPopIn 0.3s ease-out' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 28, fontWeight: 'bold', color: '#FFD700', textShadow: '0 0 10px rgba(255,215,0,0.8)', pointerEvents: 'none', zIndex: 10, animation: 'ffComboPopIn 0.3s ease-out' }}>
           🔥 x{combo} COMBO! 🔥
         </div>
       )}
@@ -417,21 +414,10 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
         🧯 {flamePut}/{level.target} fires — {level.name}
       </div>
 
-      <style>{`
-        @keyframes flameWiggle { 0%{transform:rotate(-5deg) scale(1)} 100%{transform:rotate(5deg) scale(1.05)} }
-        @keyframes splashFade { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.8)} }
-        @keyframes comboPopIn { 0%{transform:translate(-50%,-50%) scale(.5);opacity:0} 50%{transform:translate(-50%,-50%) scale(1.2)} 100%{transform:translate(-50%,-50%) scale(1);opacity:1} }
-        @keyframes powerupBounce { 0%{transform:translateY(0) scale(1)} 100%{transform:translateY(-8px) scale(1.1)} }
-      `}</style>
     </div>
   )
 }
 
-const btnStyle = (c: string): React.CSSProperties => ({
-  background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16,
-  padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436'
-})
 const playBtn: React.CSSProperties = {
   background: '#e17055', color: '#fff', border: 'none',
   borderRadius: 16, padding: '15px 30px', fontSize: 16, fontWeight: 700, cursor: 'pointer'

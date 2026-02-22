@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toggleMute, setTTSParams, getMuteState } from '../utils/sounds';
 import { getLogEntries, clearLogEntries } from '../utils/errorLogger';
+import { backBtn } from '../utils/sharedStyles';
 
 interface Props { onBack: () => void; pet?: string }
 
@@ -237,12 +238,6 @@ export default function Settings({ onBack, pet }: Props) {
     </div>
   );
 }
-
-const backBtn: React.CSSProperties = {
-  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', fontSize: 14,
-  background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-  color: '#2d3436', fontWeight: 700, cursor: 'pointer'
-};
 
 const card: React.CSSProperties = {
   background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',

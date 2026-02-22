@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { logError, ErrorCode } from '../utils/errorLogger';
+import { backBtn } from '../utils/sharedStyles';
 
 interface Props { onBack: () => void; pet?: string }
 
@@ -937,12 +938,6 @@ export default function Drawing({ onBack, pet }: Props) {
     </div>
   );
 }
-
-const backBtn: React.CSSProperties = {
-  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', fontSize: 14,
-  background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-  color: '#2d3436', fontWeight: 700, cursor: 'pointer'
-};
 
 const menuCard: React.CSSProperties = {
   border: 'none', borderRadius: 16, padding: 16, cursor: 'pointer',

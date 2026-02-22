@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { STORIES, Story } from '../data/stories';
 import { speakLongText, cancelSpeech } from '../utils/sounds';
+import { backBtn } from '../utils/sharedStyles';
 
 interface Props { onBack: () => void; pet?: string }
 
@@ -174,11 +175,6 @@ export default function Stories({ onBack, pet }: Props) {
   );
 }
 
-const backBtn: React.CSSProperties = {
-  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', fontSize: 14,
-  background: 'rgba(255,255,255,0.55)', color: '#5D4037', fontWeight: 700, cursor: 'pointer',
-  backdropFilter: 'blur(16px)'
-};
 const pageBtn: React.CSSProperties = {
   border: 'none', borderRadius: 14, padding: '12px 22px', fontSize: 17,
   background: '#e17055', color: 'white', fontWeight: 700, cursor: 'pointer'

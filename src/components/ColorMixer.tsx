@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { playSound, speakText } from '../utils/sounds'
+import { useSafeTimeout } from '../hooks/useSafeTimeout'
 
 interface ColorDef { id: string; name: string; r: number; g: number; b: number; emoji: string }
 
@@ -156,14 +157,7 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
   const [freeR, setFreeR] = useState(128)
   const [freeG, setFreeG] = useState(128)
   const [freeB, setFreeB] = useState(128)
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
-
-  useEffect(() => {
-    return () => { timersRef.current.forEach(t => clearTimeout(t)) }
-  }, [])
-  function safeTimeout(fn: () => void, ms: number) {
-    const id = setTimeout(fn, ms); timersRef.current.push(id); return id
-  }
+  const safeTimeout = useSafeTimeout()
 
   function handleColorTap(color: ColorDef) {
     if (animating || selected.length >= 4) return
