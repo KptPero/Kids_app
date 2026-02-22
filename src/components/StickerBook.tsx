@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { playSound, speakText } from '../utils/sounds'
 
 interface Sticker {
@@ -65,12 +65,19 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const canvasRef = useRef<HTMLDivElement>(null)
   const nextId = useRef(0)
+  const justDragged = useRef(false)
 
-  const canvasW = 360
-  const canvasH = 380
+  useEffect(() => {
+    return () => { window.speechSynthesis?.cancel() }
+  }, [])
+
+  const canvasW = Math.min(360, typeof window !== 'undefined' ? window.innerWidth - 40 : 360)
+  const canvasH = Math.min(380, typeof window !== 'undefined' ? window.innerHeight - 300 : 380)
 
   function handleCanvasTap(e: React.MouseEvent | React.TouchEvent) {
     if (!selectedEmoji) return
+    // Prevent placing a sticker when user was dragging an existing one
+    if (justDragged.current) { justDragged.current = false; return }
     const rect = canvasRef.current?.getBoundingClientRect()
     if (!rect) return
 
@@ -137,6 +144,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
   }
 
   function handleCanvasEnd() {
+    if (draggingId !== null) justDragged.current = true
     setDraggingId(null)
   }
 

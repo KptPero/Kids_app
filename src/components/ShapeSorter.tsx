@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { playSound, speakText } from '../utils/sounds'
 
 interface Shape {
@@ -24,28 +24,39 @@ const SHAPES: Shape[] = [
     svg: '<polygon points="40,5 75,40 40,75 5,40" fill="FILL" stroke="#333" stroke-width="2"/>' },
 ]
 
+function shuffleArr<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+function buildRound(count: number) {
+  // Pick `count` shapes, then create a separate shuffled order for holes
+  const picked = shuffleArr(SHAPES).slice(0, count)
+  const holes = shuffleArr(picked)
+  return { picked, holes }
+}
+
 export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?: string }) {
   const [level, setLevel] = useState(0)
   const [sorted, setSorted] = useState<string[]>([])
   const [dragging, setDragging] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
   const [completed, setCompleted] = useState(false)
-  const [shuffledShapes, setShuffledShapes] = useState(() => shuffleShapes())
+  const [round, setRound] = useState(() => buildRound(3))
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  useEffect(() => {
+    return () => { timersRef.current.forEach(t => clearTimeout(t)) }
+  }, [])
 
   function safeTimeout(fn: () => void, ms: number) {
     const id = setTimeout(fn, ms)
     timersRef.current.push(id)
     return id
-  }
-
-  function shuffleShapes() {
-    const arr = [...SHAPES]
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]]
-    }
-    return arr
   }
 
   // Levels: easy (3 shapes), medium (4), hard (6)
@@ -54,13 +65,12 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
     { name: 'Medium', count: 4, label: '⭐⭐' },
     { name: 'Hard', count: 6, label: '⭐⭐⭐' },
   ]
-  const currentShapes = shuffledShapes.slice(0, difficulties[level].count)
-  const holeOrder = useRef(shuffleShapes().slice(0, difficulties[level].count))
+  const currentShapes = round.picked
+  const holeShapes = round.holes
 
-  function reset() {
-    const newShuffle = shuffleShapes()
-    setShuffledShapes(newShuffle)
-    holeOrder.current = shuffleShapes().slice(0, difficulties[level].count)
+  function reset(lvl?: number) {
+    const count = difficulties[lvl ?? level].count
+    setRound(buildRound(count))
     setSorted([])
     setFeedback('')
     setCompleted(false)
@@ -112,7 +122,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
           <h2 style={{ color: '#1565C0', margin: '0 0 10px 0' }}>All Sorted!</h2>
           <div style={{ fontSize: 40, marginBottom: 15 }}>{'⭐'.repeat(difficulties[level].count)}</div>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
-            <button onClick={reset} style={{ background: 'linear-gradient(135deg, #42A5F5, #1E88E5)', color: '#fff', border: 'none', borderRadius: 25, padding: '15px 30px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Again</button>
+            <button onClick={() => reset()} style={{ background: 'linear-gradient(135deg, #42A5F5, #1E88E5)', color: '#fff', border: 'none', borderRadius: 25, padding: '15px 30px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Again</button>
             <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'linear-gradient(135deg, #999, #bbb)', color: '#fff', border: 'none', borderRadius: 25, padding: '15px 30px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer' }}>🏠 Home</button>
           </div>
         </div>
@@ -126,9 +136,10 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
         <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.95)', border: '3px solid #1565C0', borderRadius: 25, padding: '12px 20px', cursor: 'pointer', fontSize: 16, fontWeight: 'bold', color: '#1565C0' }}>← Back</button>
         <div style={{ display: 'flex', gap: 6 }}>
           {difficulties.map((d, i) => (
-            <button key={d.name} onClick={() => { setLevel(i); safeTimeout(reset, 50) }} style={{
+            <button key={d.name} onClick={() => { setLevel(i); reset(i) }} style={{
               background: level === i ? '#1565C0' : '#E3F2FD', color: level === i ? '#fff' : '#1565C0',
-              border: 'none', borderRadius: 15, padding: '8px 14px', fontSize: 13, fontWeight: 'bold', cursor: 'pointer'
+              border: 'none', borderRadius: 15, padding: '8px 14px', fontSize: 13, fontWeight: 'bold', cursor: 'pointer',
+              WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' as any
             }}>{d.name}</button>
           ))}
         </div>
@@ -161,7 +172,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
         {/* Holes */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', padding: 15, background: 'rgba(0,0,0,0.05)', borderRadius: 20, border: '3px dashed #90CAF9' }}>
           <div style={{ width: '100%', fontSize: 14, color: '#888', marginBottom: 5 }}>⬇️ Drop here ⬇️</div>
-          {holeOrder.current.map(shape => {
+          {holeShapes.map(shape => {
             const isSorted = sorted.includes(shape.id)
             return (
               <button key={shape.id} onClick={() => handleDropOnHole(shape.id)} disabled={isSorted} style={{

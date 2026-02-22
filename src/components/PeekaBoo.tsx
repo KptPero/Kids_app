@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { playSound, speakText } from '../utils/sounds'
 
 interface HidingSpot {
@@ -53,6 +53,13 @@ export default function PeekaBoo({ onBack, pet }: { onBack: () => void; pet?: st
   const [message, setMessage] = useState('Tap to peek! 👀')
   const [wiggle, setWiggle] = useState<number | null>(null)
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach(t => clearTimeout(t))
+      window.speechSynthesis?.cancel()
+    }
+  }, [])
 
   function safeTimeout(fn: () => void, ms: number) {
     const id = setTimeout(fn, ms)

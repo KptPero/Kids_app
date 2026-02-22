@@ -29,13 +29,22 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   const [gameState, setGameState] = useState<'ready' | 'playing' | 'done'>('ready')
   const [catchAnim, setCatchAnim] = useState<{ x: number; y: number; emoji: string } | null>(null)
   const [highScore, setHighScore] = useState(0)
+  const highScoreRef = useRef(0)
   const nextId = useRef(0)
   const frameRef = useRef<number>(0)
   const lastSpawn = useRef(0)
   const containerRef = useRef<HTMLDivElement>(null)
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  const gameWidth = 360
-  const gameHeight = 500
+  const gameWidth = Math.min(360, typeof window !== 'undefined' ? window.innerWidth - 16 : 360)
+  const gameHeight = Math.min(500, typeof window !== 'undefined' ? window.innerHeight - 120 : 500)
+
+  useEffect(() => {
+    return () => {
+      cancelAnimationFrame(frameRef.current)
+      timersRef.current.forEach(t => clearTimeout(t))
+    }
+  }, [])
 
   const spawn = useCallback(() => {
     const template = ITEMS[Math.floor(Math.random() * ITEMS.length)]
@@ -69,15 +78,14 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   useEffect(() => {
     if (gameState === 'done') {
       playSound('tada')
-      setScore(s => {
-        if (s > highScore) {
-          setHighScore(s)
-          speakText(`Amazing! New high score! ${s} points!`)
-        } else {
-          speakText(`Great catching! You got ${s} points!`)
-        }
-        return s
-      })
+      const hs = highScoreRef.current
+      if (score > hs) {
+        highScoreRef.current = score
+        setHighScore(score)
+        speakText(`Amazing! New high score! ${score} points!`)
+      } else {
+        speakText(`Great catching! You got ${score} points!`)
+      }
     }
   }, [gameState])
 
@@ -117,7 +125,8 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
     setScore(s => s + item.points)
     setItems(prev => prev.filter(i => i.id !== item.id))
     setCatchAnim({ x: item.x, y: item.y, emoji: `+${item.points}` })
-    setTimeout(() => setCatchAnim(null), 400)
+    const tid = setTimeout(() => setCatchAnim(null), 400)
+    timersRef.current.push(tid)
   }
 
   function startGame() {

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { playSound, speakText } from '../utils/sounds'
 
 interface ColorBlob {
@@ -39,6 +39,10 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
   const [discovered, setDiscovered] = useState<string[]>([])
   const [animating, setAnimating] = useState(false)
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  useEffect(() => {
+    return () => { timersRef.current.forEach(t => clearTimeout(t)) }
+  }, [])
 
   function safeTimeout(fn: () => void, ms: number) {
     const id = setTimeout(fn, ms)
