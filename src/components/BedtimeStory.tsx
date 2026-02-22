@@ -122,27 +122,29 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
   const softCard = 'rgba(255, 214, 165, 0.1)'
 
   // Reading Eggs style colors
-  const eggsPink = '#FFB6D9'
-  const eggsCoral = '#FF6B9D'
-  const eggsLightPink = '#FFE4E1'
+  const eggsPink = '#f8c3d3'
+  const eggsCoral = '#e84393'
+  const eggsLightPink = '#fff0f3'
 
   if (screen === 'progress') {
     return (
       <div style={{background:`linear-gradient(135deg, ${eggsPink} 0%, ${eggsLightPink} 100%)`, minHeight:'100vh', padding:'20px'}}>
         <button onClick={() => setScreen('select')} style={{
-          background:'#fff',
-          border:`3px solid ${eggsCoral}`,
-          color:eggsCoral,
-          padding:'12px 20px',
-          borderRadius:'25px',
+          background:'rgba(255,255,255,0.55)',
+          backdropFilter:'blur(16px)',
+          WebkitBackdropFilter:'blur(16px)',
+          border:'1px solid rgba(255,255,255,0.4)',
+          color:'#2d3436',
+          padding:'10px 18px',
+          borderRadius:16,
           cursor:'pointer',
           marginBottom:20,
-          fontSize:16,
-          fontWeight:'bold'
+          fontSize:14,
+          fontWeight:700
         }}>← Back</button>
 
         <div style={{maxWidth:500, margin:'0 auto', textAlign:'center'}}>
-          <h2 style={{fontSize:32, color:eggsCoral, marginTop:0}}>📚 My Stories</h2>
+          <h2 style={{fontSize:28, color:eggsCoral, marginTop:0, fontWeight:800}}>📚 My Stories</h2>
           <p style={{fontSize:18, color:'#333', marginBottom:30}}>Great job! You've enjoyed {completedStories.length} story/stories!</p>
 
           <div style={{display:'grid', gridTemplateColumns:'1fr', gap:15}}>
@@ -150,11 +152,12 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
               const isCompleted = completedStories.includes(s.id)
               return (
                 <div key={s.id} style={{
-                  background:'#fff',
-                  borderRadius:'25px',
+                  background:'rgba(255,255,255,0.7)',
+                  backdropFilter:'blur(16px)',
+                  borderRadius:20,
                   padding:'20px',
-                  border:`3px solid ${isCompleted?'#FFD700':'#ddd'}`,
-                  boxShadow:isCompleted?'0 4px 12px rgba(255,215,0,0.3)':'0 2px 8px rgba(0,0,0,0.1)'
+                  border:isCompleted?'2px solid #FFD700':'1px solid rgba(255,255,255,0.4)',
+                  boxShadow:isCompleted?'0 4px 12px rgba(255,215,0,0.2)':'0 2px 8px rgba(0,0,0,0.06)'
                 }}>
                   <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
                     <div style={{textAlign:'left'}}>
@@ -178,29 +181,31 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
     return (
       <div style={{background:`linear-gradient(135deg, ${eggsPink} 0%, ${eggsLightPink} 100%)`, minHeight:'100vh', padding:'20px'}}>
         <button onClick={() => setScreen('select')} style={{
-          background:'#fff',
-          border:`3px solid ${eggsCoral}`,
-          color:eggsCoral,
-          padding:'12px 20px',
-          borderRadius:'25px',
+          background:'rgba(255,255,255,0.55)',
+          backdropFilter:'blur(16px)',
+          WebkitBackdropFilter:'blur(16px)',
+          border:'1px solid rgba(255,255,255,0.4)',
+          color:'#2d3436',
+          padding:'10px 18px',
+          borderRadius:16,
           cursor:'pointer',
           marginBottom:20,
           fontSize:14,
-          fontWeight:'bold'
+          fontWeight:700
         }}>← Back</button>
 
         <div style={{maxWidth:500, margin:'0 auto', textAlign:'center'}}>
           {!settingsUnlocked ? (
-            <div style={{padding:30, background:'#fff', borderRadius:'30px', marginBottom:20, boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>
-              <h2 style={{fontSize:28, color:eggsCoral, margin:'0 0 20px 0'}}>🔒 Parent Settings</h2>
+            <div style={{padding:30, background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', borderRadius:24, marginBottom:20, boxShadow:'0 4px 16px rgba(0,0,0,0.06)'}}>
+              <h2 style={{fontSize:24, color:eggsCoral, margin:'0 0 20px 0', fontWeight:800}}>🔒 Parent Settings</h2>
               <p style={{fontSize:14, color:'#333', marginBottom:20}}>Enter parental code</p>
               <input type="password" maxLength={4} value={parentalPass} onChange={(e)=>setParentalPass(e.target.value)} placeholder="••••" style={{
                 fontSize:24,
                 padding:'15px',
                 borderRadius:'15px',
-                border:`3px solid ${eggsCoral}`,
+                border:`2px solid ${eggsCoral}`,
                 background:'#fff',
-                color:'#333',
+                color:'#2d3436',
                 textAlign:'center',
                 width:'100%',
                 marginBottom:15,
@@ -209,11 +214,11 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
               <button onClick={checkParentalCode} style={{
                 width:'100%',
                 padding:'12px',
-                background:`linear-gradient(135deg, ${eggsCoral} 0%, #FF5588 100%)`,
+                background:eggsCoral,
                 color:'#fff',
                 border:'none',
-                borderRadius:'15px',
-                fontWeight:'bold',
+                borderRadius:14,
+                fontWeight:700,
                 cursor:'pointer',
                 fontSize:16
               }}>Unlock</button>
@@ -221,21 +226,21 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
             </div>
           ) : (
             <>
-              <h2 style={{fontSize:28, color:eggsCoral, margin:'0 0 25px 0'}}>⚙️ Settings</h2>
+              <h2 style={{fontSize:24, color:eggsCoral, margin:'0 0 25px 0', fontWeight:800}}>⚙️ Settings</h2>
               
-              <div style={{padding:20, background:'#fff', borderRadius:'25px', marginBottom:20, boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>
+              <div style={{padding:20, background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', borderRadius:20, marginBottom:20, boxShadow:'0 4px 16px rgba(0,0,0,0.06)'}}>
                 <h3 style={{fontSize:18, marginTop:0, color:'#333'}}>Story Theme</h3>
                 <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
                   {['all', 'kindness', 'curiosity', 'sharing', 'bravery', 'wonder', 'comfort'].map(theme => (
                     <button key={theme} onClick={()=>setSelectedTheme(theme)} style={{
                       padding:'12px',
                       borderRadius:'12px',
-                      border:`3px solid ${selectedTheme===theme?eggsCoral:'#ddd'}`,
-                      background:selectedTheme===theme?`${eggsCoral}15`:'#fff',
-                      color:'#333',
+                      border:selectedTheme===theme?`2px solid ${eggsCoral}`:'1px solid rgba(0,0,0,0.06)',
+                      background:selectedTheme===theme?`${eggsCoral}15`:'rgba(255,255,255,0.5)',
+                      color:'#2d3436',
                       cursor:'pointer',
                       fontSize:11,
-                      fontWeight:'bold',
+                      fontWeight:700,
                       textTransform:'capitalize'
                     }}>
                       {theme === 'all' ? '📚 All' : theme === 'kindness' ? '💕 Kindness' : theme === 'curiosity' ? '🔍 Curious' : theme === 'sharing' ? '🤝 Sharing' : theme === 'bravery' ? '💪 Brave' : theme === 'wonder' ? '✨ Wonder' : '🤗 Comfort'}
@@ -244,19 +249,19 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
                 </div>
               </div>
 
-              <div style={{padding:20, background:'#fff', borderRadius:'25px', marginBottom:20, boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>
-                <h3 style={{fontSize:18, marginTop:0, color:'#333'}}>Story Length</h3>
+              <div style={{padding:20, background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', borderRadius:20, marginBottom:20, boxShadow:'0 4px 16px rgba(0,0,0,0.06)'}}>
+                <h3 style={{fontSize:18, marginTop:0, color:'#2d3436'}}>Story Length</h3>
                 <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:10}}>
                   {['all', '5', '10'].map(len => (
                     <button key={len} onClick={()=>setSelectedLength(len)} style={{
                       padding:'12px',
                       borderRadius:'12px',
-                      border:`3px solid ${selectedLength===len?eggsCoral:'#ddd'}`,
-                      background:selectedLength===len?`${eggsCoral}15`:'#fff',
-                      color:'#333',
+                      border:selectedLength===len?`2px solid ${eggsCoral}`:'1px solid rgba(0,0,0,0.06)',
+                      background:selectedLength===len?`${eggsCoral}15`:'rgba(255,255,255,0.5)',
+                      color:'#2d3436',
                       cursor:'pointer',
                       fontSize:12,
-                      fontWeight:'bold'
+                      fontWeight:700
                     }}>
                       {len === 'all' ? 'Any' : len + ' min'}
                     </button>
@@ -267,11 +272,11 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
               <button onClick={()=>{setSettingsUnlocked(false);setScreen('select')}} style={{
                 width:'100%',
                 padding:'15px',
-                background:`linear-gradient(135deg, ${eggsCoral} 0%, #FF5588 100%)`,
+                background:eggsCoral,
                 color:'#fff',
                 border:'none',
-                borderRadius:'15px',
-                fontWeight:'bold',
+                borderRadius:14,
+                fontWeight:700,
                 cursor:'pointer',
                 fontSize:16
               }}>
@@ -311,18 +316,18 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
         {/* Story Content */}
         <div style={{maxWidth:600, margin:'0 auto', position:'relative', zIndex:10}}>
           <button onClick={()=>{ playSound('click'); stopStory(); setScreen('select') }} style={{
-            background:'rgba(255,229,180,0.2)',
-            border:`2px solid ${warmText}`,
+            background:'rgba(255,255,255,0.08)',
+            border:'1px solid rgba(255,255,255,0.12)',
             color:warmText,
-            padding:'10px 16px',
-            borderRadius:'20px',
+            padding:'10px 18px',
+            borderRadius:16,
             cursor:'pointer',
             marginBottom:20,
             fontSize:14,
-            fontWeight:'bold'
+            fontWeight:700
           }}>← Menu</button>
 
-          <div style={{background:softCard, borderRadius:'30px', padding:'30px', marginBottom:20}}>
+          <div style={{background:softCard, borderRadius:24, padding:'30px', marginBottom:20}}>
             <h2 style={{fontSize:28, color:warmText, textAlign:'center', marginTop:0}}>{story.title}</h2>
             
             {/* Story Text with highlighting */}
@@ -332,7 +337,6 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
               color:warmText,
               minHeight:300,
               marginBottom:20,
-              fontFamily:"'Nunito', 'Quicksand', sans-serif",
               fontWeight:600,
               letterSpacing:'0.02em'
             }}>
@@ -411,7 +415,7 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
         {/* Rating Modal */}
         {showRating && (
           <div style={{position:'fixed', top:0, left:0, width:'100%', height:'100%', background:'rgba(0,0,0,0.6)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:100}}>
-            <div style={{background:'#fff', borderRadius:'30px', padding:'30px', textAlign:'center', boxShadow:'0 8px 24px rgba(0,0,0,0.3)'}}>
+            <div style={{background:'#fff', borderRadius:24, padding:'30px', textAlign:'center', boxShadow:'0 8px 24px rgba(0,0,0,0.2)'}}>
               <h3 style={{fontSize:24, color:eggsCoral, marginTop:0}}>Great Job! 🌟</h3>
               <p style={{fontSize:16, color:'#333', marginBottom:20}}>How did you like the story?</p>
               <div style={{display:'flex', gap:15, justifyContent:'center', marginBottom:20}}>
@@ -450,41 +454,41 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
     <div style={{background:`linear-gradient(135deg, ${eggsPink} 0%, ${eggsLightPink} 100%)`, minHeight:'100vh', padding:'0'}}>
       {/* Header */}
       <div style={{
-        background:`linear-gradient(90deg, ${eggsCoral} 0%, ${eggsPink} 100%)`,
+        background:eggsCoral,
         color:'#fff',
         padding:'20px',
         textAlign:'center',
-        boxShadow:'0 4px 12px rgba(0,0,0,0.1)'
+        boxShadow:'0 2px 12px rgba(0,0,0,0.08)'
       }}>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
           <button onClick={onBack} style={{
-            background:'rgba(255,255,255,0.3)',
-            border:'none',
+            background:'rgba(255,255,255,0.15)',
+            border:'1px solid rgba(255,255,255,0.2)',
             color:'#fff',
-            fontSize:24,
+            fontSize:20,
             cursor:'pointer',
-            padding:'8px 12px',
-            borderRadius:'15px',
-            fontWeight:'bold'
+            padding:'8px 14px',
+            borderRadius:14,
+            fontWeight:700
           }}>← Home</button>
           
           <h1 style={{margin:0, fontSize:28}}>🌙 Bedtime Stories</h1>
           
           <button onClick={()=>setScreen('settings')} style={{
-            background:'rgba(255,255,255,0.3)',
-            border:'none',
+            background:'rgba(255,255,255,0.15)',
+            border:'1px solid rgba(255,255,255,0.2)',
             color:'#fff',
-            fontSize:24,
+            fontSize:20,
             cursor:'pointer',
-            padding:'8px 12px',
-            borderRadius:'15px'
+            padding:'8px 14px',
+            borderRadius:14
           }}>⚙️</button>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div style={{background:'#fff', padding:'15px 20px', borderBottom:'3px solid '+eggsCoral}}>
-        <p style={{margin:'0 0 10px 0', fontSize:14, fontWeight:'bold', color:'#333'}}>
+      <div style={{background:'rgba(255,255,255,0.8)', padding:'15px 20px', borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
+        <p style={{margin:'0 0 10px 0', fontSize:14, fontWeight:700, color:'#2d3436'}}>
           Stories Completed: {completedStories.length} / {BEDTIME_STORIES.length}
         </p>
         <div style={{background:'#eee', borderRadius:'15px', height:'12px', overflow:'hidden'}}>
@@ -500,7 +504,7 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
       {/* Main Content */}
       <div style={{padding:'20px', maxWidth:600, margin:'0 auto'}}>
         {/* Featured Story */}
-        <div style={{background:'#fff', borderRadius:'30px', padding:'25px', marginBottom:25, boxShadow:'0 6px 15px rgba(0,0,0,0.1)'}}>
+        <div style={{background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', borderRadius:24, padding:'25px', marginBottom:25, boxShadow:'0 4px 16px rgba(0,0,0,0.06)'}}>
           <div style={{
             fontSize:80,
             textAlign:'center',
@@ -525,14 +529,14 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
           <button onClick={()=>{ playSound('success'); setStoryIdx(BEDTIME_STORIES.findIndex(s => s.id === displayStory.id)); setScreen('story'); setShowRating(false); }} style={{
             width:'100%',
             padding:'16px',
-            background:`linear-gradient(135deg, ${eggsCoral} 0%, #FF5588 100%)`,
+            background:eggsCoral,
             color:'#fff',
             border:'none',
-            borderRadius:'20px',
+            borderRadius:16,
             fontSize:18,
-            fontWeight:'bold',
+            fontWeight:700,
             cursor:'pointer',
-            boxShadow:'0 4px 12px rgba(255,107,157,0.3)',
+            boxShadow:'0 4px 12px rgba(232,67,147,0.2)',
             transition:'all 0.2s'
           }} onMouseOver={(e)=>e.currentTarget.style.transform='scale(1.05)'} onMouseOut={(e)=>e.currentTarget.style.transform='scale(1)'}>
             📖 Read to Me
@@ -541,16 +545,16 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
 
         {/* All Stories Grid */}
         <div style={{marginBottom:20}}>
-          <h3 style={{fontSize:18, color:eggsCoral, marginBottom:15, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <h3 style={{fontSize:18, color:eggsCoral, marginBottom:15, fontWeight:700, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
             All Stories
             <button onClick={()=>setScreen('progress')} style={{
-              background:`linear-gradient(135deg, ${eggsCoral} 0%, #FF5588 100%)`,
+              background:eggsCoral,
               color:'#fff',
               border:'none',
-              borderRadius:'15px',
+              borderRadius:14,
               padding:'8px 12px',
               fontSize:12,
-              fontWeight:'bold',
+              fontWeight:700,
               cursor:'pointer'
             }}>
               📚 My Stories
@@ -561,13 +565,13 @@ export default function BedtimeStory({ onBack }:{onBack:()=>void}){
               const isCompleted = completedStories.includes(s.id)
               return (
                 <button key={s.id} onClick={()=>{ playSound('click'); setStoryIdx(BEDTIME_STORIES.findIndex(st => st.id === s.id)); setScreen('story'); setShowRating(false); }} style={{
-                  background:'#fff',
-                  border:`3px solid ${isCompleted?'#FFD700':eggsCoral}`,
-                  borderRadius:'20px',
+                  background:'rgba(255,255,255,0.7)',
+                  border:isCompleted?'2px solid #FFD700':`1px solid rgba(255,255,255,0.4)`,
+                  borderRadius:18,
                   padding:'15px',
                   cursor:'pointer',
                   transition:'all 0.2s',
-                  boxShadow:isCompleted?'0 4px 12px rgba(255,215,0,0.3)':'0 2px 8px rgba(0,0,0,0.1)'
+                  boxShadow:isCompleted?'0 4px 12px rgba(255,215,0,0.2)':'0 2px 8px rgba(0,0,0,0.06)'
                 }} onMouseOver={(e)=>e.currentTarget.style.transform='scale(1.05)'} onMouseOut={(e)=>e.currentTarget.style.transform='scale(1)'}>
                   <div style={{fontSize:40, marginBottom:8}}>{isCompleted?'⭐':'🌙'}</div>
                   <h4 style={{fontSize:13, margin:'0 0 5px 0', color:'#333'}}>{s.character}</h4>

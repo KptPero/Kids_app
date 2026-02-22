@@ -173,26 +173,25 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
 
   if (mode === 'quiz' && quizAnimal) {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+      <div style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => setMode('browse')} style={{ background: 'rgba(255,255,255,0.95)', border: '3px solid #4CAF50', borderRadius: 25, padding: '12px 20px', cursor: 'pointer', fontSize: 16, fontWeight: 'bold', color: '#4CAF50' }}>← Back</button>
-          <span style={{ fontSize: 15, fontWeight: 'bold', color: '#4CAF50' }}>Round {quizRound}/{quizTotal} | ⭐{quizScore} | 🔥{streak}</span>
+          <button onClick={() => setMode('browse')} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#00b894' }}>Round {quizRound}/{quizTotal} | ⭐{quizScore} | 🔥{streak}</span>
         </div>
         <div style={{ maxWidth: 400, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ background: '#fff', borderRadius: 30, padding: 25, boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
-            <h2 style={{ color: '#4CAF50', margin: '0 0 12px 0', fontSize: 20 }}>🔊 Which animal sounds like this?</h2>
+          <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 25, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+            <h2 style={{ color: '#00b894', margin: '0 0 12px 0', fontSize: 18, fontWeight: 800 }}>🔊 Which animal sounds like this?</h2>
             <button onClick={() => quizAnimal && playAnimalSound(quizAnimal)} style={{
-              background: 'linear-gradient(135deg, #FFB74D, #FFA726)', color: '#fff', border: 'none',
-              width: 80, height: 80, borderRadius: '50%', fontSize: 36, cursor: 'pointer', marginBottom: 15,
-              boxShadow: '0 4px 12px rgba(255,183,77,0.4)'
+              background: '#e17055', color: '#fff', border: 'none',
+              width: 80, height: 80, borderRadius: '50%', fontSize: 36, cursor: 'pointer', marginBottom: 15
             }}>🔊</button>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               {quizOptions.map(a => (
                 <button key={a.name} onClick={() => answerQuiz(a)} disabled={answered} style={{
-                  background: answered && a.name === quizAnimal.name ? '#C8E6C9' : a.bg,
-                  border: `3px solid ${answered && a.name === quizAnimal.name ? '#4CAF50' : '#ddd'}`,
-                  borderRadius: 20, padding: '12px', fontSize: 18, cursor: answered ? 'default' : 'pointer',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, fontWeight: 'bold',
+                  background: answered && a.name === quizAnimal.name ? 'rgba(0,184,148,0.12)' : a.bg,
+                  border: `2px solid ${answered && a.name === quizAnimal.name ? '#00b894' : 'rgba(0,0,0,0.06)'}`,
+                  borderRadius: 16, padding: '12px', fontSize: 18, cursor: answered ? 'default' : 'pointer',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, fontWeight: 700,
                   opacity: answered && a.name !== quizAnimal.name ? 0.5 : 1
                 }}>
                   <span style={{ fontSize: 36 }}>{a.emoji}</span>
@@ -202,8 +201,8 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
             </div>
             {feedback && (
               <div style={{ marginTop: 12, padding: 10, borderRadius: 15, fontSize: 14, fontWeight: 'bold',
-                background: feedback.includes('✅') ? '#E8F5E9' : feedback.includes('🎉') ? '#FFF9C4' : '#FFE4E1',
-                color: feedback.includes('✅') ? '#2E7D32' : feedback.includes('🎉') ? '#F57F17' : '#C62828'
+                background: feedback.includes('✅') ? 'rgba(0,184,148,0.08)' : feedback.includes('🎉') ? 'rgba(253,203,110,0.15)' : 'rgba(232,67,147,0.06)',
+                color: feedback.includes('✅') ? '#00b894' : feedback.includes('🎉') ? '#e17055' : '#d63031'
               }}>{feedback}</div>
             )}
           </div>
@@ -213,22 +212,22 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
   }
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 50%, #DCEDC8 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+    <div style={{ background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 50%, #f0faf0 100%)', minHeight: '100vh', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.95)', border: '3px solid #4CAF50', borderRadius: 25, padding: '12px 20px', cursor: 'pointer', fontSize: 16, fontWeight: 'bold', color: '#4CAF50' }}>← Back</button>
+        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
         {pet && <div style={{ fontSize: 32 }}>{pet}</div>}
       </div>
       <div style={{ maxWidth: 500, margin: '0 auto', textAlign: 'center' }}>
-        <h1 style={{ fontSize: 28, color: '#2E7D32', margin: '0 0 5px 0' }}>🐾 Animal Sounds</h1>
+        <h1 style={{ fontSize: 26, color: '#00b894', margin: '0 0 5px 0', fontWeight: 800 }}>🐾 Animal Sounds</h1>
         <p style={{ fontSize: 13, color: '#666', margin: '0 0 12px 0' }}>Tap an animal to hear its real sound!</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 18 }}>
           {ANIMALS.map((animal, i) => (
             <button key={animal.name} onClick={() => tapAnimal(i)} style={{
-              background: active === i ? '#FFD54F' : animal.bg,
-              border: `3px solid ${active === i ? '#FFA000' : '#ddd'}`,
-              borderRadius: 20, padding: '12px 6px', cursor: 'pointer',
+              background: active === i ? '#fdcb6e' : animal.bg,
+              border: `2px solid ${active === i ? '#e17055' : 'rgba(0,0,0,0.04)'}`,
+              borderRadius: 16, padding: '12px 6px', cursor: 'pointer',
               transform: active === i ? 'scale(1.08)' : 'scale(1)', transition: 'all 0.2s',
-              boxShadow: active === i ? '0 6px 20px rgba(255,160,0,0.4)' : '0 2px 8px rgba(0,0,0,0.06)'
+              boxShadow: active === i ? '0 4px 16px rgba(225,112,85,0.25)' : '0 2px 8px rgba(0,0,0,0.04)'
             }}>
               <div style={{ fontSize: 36, marginBottom: 2 }}>{animal.emoji}</div>
               <div style={{ fontSize: 12, fontWeight: 'bold', color: '#333' }}>{animal.name}</div>
@@ -237,9 +236,8 @@ export default function AnimalSounds({ onBack, pet }: { onBack: () => void; pet?
           ))}
         </div>
         <button onClick={startQuiz} style={{
-          background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', color: '#fff', border: 'none',
-          borderRadius: 25, padding: '14px 36px', fontSize: 17, fontWeight: 'bold', cursor: 'pointer',
-          boxShadow: '0 4px 12px rgba(76,175,80,0.3)'
+          background: '#00b894', color: '#fff', border: 'none',
+          borderRadius: 16, padding: '14px 36px', fontSize: 17, fontWeight: 700, cursor: 'pointer'
         }}>🎯 Sound Quiz!</button>
       </div>
     </div>

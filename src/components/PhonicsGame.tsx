@@ -99,14 +99,14 @@ export default function PhonicsGame({ onBack, pet }: { onBack: () => void, pet?:
   if (gameOver) {
     const stars = score >= 40 ? 3 : score >= 25 ? 2 : 1
     return (
-      <div style={{background:'linear-gradient(135deg, #FFB6D9 0%, #FFE4E1 50%, #FFF9C4 100%)', minHeight:'100vh', padding:'20px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
-        <div style={{background:'rgba(255,255,255,0.95)', borderRadius:'30px', padding:'40px', textAlign:'center', boxShadow:'0 8px 30px rgba(0,0,0,0.1)', maxWidth:400}}>
+      <div style={{background:'linear-gradient(135deg, #fce4ec 0%, #fff0f5 50%, #fffde8 100%)', minHeight:'100vh', padding:'20px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
+        <div style={{background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:24, padding:'40px', textAlign:'center', boxShadow:'0 4px 16px rgba(0,0,0,0.06)', maxWidth:400}}>
           <div style={{fontSize:60, marginBottom:10}}>🎉</div>
-          <h2 style={{color:'#FF6B9D', margin:'0 0 10px 0'}}>Game Over!</h2>
+          <h2 style={{color:'#e84393', margin:'0 0 10px 0'}}>Game Over!</h2>
           <div style={{fontSize:40, marginBottom:10}}>{'⭐'.repeat(stars)}</div>
           <p style={{fontSize:20, fontWeight:'bold', color:'#333'}}>Score: {score}/{totalRounds*10}</p>
           <p style={{fontSize:16, color:'#666'}}>Best Streak: {bestStreak}</p>
-          <button onClick={()=>{setGameMode('menu');setGameOver(false)}} style={{background:'linear-gradient(135deg, #FF6B9D, #FFB6D9)', color:'#fff', border:'none', borderRadius:'25px', padding:'15px 40px', fontSize:16, fontWeight:'bold', cursor:'pointer', marginTop:15}}>
+          <button onClick={()=>{setGameMode('menu');setGameOver(false)}} style={{background:'#e84393', color:'#fff', border:'none', borderRadius:16, padding:'15px 40px', fontSize:16, fontWeight:700, cursor:'pointer', marginTop:15}}>
             🏠 Back to Menu
           </button>
         </div>
@@ -116,24 +116,22 @@ export default function PhonicsGame({ onBack, pet }: { onBack: () => void, pet?:
 
   if (gameMode === 'menu') {
     return (
-      <div style={{background:'linear-gradient(135deg, #FFB6D9 0%, #FFE4E1 50%, #E8D5FF 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
-        <div style={{position:'absolute',top:30,left:20,fontSize:55,opacity:0.08}}>🔊</div>
-        <div style={{position:'absolute',bottom:60,right:30,fontSize:50,opacity:0.08}}>🎵</div>
+      <div style={{background:'linear-gradient(135deg, #fce4ec 0%, #fff0f5 50%, #f3eeff 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
 
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20, position:'relative', zIndex:2}}>
-          <button onClick={onBack} style={{background:'rgba(255,255,255,0.95)', border:'3px solid #FF6B9D', color:'#FF6B9D', padding:'12px 20px', borderRadius:'25px', cursor:'pointer', fontSize:16, fontWeight:'bold'}}>← Back</button>
+          <button onClick={onBack} style={{background:'rgba(255,255,255,0.55)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:16, padding:'10px 18px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#2d3436'}}>← Back</button>
           {pet && <div style={{fontSize:32}}>{pet}</div>}
         </div>
 
         <div style={{maxWidth:500, margin:'0 auto', textAlign:'center', position:'relative', zIndex:2}}>
-          <h1 style={{fontSize:36, color:'#FF6B9D', marginTop:0}}>🔊 Phonics Games</h1>
+          <h1 style={{fontSize:32, color:'#e84393', marginTop:0, fontWeight:800}}>🔊 Phonics Games</h1>
           <p style={{fontSize:16, color:'#555', marginBottom:30}}>Learn letter sounds!</p>
 
-          <button onClick={startListeningGame} style={{width:'100%', padding:'22px', marginBottom:15, background:'linear-gradient(135deg, #FF66B2, #FF6B9D)', color:'#fff', border:'none', borderRadius:25, fontSize:20, fontWeight:'bold', cursor:'pointer', boxShadow:'0 6px 15px rgba(255,107,157,0.3)'}}>
+          <button onClick={startListeningGame} style={{width:'100%', padding:'22px', marginBottom:15, background:'#e84393', color:'#fff', border:'none', borderRadius:18, fontSize:20, fontWeight:700, cursor:'pointer'}}>
             👂 Listen & Choose<br/><span style={{fontSize:15}}>Hear the sound, pick the letter!</span>
           </button>
 
-          <button onClick={startMatchingGame} style={{width:'100%', padding:'22px', background:'linear-gradient(135deg, #7B68EE, #6A5ACD)', color:'#fff', border:'none', borderRadius:25, fontSize:20, fontWeight:'bold', cursor:'pointer', boxShadow:'0 6px 15px rgba(123,104,238,0.3)'}}>
+          <button onClick={startMatchingGame} style={{width:'100%', padding:'22px', background:'#6c5ce7', color:'#fff', border:'none', borderRadius:18, fontSize:20, fontWeight:700, cursor:'pointer'}}>
             🎯 Match the Sound<br/><span style={{fontSize:15}}>See the phonetic sound, find the letter!</span>
           </button>
         </div>
@@ -142,16 +140,16 @@ export default function PhonicsGame({ onBack, pet }: { onBack: () => void, pet?:
   }
 
   const isListening = gameMode === 'listening'
-  const bgColor = isListening ? 'linear-gradient(135deg, #FF66B2 0%, #FFB6D9 100%)' : 'linear-gradient(135deg, #7B68EE 0%, #9370DB 100%)'
-  const accent = isListening ? '#FF6B9D' : '#7B68EE'
+  const bgColor = isListening ? 'linear-gradient(135deg, #fce4ec 0%, #fff0f5 100%)' : 'linear-gradient(135deg, #f3eeff 0%, #faf0ff 100%)'
+  const accent = isListening ? '#e84393' : '#6c5ce7'
 
   return (
     <div style={{background:bgColor, minHeight:'100vh', padding:'20px'}}>
-      <div style={{maxWidth:500, margin:'0 auto', background:'rgba(255,255,255,0.95)', borderRadius:30, padding:25, boxShadow:'0 8px 24px rgba(0,0,0,0.1)'}}>
+      <div style={{maxWidth:500, margin:'0 auto', background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:24, padding:25, boxShadow:'0 4px 16px rgba(0,0,0,0.06)'}}>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:15}}>
           <span style={{fontSize:15, fontWeight:'bold', color:'#666'}}>Round {round}/{totalRounds}</span>
           <span style={{fontSize:15, fontWeight:'bold', color:'#666'}}>Score: {score} | 🔥 {streak}</span>
-          <button onClick={()=>setGameMode('menu')} style={{background:accent, color:'#fff', border:'none', padding:'10px 18px', borderRadius:20, cursor:'pointer', fontSize:14, fontWeight:'bold'}}>Quit</button>
+          <button onClick={()=>setGameMode('menu')} style={{background:accent, color:'#fff', border:'none', padding:'10px 18px', borderRadius:14, cursor:'pointer', fontSize:14, fontWeight:700}}>Quit</button>
         </div>
 
         <h2 style={{fontSize:24, textAlign:'center', margin:'15px 0', color:accent}}>
@@ -160,7 +158,7 @@ export default function PhonicsGame({ onBack, pet }: { onBack: () => void, pet?:
 
         <div style={{textAlign:'center', marginBottom:20}}>
           {isListening ? (
-            <button onClick={replaySound} style={{background:'linear-gradient(135deg, #FFB366, #FFA333)', color:'#fff', border:'none', width:90, height:90, borderRadius:'50%', fontSize:40, cursor:'pointer', boxShadow:'0 6px 15px rgba(255,179,102,0.4)', margin:'0 auto'}}>
+            <button onClick={replaySound} style={{background:'#e17055', color:'#fff', border:'none', width:90, height:90, borderRadius:'50%', fontSize:40, cursor:'pointer', margin:'0 auto'}}>
               🔊
             </button>
           ) : (
@@ -174,16 +172,16 @@ export default function PhonicsGame({ onBack, pet }: { onBack: () => void, pet?:
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:15}}>
           {options.map((l, i) => (
             <button key={l+i} onClick={() => handleAnswer(l)} disabled={answered} style={{
-              padding:18, background: answered && l===currentLetter ? '#C8E6C9' : '#fff',
-              color: answered && l===currentLetter ? '#2E7D32' : '#333', border:`3px solid ${accent}`,
-              borderRadius:20, fontSize:28, fontWeight:'bold', cursor: answered?'default':'pointer',
+              padding:18, background: answered && l===currentLetter ? 'rgba(0,184,148,0.12)' : 'rgba(255,255,255,0.7)',
+              color: answered && l===currentLetter ? '#00b894' : '#2d3436', border:`2px solid ${accent}33`,
+              borderRadius:16, fontSize:28, fontWeight:700, cursor: answered?'default':'pointer',
               transition:'all 0.2s', opacity: answered && l!==currentLetter ? 0.5 : 1
             }}>{l}</button>
           ))}
         </div>
 
         {feedback && (
-          <div style={{textAlign:'center', fontSize:16, fontWeight:'bold', color: feedback.includes('✅')?'#4CAF50':'#FF6B9D', padding:12, background: feedback.includes('✅')?'#E8F5E9':'#FFE4E1', borderRadius:15}}>
+          <div style={{textAlign:'center', fontSize:16, fontWeight:700, color: feedback.includes('✅')?'#00b894':'#e84393', padding:12, background: feedback.includes('✅')?'rgba(0,184,148,0.08)':'rgba(232,67,147,0.06)', borderRadius:14}}>
             {feedback}
           </div>
         )}

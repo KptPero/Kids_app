@@ -87,28 +87,26 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
 
   if (!gameStarted || won) {
     return (
-      <div style={{background:'linear-gradient(135deg, #E8D5FF 0%, #F3E5F5 50%, #FFE4E1 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
-        <div style={{position:'absolute',top:30,left:20,fontSize:55,opacity:0.08}}>🃏</div>
-        <div style={{position:'absolute',bottom:60,right:30,fontSize:50,opacity:0.08}}>🧠</div>
+      <div style={{background:'linear-gradient(135deg, #f3eeff 0%, #faf0ff 50%, #fff0f5 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
 
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20, position:'relative', zIndex:2}}>
-          <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.95)', border:'3px solid #9C27B0', borderRadius:'25px', padding:'12px 20px', cursor:'pointer', fontSize:16, fontWeight:'bold', color:'#9C27B0'}}>← Back</button>
+          <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.55)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:16, padding:'10px 18px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#2d3436'}}>← Back</button>
           {pet && <div style={{fontSize:32}}>{pet}</div>}
         </div>
 
         <div style={{maxWidth:450, margin:'0 auto', textAlign:'center', position:'relative', zIndex:2}}>
-          <div style={{background:'rgba(255,255,255,0.95)', borderRadius:'30px', padding:'30px', boxShadow:'0 6px 20px rgba(0,0,0,0.1)'}}>
+          <div style={{background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:24, padding:'30px', boxShadow:'0 4px 16px rgba(0,0,0,0.06)'}}>
             {won ? (
               <>
                 <div style={{fontSize:60, marginBottom:10}}>🎉</div>
-                <h2 style={{color:'#9C27B0', margin:'0 0 10px 0'}}>You Won!</h2>
+                <h2 style={{color:'#6c5ce7', margin:'0 0 10px 0'}}>You Won!</h2>
                 <p style={{fontSize:16, color:'#666'}}>Completed in {moves} moves!</p>
                 <div style={{fontSize:40, marginBottom:15}}>{'⭐'.repeat(moves <= pairCount+2 ? 3 : moves <= pairCount*2 ? 2 : 1)}</div>
               </>
             ) : (
               <>
                 <div style={{fontSize:60, marginBottom:10}}>🃏</div>
-                <h2 style={{color:'#9C27B0', margin:'0 0 20px 0'}}>Memory Match</h2>
+                <h2 style={{color:'#6c5ce7', margin:'0 0 20px 0'}}>Memory Match</h2>
               </>
             )}
 
@@ -117,8 +115,8 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
               <div style={{display:'flex', gap:8, justifyContent:'center'}}>
                 {(['easy','medium','hard'] as const).map(d => (
                   <button key={d} onClick={()=>{playSound('click');setDifficulty(d)}} style={{
-                    background: difficulty===d ? '#9C27B0' : '#f0e6f6', color: difficulty===d ? '#fff' : '#9C27B0',
-                    border:'none', borderRadius:'18px', padding:'10px 20px', fontSize:15, fontWeight:'bold', cursor:'pointer', textTransform:'capitalize'
+                    background: difficulty===d ? '#6c5ce7' : 'rgba(108,92,231,0.08)', color: difficulty===d ? '#fff' : '#6c5ce7',
+                    border:'none', borderRadius:14, padding:'10px 20px', fontSize:15, fontWeight:700, cursor:'pointer', textTransform:'capitalize'
                   }}>{d}</button>
                 ))}
               </div>
@@ -129,14 +127,14 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
               <div style={{display:'flex', gap:8, justifyContent:'center'}}>
                 {emojiSets.map((set, i) => (
                   <button key={i} onClick={()=>{playSound('click');setSetIdx(i)}} style={{
-                    background: setIdx===i ? '#9C27B0' : '#f0e6f6', fontSize:24,
-                    border:'none', borderRadius:'18px', padding:'10px 14px', cursor:'pointer'
+                    background: setIdx===i ? '#6c5ce7' : 'rgba(108,92,231,0.08)', fontSize:24,
+                    border:'none', borderRadius:14, padding:'10px 14px', cursor:'pointer'
                   }}>{set[0]}{set[1]}</button>
                 ))}
               </div>
             </div>
 
-            <button onClick={startGame} style={{background:'linear-gradient(135deg, #9C27B0, #BA68C8)', color:'#fff', border:'none', borderRadius:'25px', padding:'15px 40px', fontSize:18, fontWeight:'bold', cursor:'pointer', boxShadow:'0 4px 12px rgba(156,39,176,0.3)'}}>
+            <button onClick={startGame} style={{background:'#6c5ce7', color:'#fff', border:'none', borderRadius:16, padding:'15px 40px', fontSize:18, fontWeight:700, cursor:'pointer'}}>
               {won ? '🔄 Play Again' : '🎮 Start Game'}
             </button>
           </div>
@@ -146,21 +144,21 @@ export default function MemoryGame({ onBack, pet }:{ onBack:()=>void, pet?:strin
   }
 
   return (
-    <div style={{background:'linear-gradient(135deg, #E8D5FF 0%, #F3E5F5 50%, #FFE4E1 100%)', minHeight:'100vh', padding:'15px', position:'relative', overflow:'hidden'}}>
+    <div style={{background:'linear-gradient(135deg, #f3eeff 0%, #faf0ff 50%, #fff0f5 100%)', minHeight:'100vh', padding:'15px', position:'relative', overflow:'hidden'}}>
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12, position:'relative', zIndex:2}}>
-        <button onClick={()=>{playSound('click');setGameStarted(false)}} style={{background:'rgba(255,255,255,0.95)', border:'3px solid #9C27B0', borderRadius:'25px', padding:'12px 18px', cursor:'pointer', fontSize:15, fontWeight:'bold', color:'#9C27B0'}}>← Menu</button>
-        <span style={{fontSize:15, fontWeight:'bold', color:'#fff', textShadow:'1px 1px 2px rgba(0,0,0,0.2)'}}>Moves: {moves} | Pairs: {matches}/{pairCount}</span>
+        <button onClick={()=>{playSound('click');setGameStarted(false)}} style={{background:'rgba(255,255,255,0.55)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:16, padding:'10px 16px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#2d3436'}}>← Menu</button>
+        <span style={{fontSize:14, fontWeight:700, color:'#636e72'}}>Moves: {moves} | Pairs: {matches}/{pairCount}</span>
         {pet && <div style={{fontSize:28}}>{pet}</div>}
       </div>
 
       <div style={{display:'grid', gridTemplateColumns:`repeat(${cols}, 1fr)`, gap:10, maxWidth:400, margin:'0 auto', position:'relative', zIndex:2}}>
         {cards.map(card => (
           <button key={card.id} onClick={()=>flipCard(card.id)} style={{
-            aspectRatio:'1/1', borderRadius:'18px', border:'none', cursor:'pointer',
+            aspectRatio:'1/1', borderRadius:16, border:'none', cursor:'pointer',
             fontSize: card.flipped || card.matched ? 36 : 28,
-            background: card.matched ? 'linear-gradient(135deg, #C8E6C9, #A5D6A7)' : card.flipped ? 'linear-gradient(135deg, #fff, #F3E5F5)' : 'linear-gradient(135deg, #9C27B0, #BA68C8)',
+            background: card.matched ? 'rgba(0,184,148,0.15)' : card.flipped ? 'rgba(255,255,255,0.8)' : '#6c5ce7',
             color: card.flipped || card.matched ? '#333' : '#fff',
-            boxShadow: card.matched ? '0 2px 8px rgba(76,175,80,0.3)' : '0 4px 12px rgba(156,39,176,0.3)',
+            boxShadow: card.matched ? '0 2px 8px rgba(0,184,148,0.2)' : '0 2px 8px rgba(108,92,231,0.2)',
             transition:'all 0.3s', transform: card.flipped ? 'rotateY(0deg)' : 'rotateY(0deg)',
             display:'flex', alignItems:'center', justifyContent:'center'
           }}>

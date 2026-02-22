@@ -320,12 +320,12 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   // ── Level Select ──
   if (screen === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.15)', color: '#C8E6C9', border: '2px solid #A5D6A7', borderRadius: 25, padding: '10px 18px', fontSize: 15, cursor: 'pointer', fontWeight: 'bold' }}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.08)', color: '#C8E6C9', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, padding: '10px 18px', fontSize: 14, cursor: 'pointer', fontWeight: 700 }}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
         </div>
-        <h2 style={{ textAlign: 'center', color: '#C8E6C9', fontSize: 24, margin: '0 0 5px 0' }}>🍉 Fruit Ninja</h2>
+        <h2 style={{ textAlign: 'center', color: '#C8E6C9', fontSize: 24, margin: '0 0 5px 0', fontWeight: 800 }}>🍉 Fruit Ninja</h2>
         {bestScore > 0 && <p style={{ textAlign: 'center', color: '#A5D6A7', fontSize: 13, margin: '0 0 15px 0' }}>🏆 Best: {bestScore}</p>}
         <div style={{ maxWidth: 400, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {LEVELS.map((lv, i) => (
@@ -335,7 +335,7 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
               cursor: unlocked[i] ? 'pointer' : 'not-allowed', opacity: unlocked[i] ? 1 : 0.4, textAlign: 'center'
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? lv.icon : '🔒'}</div>
-              <div style={{ fontSize: 14, fontWeight: 'bold', color: '#C8E6C9', marginTop: 4 }}>{lv.name}</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#C8E6C9', marginTop: 4 }}>{lv.name}</div>
               <div style={{ fontSize: 11, color: '#A5D6A7', marginTop: 2 }}>{lv.desc}</div>
               <div style={{ fontSize: 10, color: '#81C784', marginTop: 4 }}>⏱ {lv.duration}s • 🎯 {lv.target}</div>
             </button>
@@ -348,16 +348,16 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   // ── Level Complete ──
   if (screen === 'complete') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 30, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
           <div style={{ fontSize: 55 }}>🎉</div>
-          <h2 style={{ color: '#C8E6C9', margin: '8px 0' }}>Level Complete!</h2>
+          <h2 style={{ color: '#C8E6C9', margin: '8px 0', fontWeight: 800 }}>Level Complete!</h2>
           <div style={{ fontSize: 36, marginBottom: 5 }}>{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</div>
           <p style={{ color: '#A5D6A7', fontSize: 14, margin: '0 0 15px 0' }}>Score: {score} • Sliced: {sliced}</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => startLevel(levelIdx)} style={{ background: 'linear-gradient(135deg, #66BB6A, #43A047)', color: '#fff', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Retry</button>
-            {levelIdx < LEVELS.length - 1 && <button onClick={() => startLevel(levelIdx + 1)} style={{ background: 'linear-gradient(135deg, #FFA726, #F57C00)', color: '#fff', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>Next ➜</button>}
-            <button onClick={() => setScreen('select')} style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>📋 Levels</button>
+            <button onClick={() => startLevel(levelIdx)} style={{ background: '#00b894', color: '#fff', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>🔄 Retry</button>
+            {levelIdx < LEVELS.length - 1 && <button onClick={() => startLevel(levelIdx + 1)} style={{ background: '#e17055', color: '#fff', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>Next ➜</button>}
+            <button onClick={() => setScreen('select')} style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>📋 Levels</button>
           </div>
         </div>
       </div>
@@ -367,16 +367,16 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   // ── Time's Up ──
   if (screen === 'timeup') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 30, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+      <div style={{ background: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 360, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)' }}>
           <div style={{ fontSize: 55 }}>⏰</div>
-          <h2 style={{ color: '#C8E6C9', margin: '8px 0' }}>Time's Up!</h2>
-          <div style={{ fontSize: 40, color: '#fff', fontWeight: 'bold', marginBottom: 5 }}>{score}</div>
+          <h2 style={{ color: '#C8E6C9', margin: '8px 0', fontWeight: 800 }}>Time's Up!</h2>
+          <div style={{ fontSize: 40, color: '#fff', fontWeight: 700, marginBottom: 5 }}>{score}</div>
           <p style={{ color: '#A5D6A7', fontSize: 14, margin: '0 0 5px 0' }}>Sliced: {sliced} / {LEVELS[levelIdx].target}</p>
           <p style={{ color: '#81C784', fontSize: 12, margin: '0 0 15px 0' }}>Keep trying, you'll get it!</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
-            <button onClick={() => startLevel(levelIdx)} style={{ background: 'linear-gradient(135deg, #66BB6A, #43A047)', color: '#fff', border: 'none', borderRadius: 25, padding: '14px 28px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Again</button>
-            <button onClick={() => setScreen('select')} style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: 'none', borderRadius: 25, padding: '14px 28px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer' }}>📋 Levels</button>
+            <button onClick={() => startLevel(levelIdx)} style={{ background: '#00b894', color: '#fff', border: 'none', borderRadius: 14, padding: '14px 28px', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>🔄 Again</button>
+            <button onClick={() => setScreen('select')} style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', border: 'none', borderRadius: 14, padding: '14px 28px', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>📋 Levels</button>
           </div>
         </div>
       </div>
@@ -388,16 +388,16 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
   const progress = Math.min(100, (sliced / lv.target) * 100)
 
   return (
-    <div style={{ background: 'linear-gradient(180deg, #1B5E20 0%, #2E7D32 30%, #388E3C 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: "'Nunito', sans-serif" }}>
+    <div style={{ background: 'linear-gradient(180deg, #1B5E20 0%, #2E7D32 30%, #388E3C 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* HUD */}
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: gameWidth, padding: '10px 14px', boxSizing: 'border-box', alignItems: 'center' }}>
         <button onClick={() => { if (spawnTimer.current) clearInterval(spawnTimer.current); setScreen('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 15, padding: '6px 12px', color: '#A5D6A7', fontSize: 13, cursor: 'pointer' }}>← Back</button>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          <span style={{ color: '#FFA726', fontSize: 18, fontWeight: 'bold' }}>🍉 {score}</span>
+          <span style={{ color: '#FFA726', fontSize: 18, fontWeight: 700 }}>🍉 {score}</span>
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <span style={{ color: '#A5D6A7', fontSize: 12 }}>{sliced}/{lv.target}</span>
-          <span style={{ color: timeLeft <= 5 ? '#EF5350' : '#A5D6A7', fontSize: 16, fontWeight: 'bold' }}>⏱ {timeLeft}s</span>
+          <span style={{ color: timeLeft <= 5 ? '#EF5350' : '#A5D6A7', fontSize: 16, fontWeight: 700 }}>⏱ {timeLeft}s</span>
         </div>
       </div>
 

@@ -803,21 +803,21 @@ export default function Drawing({ onBack, pet }: Props) {
   // ===== MENU =====
   if (mode === 'menu') return (
     <div style={{
-      minHeight: '100vh', padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif",
-      background: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%)'
+      minHeight: '100vh', padding: 16,
+      background: 'linear-gradient(135deg, #e8f5e9 0%, #e8f8f5 50%, #c8f0e8 100%)'
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
         <button onClick={onBack} style={backBtn}>⬅️ Back</button>
-        <h2 style={{ margin: 0, fontSize: 22, color: '#2E7D32', flex: 1, textAlign: 'center' }}>🎨 Drawing & Coloring</h2>
+        <h2 style={{ margin: 0, fontSize: 22, color: '#00b894', flex: 1, textAlign: 'center', fontWeight: 800 }}>🎨 Drawing & Coloring</h2>
       </div>
 
       <button onClick={() => setMode('free')} style={{
-        ...menuCard, background: '#66BB6A'
+        ...menuCard, background: '#00b894'
       }}>
         <span style={{ fontSize: 42 }}>✏️</span>
         <div>
-          <div style={{ fontSize: 20, fontWeight: 'bold' }}>Free Drawing</div>
+          <div style={{ fontSize: 20, fontWeight: 700 }}>Free Drawing</div>
           <div style={{ fontSize: 14, opacity: .85 }}>Empty canvas - draw anything!</div>
         </div>
       </button>
@@ -827,7 +827,7 @@ export default function Drawing({ onBack, pet }: Props) {
         if (items.length === 0) return null
         return (
           <div key={cat}>
-            <h3 style={{ color: '#2E7D32', margin: '16px 0 8px', fontSize: 18 }}>
+            <h3 style={{ color: '#00b894', margin: '16px 0 8px', fontSize: 18, fontWeight: 700 }}>
               {cat === 'Animals' ? '🐾' : cat === 'Nature' ? '🌿' : cat === 'Vehicles' ? '🚗' : '🏠'} {cat}
             </h3>
             <div style={{ display: 'grid', gap: 10, gridTemplateColumns: '1fr 1fr' }}>
@@ -835,10 +835,10 @@ export default function Drawing({ onBack, pet }: Props) {
                 const idx = DRAWINGS.indexOf(d)
                 return (
                   <button key={idx} onClick={() => { setDrawingIdx(idx); setMode('coloring'); }} style={{
-                    ...menuCard, background: '#43A047', padding: 12, justifyContent: 'center', flexDirection: 'column' as const, gap: 4
+                    ...menuCard, background: '#00b894', padding: 12, justifyContent: 'center', flexDirection: 'column' as const, gap: 4
                   }}>
                     <span style={{ fontSize: 32 }}>{d.icon}</span>
-                    <span style={{ fontSize: 15, fontWeight: 'bold' }}>{d.name}</span>
+                    <span style={{ fontSize: 15, fontWeight: 700 }}>{d.name}</span>
                   </button>
                 )
               })}
@@ -853,18 +853,18 @@ export default function Drawing({ onBack, pet }: Props) {
   return (
     <div style={{
       height: '100vh', display: 'flex', flexDirection: 'column',
-      background: '#F5F5F5', fontFamily: "'Nunito', 'Quicksand', sans-serif"
+      background: '#F5F5F5'
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
 
       {/* Top toolbar */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 6, padding: '8px 12px',
-        background: '#2E7D32', color: 'white', flexWrap: 'wrap'
+        background: '#00b894', color: 'white', flexWrap: 'wrap'
       }}>
         <button onClick={() => { setMode('menu'); }} style={{
-          border: 'none', background: '#1B5E20', color: 'white', borderRadius: 8,
-          padding: '6px 12px', fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold'
+          border: 'none', background: 'rgba(0,0,0,0.15)', color: 'white', borderRadius: 8,
+          padding: '6px 12px', fontSize: 14, cursor: 'pointer', fontWeight: 700
         }}>⬅️</button>
 
         {/* Tool buttons */}
@@ -874,15 +874,15 @@ export default function Drawing({ onBack, pet }: Props) {
           ['fill', '🪣'],
         ] as [Tool, string][]).map(([t, icon]) => (
           <button key={t} onClick={() => setTool(t)} style={{
-            border: tool === t ? '2px solid #FFEB3B' : '2px solid transparent',
+            border: tool === t ? '2px solid #fff' : '2px solid transparent',
             background: tool === t ? 'rgba(255,255,255,.25)' : 'transparent',
             borderRadius: 8, padding: '6px 10px', fontSize: 20, cursor: 'pointer',
           }}>{icon}</button>
         ))}
 
         <button onClick={clearCanvas} style={{
-          border: 'none', background: '#C62828', color: 'white', borderRadius: 8,
-          padding: '6px 10px', fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold',
+          border: 'none', background: '#d63031', color: 'white', borderRadius: 8,
+          padding: '6px 10px', fontSize: 14, cursor: 'pointer', fontWeight: 700,
           marginLeft: 'auto'
         }}>🗑️ Clear</button>
       </div>
@@ -894,7 +894,7 @@ export default function Drawing({ onBack, pet }: Props) {
       }}>
         {COLORS.map(c => (
           <button key={c} onClick={() => { setColor(c); if (tool === 'eraser') setTool('brush'); }} style={{
-            width: 32, height: 32, borderRadius: '50%', border: color === c && tool !== 'eraser' ? '3px solid #333' : '2px solid #999',
+            width: 32, height: 32, borderRadius: '50%', border: color === c && tool !== 'eraser' ? '2px solid #2d3436' : '1px solid #b2bec3',
             background: c, cursor: 'pointer', flexShrink: 0
           }} />
         ))}
@@ -909,8 +909,8 @@ export default function Drawing({ onBack, pet }: Props) {
           <span style={{ fontSize: 12 }}>Size:</span>
           {BRUSH_SIZES.map(s => (
             <button key={s} onClick={() => setBrushSize(s)} style={{
-              width: 36, height: 36, borderRadius: 8, border: brushSize === s ? '2px solid #333' : '1px solid #999',
-              background: brushSize === s ? '#BBDEFB' : 'white', cursor: 'pointer',
+              width: 36, height: 36, borderRadius: 8, border: brushSize === s ? '2px solid #2d3436' : '1px solid #b2bec3',
+              background: brushSize === s ? '#dfe6e9' : 'white', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>
               <div style={{
@@ -939,14 +939,14 @@ export default function Drawing({ onBack, pet }: Props) {
 }
 
 const backBtn: React.CSSProperties = {
-  border: 'none', borderRadius: 20, padding: '12px 20px', fontSize: 16,
-  background: 'linear-gradient(135deg, #43A047, #66BB6A)', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: "'Nunito', 'Quicksand', sans-serif"
+  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', fontSize: 14,
+  background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+  color: '#2d3436', fontWeight: 700, cursor: 'pointer'
 };
 
 const menuCard: React.CSSProperties = {
   border: 'none', borderRadius: 16, padding: 16, cursor: 'pointer',
   color: 'white', display: 'flex', alignItems: 'center', gap: 14,
-  fontFamily: "'Nunito', 'Quicksand', sans-serif", width: '100%', textAlign: 'left',
+  width: '100%', textAlign: 'left',
   marginBottom: 0
 };

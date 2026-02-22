@@ -146,11 +146,11 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
   const sel = stickers.find(s => s.id === selectedStickerId)
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #F3E5F5 0%, #E8EAF6 50%, #E3F2FD 100%)', minHeight: '100vh', padding: 12, fontFamily: "'Nunito', sans-serif" }}>
+    <div style={{ background: 'linear-gradient(135deg, #f3eeff 0%, #eef0ff 50%, #eaf6ff 100%)', minHeight: '100vh', padding: 12 }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.95)', border: '3px solid #7B1FA2', borderRadius: 25, padding: '8px 14px', cursor: 'pointer', fontSize: 14, fontWeight: 'bold', color: '#7B1FA2' }}>← Back</button>
-        <h2 style={{ fontSize: 18, color: '#7B1FA2', margin: 0 }}>📒 Sticker Book</h2>
+        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '8px 14px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
+        <h2 style={{ fontSize: 18, color: '#6c5ce7', margin: 0, fontWeight: 800 }}>📒 Sticker Book</h2>
         {pet && <div style={{ fontSize: 24 }}>{pet}</div>}
       </div>
 
@@ -159,8 +159,8 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
         <div style={{ display: 'flex', gap: 4, justifyContent: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
           {SCENES.map((scene, i) => (
             <button key={scene.name} onClick={() => { setSceneIdx(i); playSound('click') }} style={{
-              background: sceneIdx === i ? '#7B1FA2' : '#E1BEE7', color: sceneIdx === i ? '#fff' : '#7B1FA2',
-              border: 'none', borderRadius: 10, padding: '4px 8px', fontSize: 11, fontWeight: 'bold', cursor: 'pointer'
+              background: sceneIdx === i ? '#6c5ce7' : 'rgba(108,92,231,0.12)', color: sceneIdx === i ? '#fff' : '#6c5ce7',
+              border: 'none', borderRadius: 10, padding: '4px 8px', fontSize: 11, fontWeight: 700, cursor: 'pointer'
             }}>{scene.icon}</button>
           ))}
         </div>
@@ -173,7 +173,7 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
           style={{
             width: canvasW, height: canvasH, margin: '0 auto', borderRadius: 18,
             background: SCENES[sceneIdx].bg, position: 'relative', overflow: 'hidden',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.15)', border: '3px solid rgba(255,255,255,0.5)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.1)', border: '2px solid rgba(255,255,255,0.4)',
             cursor: selectedEmoji ? 'crosshair' : 'default', touchAction: 'none'
           }}>
           {stickers.map(sticker => (
@@ -187,13 +187,13 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
                 cursor: 'grab', userSelect: 'none', WebkitUserSelect: 'none',
                 filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
                 zIndex: draggingId === sticker.id ? 100 : 1,
-                outline: selectedStickerId === sticker.id ? '2px dashed #7B1FA2' : 'none',
+                outline: selectedStickerId === sticker.id ? '2px dashed #6c5ce7' : 'none',
                 outlineOffset: 2, borderRadius: 4,
               }}>{sticker.emoji}</div>
           ))}
           {stickers.length === 0 && (
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-              color: [2, 3, 4].includes(sceneIdx) ? '#78909C' : '#999', fontSize: 13, textAlign: 'center', pointerEvents: 'none'
+              color: [2, 3, 4].includes(sceneIdx) ? '#78909C' : '#b2bec3', fontSize: 13, textAlign: 'center', pointerEvents: 'none'
             }}>{selectedEmoji ? 'Tap here to place stickers!' : 'Pick a sticker below 👇'}</div>
           )}
         </div>
@@ -205,15 +205,15 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
             <button onClick={() => rotateSelected(15)} style={editBtnStyle}>↻</button>
             <button onClick={() => resizeSelected(-4)} style={editBtnStyle}>➖</button>
             <button onClick={() => resizeSelected(4)} style={editBtnStyle}>➕</button>
-            <button onClick={() => removeSticker(sel.id)} style={{ ...editBtnStyle, color: '#D32F2F' }}>🗑️</button>
-            <button onClick={() => setSelectedStickerId(null)} style={{ ...editBtnStyle, color: '#7B1FA2' }}>✓</button>
+            <button onClick={() => removeSticker(sel.id)} style={{ ...editBtnStyle, color: '#d63031' }}>🗑️</button>
+            <button onClick={() => setSelectedStickerId(null)} style={{ ...editBtnStyle, color: '#6c5ce7' }}>✓</button>
           </div>
         )}
 
         {/* Size slider */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center', marginTop: 6 }}>
           <span style={{ fontSize: 12, color: '#999' }}>Size:</span>
-          <input type="range" min={20} max={75} value={stickerSize} onChange={e => setStickerSize(Number(e.target.value))} style={{ width: 100, accentColor: '#7B1FA2' }} />
+          <input type="range" min={20} max={75} value={stickerSize} onChange={e => setStickerSize(Number(e.target.value))} style={{ width: 100, accentColor: '#6c5ce7' }} />
           <span style={{ fontSize: stickerSize * 0.5, minWidth: 20 }}>{selectedEmoji || '📌'}</span>
         </div>
 
@@ -221,8 +221,8 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
         <div style={{ display: 'flex', gap: 3, justifyContent: 'center', marginTop: 6, marginBottom: 4, flexWrap: 'wrap' }}>
           {CATEGORIES.map((cat, i) => (
             <button key={cat} onClick={() => setCatIdx(i)} style={{
-              background: catIdx === i ? '#7B1FA2' : 'rgba(255,255,255,0.7)', color: catIdx === i ? '#fff' : '#7B1FA2',
-              border: 'none', borderRadius: 10, padding: '4px 10px', fontSize: 11, fontWeight: 'bold', cursor: 'pointer'
+              background: catIdx === i ? '#6c5ce7' : 'rgba(255,255,255,0.7)', color: catIdx === i ? '#fff' : '#6c5ce7',
+              border: 'none', borderRadius: 10, padding: '4px 10px', fontSize: 11, fontWeight: 700, cursor: 'pointer'
             }}>{cat}</button>
           ))}
         </div>
@@ -231,11 +231,11 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center', padding: 8, background: 'rgba(255,255,255,0.7)', borderRadius: 16 }}>
           {filteredStickers.map(opt => (
             <button key={opt.emoji} onClick={() => { setSelectedEmoji(selectedEmoji === opt.emoji ? null : opt.emoji); playSound('click') }} style={{
-              background: selectedEmoji === opt.emoji ? '#E1BEE7' : '#fff',
-              border: selectedEmoji === opt.emoji ? '3px solid #7B1FA2' : '2px solid #E0E0E0',
+              background: selectedEmoji === opt.emoji ? 'rgba(108,92,231,0.12)' : 'rgba(255,255,255,0.8)',
+              border: selectedEmoji === opt.emoji ? '2px solid #6c5ce7' : '1px solid rgba(0,0,0,0.06)',
               borderRadius: 12, padding: 6, fontSize: 24, cursor: 'pointer',
-              transform: selectedEmoji === opt.emoji ? 'scale(1.15)' : 'scale(1)',
-              transition: 'all 0.15s', boxShadow: selectedEmoji === opt.emoji ? '0 4px 12px rgba(123,31,162,0.3)' : 'none'
+              transform: selectedEmoji === opt.emoji ? 'scale(1.12)' : 'scale(1)',
+              transition: 'all 0.15s', boxShadow: selectedEmoji === opt.emoji ? '0 4px 12px rgba(108,92,231,0.2)' : 'none'
             }}>{opt.emoji}</button>
           ))}
         </div>
@@ -243,14 +243,14 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
         {/* Actions */}
         <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 8, flexWrap: 'wrap' }}>
           <button onClick={undo} disabled={history.length === 0} style={{
-            background: history.length === 0 ? '#E0E0E0' : 'rgba(255,255,255,0.8)', border: '2px solid #BDBDBD',
-            borderRadius: 12, padding: '6px 12px', fontSize: 12, fontWeight: 'bold', color: '#666', cursor: history.length === 0 ? 'not-allowed' : 'pointer'
+            background: history.length === 0 ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.06)',
+            borderRadius: 12, padding: '6px 12px', fontSize: 12, fontWeight: 700, color: '#636e72', cursor: history.length === 0 ? 'not-allowed' : 'pointer'
           }}>↩️ Undo</button>
           <button onClick={clearAll} disabled={stickers.length === 0} style={{
-            background: stickers.length === 0 ? '#E0E0E0' : 'rgba(255,255,255,0.8)', border: '2px solid #BDBDBD',
-            borderRadius: 12, padding: '6px 12px', fontSize: 12, fontWeight: 'bold', color: '#666', cursor: stickers.length === 0 ? 'not-allowed' : 'pointer'
+            background: stickers.length === 0 ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.7)', border: '1px solid rgba(0,0,0,0.06)',
+            borderRadius: 12, padding: '6px 12px', fontSize: 12, fontWeight: 700, color: '#636e72', cursor: stickers.length === 0 ? 'not-allowed' : 'pointer'
           }}>🗑️ Clear</button>
-          <div style={{ color: '#999', fontSize: 11, alignSelf: 'center' }}>
+          <div style={{ color: '#b2bec3', fontSize: 11, alignSelf: 'center' }}>
             {stickers.length} sticker{stickers.length !== 1 ? 's' : ''}
           </div>
         </div>
@@ -260,6 +260,6 @@ export default function StickerBook({ onBack, pet }: { onBack: () => void; pet?:
 }
 
 const editBtnStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.9)', border: '2px solid #CE93D8', borderRadius: 10,
-  padding: '4px 10px', fontSize: 14, fontWeight: 'bold', color: '#555', cursor: 'pointer'
+  background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(108,92,231,0.2)', borderRadius: 10,
+  padding: '4px 10px', fontSize: 14, fontWeight: 700, color: '#636e72', cursor: 'pointer'
 }

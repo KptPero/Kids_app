@@ -173,9 +173,9 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   // Level select
   if (gameState === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'transparent', color: '#78909C', border: '2px solid #78909C', borderRadius: 25, padding: '10px 18px', fontSize: 15, cursor: 'pointer', fontWeight: 'bold' }}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.08)', color: '#B0BEC5', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, padding: '10px 18px', fontSize: 14, cursor: 'pointer', fontWeight: 700 }}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
         </div>
         <h2 style={{ textAlign: 'center', color: '#FFD54F', fontSize: 24, margin: '0 0 8px 0' }}>⭐ Catch the Stars</h2>
@@ -188,7 +188,7 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
               cursor: unlocked[i] ? 'pointer' : 'not-allowed', opacity: unlocked[i] ? 1 : 0.4, textAlign: 'center'
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? w.icon : '🔒'}</div>
-              <div style={{ fontSize: 14, fontWeight: 'bold', color: '#FFD54F', marginTop: 4 }}>{w.name}</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#FFD54F', marginTop: 4 }}>{w.name}</div>
               <div style={{ fontSize: 11, color: '#78909C', marginTop: 2 }}>{w.duration}s • Speed ×{w.speedMul}</div>
             </button>
           ))}
@@ -200,16 +200,16 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   // Wave Complete
   if (gameState === 'waveComplete') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 30, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div style={{ fontSize: 55 }}>🎉</div>
-          <h2 style={{ color: '#FFD54F', margin: '8px 0' }}>Wave Complete!</h2>
+          <h2 style={{ color: '#FFD54F', margin: '8px 0', fontWeight: 800 }}>Wave Complete!</h2>
           <div style={{ fontSize: 36, marginBottom: 5 }}>{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</div>
           <p style={{ color: '#78909C', fontSize: 14, margin: '0 0 15px 0' }}>Score: {score} • Caught: {caught}</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => startWave(waveIdx)} style={{ background: 'linear-gradient(135deg, #FFD54F, #FF8F00)', color: '#333', border: 'none', borderRadius: 25, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Retry</button>
-            {waveIdx < WAVES.length - 1 && <button onClick={() => startWave(waveIdx + 1)} style={{ background: 'linear-gradient(135deg, #66BB6A, #43A047)', color: '#fff', border: 'none', borderRadius: 25, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>Next ➜</button>}
-            <button onClick={() => setGameState('select')} style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: 'none', borderRadius: 25, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>📋 Waves</button>
+            <button onClick={() => startWave(waveIdx)} style={{ background: '#fdcb6e', color: '#2d3436', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>🔄 Retry</button>
+            {waveIdx < WAVES.length - 1 && <button onClick={() => startWave(waveIdx + 1)} style={{ background: '#00b894', color: '#fff', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>Next ➜</button>}
+            <button onClick={() => setGameState('select')} style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>📋 Waves</button>
           </div>
         </div>
       </div>
@@ -219,15 +219,15 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   // Done (failed)
   if (gameState === 'done') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 30, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <div style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1B2838 50%, #0D1B2A 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 24, padding: 35, textAlign: 'center', maxWidth: 350, backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div style={{ fontSize: 55 }}>⏰</div>
-          <h2 style={{ color: '#FFD54F', margin: '8px 0' }}>Time's Up!</h2>
-          <div style={{ fontSize: 40, color: '#FFF', fontWeight: 'bold', marginBottom: 5 }}>{score}</div>
+          <h2 style={{ color: '#FFD54F', margin: '8px 0', fontWeight: 800 }}>Time's Up!</h2>
+          <div style={{ fontSize: 40, color: '#FFF', fontWeight: 700, marginBottom: 5 }}>{score}</div>
           <p style={{ color: '#78909C', fontSize: 14, margin: '0 0 15px 0' }}>Caught: {caught} • Missed: {missed}</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
-            <button onClick={() => startWave(waveIdx)} style={{ background: 'linear-gradient(135deg, #FFD54F, #FF8F00)', color: '#333', border: 'none', borderRadius: 25, padding: '14px 28px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Again</button>
-            <button onClick={() => setGameState('select')} style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: 'none', borderRadius: 25, padding: '14px 28px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer' }}>📋 Waves</button>
+            <button onClick={() => startWave(waveIdx)} style={{ background: '#fdcb6e', color: '#2d3436', border: 'none', borderRadius: 14, padding: '14px 28px', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>🔄 Again</button>
+            <button onClick={() => setGameState('select')} style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', border: 'none', borderRadius: 14, padding: '14px 28px', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>📋 Waves</button>
           </div>
         </div>
       </div>
@@ -236,15 +236,15 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
 
   const wave = WAVES[waveIdx]
   return (
-    <div style={{ background: 'linear-gradient(180deg, #0D1B2A 0%, #1B2838 60%, #263238 100%)', minHeight: '100vh', padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: "'Nunito', sans-serif" }}>
+    <div style={{ background: 'linear-gradient(180deg, #0D1B2A 0%, #1B2838 60%, #263238 100%)', minHeight: '100vh', padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* HUD */}
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: gameWidth, padding: '10px 14px', boxSizing: 'border-box', alignItems: 'center' }}>
         <button onClick={() => { setGameState('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 15, padding: '6px 12px', color: '#B0BEC5', fontSize: 13, cursor: 'pointer' }}>← Back</button>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          <span style={{ color: '#FFD54F', fontSize: 18, fontWeight: 'bold' }}>⭐ {score}</span>
+          <span style={{ color: '#FFD54F', fontSize: 18, fontWeight: 700 }}>⭐ {score}</span>
           {activePower && <span style={{ fontSize: 13, color: '#4FC3F7' }}>{activePower === 'magnet' ? '🧲' : '2️⃣'} {powerTimer}s</span>}
         </div>
-        <span style={{ color: timeLeft <= 5 ? '#EF5350' : '#B0BEC5', fontSize: 16, fontWeight: 'bold' }}>⏱ {timeLeft}s</span>
+        <span style={{ color: timeLeft <= 5 ? '#EF5350' : '#B0BEC5', fontSize: 16, fontWeight: 700 }}>⏱ {timeLeft}s</span>
       </div>
 
       {/* Wave label */}

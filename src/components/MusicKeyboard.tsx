@@ -126,13 +126,10 @@ export default function MusicKeyboard({ onBack, pet }:{ onBack:()=>void, pet?:st
 
   return (
     <div style={{background:'linear-gradient(135deg, #1A237E 0%, #283593 50%, #3F51B5 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
-      <div style={{position:'absolute',top:30,left:20,fontSize:55,opacity:0.1,color:'#fff'}}>🎵</div>
-      <div style={{position:'absolute',bottom:60,right:30,fontSize:50,opacity:0.1,color:'#fff'}}>🎶</div>
-      <div style={{position:'absolute',top:100,right:20,fontSize:40,opacity:0.1,color:'#fff'}}>🎼</div>
 
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:15, position:'relative', zIndex:2}}>
-        <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.15)', border:'2px solid rgba(255,255,255,0.5)', borderRadius:'20px', padding:'8px 16px', cursor:'pointer', fontSize:14, fontWeight:'bold', color:'#fff'}}>← Back</button>
-        <h2 style={{margin:0, fontSize:18, color:'#fff'}}>🎹 Music Studio</h2>
+        <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.08)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:16, padding:'8px 16px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#B0BEC5'}}>← Back</button>
+        <h2 style={{margin:0, fontSize:18, color:'#fff', fontWeight:800}}>🎹 Music Studio</h2>
         {pet && <div style={{fontSize:32}}>{pet}</div>}
       </div>
 
@@ -140,9 +137,9 @@ export default function MusicKeyboard({ onBack, pet }:{ onBack:()=>void, pet?:st
       <div style={{display:'flex', gap:8, justifyContent:'center', marginBottom:15, position:'relative', zIndex:2}}>
         {Object.entries(instruments).map(([key, inst]) => (
           <button key={key} onClick={()=>{playSound('click');setInstrument(key)}} style={{
-            background: instrument===key ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)',
-            color:'#fff', border: instrument===key ? '2px solid #fff' : '2px solid transparent',
-            borderRadius:'18px', padding:'10px 14px', fontSize:14, cursor:'pointer', fontWeight:'bold'
+            background: instrument===key ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)',
+            color:'#fff', border: instrument===key ? '1px solid rgba(255,255,255,0.4)' : '1px solid rgba(255,255,255,0.1)',
+            borderRadius:14, padding:'10px 14px', fontSize:14, cursor:'pointer', fontWeight:700
           }}>{inst.icon} {inst.name}</button>
         ))}
       </div>
@@ -156,11 +153,11 @@ export default function MusicKeyboard({ onBack, pet }:{ onBack:()=>void, pet?:st
               background: activeNote===n.note 
                 ? `linear-gradient(180deg, ${n.color} 0%, ${n.color}CC 100%)` 
                 : 'linear-gradient(180deg, #fff 0%, #e8e8e8 100%)',
-              border: activeNote===n.note ? `3px solid ${n.color}` : '2px solid #ccc',
+              border: activeNote===n.note ? `2px solid ${n.color}` : '1px solid rgba(0,0,0,0.12)',
               cursor:'pointer', display:'flex', flexDirection:'column', justifyContent:'flex-end',
               alignItems:'center', paddingBottom:10, fontSize:14, fontWeight:'bold',
-              color: activeNote===n.note ? '#fff' : '#555',
-              boxShadow: activeNote===n.note ? `0 0 20px ${n.color}88` : '0 4px 8px rgba(0,0,0,0.2)',
+              color: activeNote===n.note ? '#fff' : '#636e72',
+              boxShadow: activeNote===n.note ? `0 0 16px ${n.color}66` : '0 2px 8px rgba(0,0,0,0.12)',
               transition:'all 0.1s'
             }}>
               <div style={{fontSize:18, marginBottom:2}}>{n.note}</div>
@@ -172,21 +169,21 @@ export default function MusicKeyboard({ onBack, pet }:{ onBack:()=>void, pet?:st
         {/* Recording Controls */}
         <div style={{background:'rgba(255,255,255,0.1)', borderRadius:'20px', padding:'15px', display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap'}}>
           {!recording ? (
-            <button onClick={startRecording} style={{background:'linear-gradient(135deg, #FF5722, #FF8A65)', color:'#fff', border:'none', borderRadius:'20px', padding:'10px 20px', fontSize:14, fontWeight:'bold', cursor:'pointer'}}>
+            <button onClick={startRecording} style={{background:'#d63031', color:'#fff', border:'none', borderRadius:14, padding:'10px 20px', fontSize:14, fontWeight:700, cursor:'pointer'}}>
               🔴 Record
             </button>
           ) : (
-            <button onClick={stopRecording} style={{background:'linear-gradient(135deg, #F44336, #EF5350)', color:'#fff', border:'none', borderRadius:'20px', padding:'10px 20px', fontSize:14, fontWeight:'bold', cursor:'pointer', animation:'pulse 1s infinite'}}>
+            <button onClick={stopRecording} style={{background:'#d63031', color:'#fff', border:'none', borderRadius:14, padding:'10px 20px', fontSize:14, fontWeight:700, cursor:'pointer', animation:'pulse 1s infinite'}}>
               ⏹️ Stop ({recorded.length} notes)
             </button>
           )}
           {recorded.length > 0 && !recording && (
-            <button onClick={playRecording} disabled={playing} style={{background:'linear-gradient(135deg, #4CAF50, #81C784)', color:'#fff', border:'none', borderRadius:'20px', padding:'10px 20px', fontSize:14, fontWeight:'bold', cursor:'pointer', opacity:playing?0.6:1}}>
+            <button onClick={playRecording} disabled={playing} style={{background:'#00b894', color:'#fff', border:'none', borderRadius:14, padding:'10px 20px', fontSize:14, fontWeight:700, cursor:'pointer', opacity:playing?0.6:1}}>
               ▶️ {playing ? 'Playing...' : 'Play Back'}
             </button>
           )}
           {recorded.length > 0 && !recording && (
-            <button onClick={()=>{playSound('click');setRecorded([])}} style={{background:'rgba(255,255,255,0.2)', color:'#fff', border:'none', borderRadius:'20px', padding:'10px 20px', fontSize:14, fontWeight:'bold', cursor:'pointer'}}>
+            <button onClick={()=>{playSound('click');setRecorded([])}} style={{background:'rgba(255,255,255,0.12)', color:'#fff', border:'none', borderRadius:14, padding:'10px 20px', fontSize:14, fontWeight:700, cursor:'pointer'}}>
               🗑️ Clear
             </button>
           )}

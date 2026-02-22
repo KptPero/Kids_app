@@ -152,23 +152,23 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
   // Level Select
   if (screen === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #E8EAF6 100%)', minHeight: '100vh', padding: 20 }}>
+      <div style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 50%, #f3eeff 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.95)', border: '3px solid #1565C0', borderRadius: 25, padding: '12px 20px', cursor: 'pointer', fontSize: 16, fontWeight: 'bold', color: '#1565C0' }}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
         </div>
-        <h2 style={{ textAlign: 'center', color: '#1565C0', fontSize: 24, margin: '0 0 20px 0' }}>🔵 Shape Sorter</h2>
+        <h2 style={{ textAlign: 'center', color: '#0984e3', fontSize: 22, margin: '0 0 20px 0', fontWeight: 800 }}>🔵 Shape Sorter</h2>
         <div style={{ maxWidth: 400, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {LEVELS.map((lv, i) => (
             <button key={lv.name} onClick={() => unlocked[i] && startLevel(i)} disabled={!unlocked[i]} style={{
-              background: unlocked[i] ? '#fff' : '#E0E0E0', borderRadius: 20, padding: 16, border: 'none',
+              background: unlocked[i] ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.04)', backdropFilter: unlocked[i] ? 'blur(16px)' : undefined, WebkitBackdropFilter: unlocked[i] ? 'blur(16px)' : undefined, borderRadius: 18, padding: 16, border: unlocked[i] ? '1px solid rgba(255,255,255,0.4)' : '1px solid transparent',
               cursor: unlocked[i] ? 'pointer' : 'not-allowed', opacity: unlocked[i] ? 1 : 0.5,
-              boxShadow: unlocked[i] ? '0 4px 15px rgba(0,0,0,0.1)' : 'none', textAlign: 'center'
+              boxShadow: unlocked[i] ? '0 4px 16px rgba(0,0,0,0.06)' : 'none', textAlign: 'center'
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? lv.icon : '🔒'}</div>
-              <div style={{ fontSize: 15, fontWeight: 'bold', color: '#333', marginTop: 4 }}>{lv.name}</div>
-              <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>{lv.desc}</div>
-              {lv.timeLimit && <div style={{ fontSize: 10, color: '#E65100', marginTop: 4 }}>⏱ {lv.timeLimit}s</div>}
+              <div style={{ fontSize: 15, fontWeight: 700, color: '#2d3436', marginTop: 4 }}>{lv.name}</div>
+              <div style={{ fontSize: 11, color: '#636e72', marginTop: 2 }}>{lv.desc}</div>
+              {lv.timeLimit && <div style={{ fontSize: 10, color: '#e17055', marginTop: 4 }}>⏱ {lv.timeLimit}s</div>}
             </button>
           ))}
         </div>
@@ -180,16 +180,16 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
   // Level Complete
   if (screen === 'complete') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: '#fff', borderRadius: 30, padding: 35, textAlign: 'center', boxShadow: '0 8px 30px rgba(0,0,0,0.1)', maxWidth: 380 }}>
+      <div style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 35, textAlign: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', maxWidth: 380 }}>
           <div style={{ fontSize: 55 }}>{stars > 0 ? '🎉' : '⏰'}</div>
-          <h2 style={{ color: '#1565C0', margin: '8px 0' }}>{stars > 0 ? 'Level Complete!' : "Time's Up!"}</h2>
+          <h2 style={{ color: '#0984e3', margin: '8px 0', fontWeight: 800 }}>{stars > 0 ? 'Level Complete!' : "Time's Up!"}</h2>
           <div style={{ fontSize: 36, marginBottom: 10 }}>{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</div>
           <p style={{ color: '#777', fontSize: 14, margin: '0 0 15px 0' }}>Streak: {streak} • Best: {bestStreak}</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => startLevel(levelIdx)} style={{ background: 'linear-gradient(135deg, #42A5F5, #1E88E5)', color: '#fff', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Retry</button>
-            {stars > 0 && levelIdx < LEVELS.length - 1 && <button onClick={() => startLevel(levelIdx + 1)} style={{ background: 'linear-gradient(135deg, #66BB6A, #43A047)', color: '#fff', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>Next ➜</button>}
-            <button onClick={() => setScreen('select')} style={{ background: '#E0E0E0', color: '#555', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>📋 Levels</button>
+            <button onClick={() => startLevel(levelIdx)} style={{ background: '#0984e3', color: '#fff', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>🔄 Retry</button>
+            {stars > 0 && levelIdx < LEVELS.length - 1 && <button onClick={() => startLevel(levelIdx + 1)} style={{ background: '#00b894', color: '#fff', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>Next ➜</button>}
+            <button onClick={() => setScreen('select')} style={{ background: 'rgba(0,0,0,0.06)', color: '#636e72', border: 'none', borderRadius: 14, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>📋 Levels</button>
           </div>
         </div>
       </div>
@@ -199,46 +199,46 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
   // Gameplay
   const lv = LEVELS[levelIdx]
   return (
-    <div style={{ background: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 50%, #E8EAF6 100%)', minHeight: '100vh', padding: 20 }}>
+    <div style={{ background: 'linear-gradient(135deg, #eaf6ff 0%, #f0f4ff 50%, #f3eeff 100%)', minHeight: '100vh', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-        <button onClick={() => { setScreen('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.95)', border: '3px solid #1565C0', borderRadius: 25, padding: '10px 16px', cursor: 'pointer', fontSize: 14, fontWeight: 'bold', color: '#1565C0' }}>← Levels</button>
+        <button onClick={() => { setScreen('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 16px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Levels</button>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          {timeLeft !== null && <span style={{ fontSize: 16, fontWeight: 'bold', color: timeLeft <= 10 ? '#D32F2F' : '#1565C0' }}>⏱ {timeLeft}s</span>}
-          <span style={{ fontSize: 14, color: '#888' }}>🔥{streak}</span>
-          <button onClick={useHint} disabled={hints <= 0} style={{ background: hints > 0 ? '#FFF9C4' : '#EEE', border: 'none', borderRadius: 12, padding: '6px 10px', fontSize: 13, fontWeight: 'bold', cursor: hints > 0 ? 'pointer' : 'not-allowed', color: '#F57F17' }}>💡{hints}</button>
+          {timeLeft !== null && <span style={{ fontSize: 16, fontWeight: 700, color: timeLeft <= 10 ? '#d63031' : '#0984e3' }}>⏱ {timeLeft}s</span>}
+          <span style={{ fontSize: 14, color: '#636e72' }}>🔥{streak}</span>
+          <button onClick={useHint} disabled={hints <= 0} style={{ background: hints > 0 ? 'rgba(253,203,110,0.2)' : 'rgba(0,0,0,0.04)', border: 'none', borderRadius: 12, padding: '6px 10px', fontSize: 13, fontWeight: 700, cursor: hints > 0 ? 'pointer' : 'not-allowed', color: '#e17055' }}>💡{hints}</button>
         </div>
         {pet && <span style={{ fontSize: 24 }}>{pet}</span>}
       </div>
 
       <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
-        <h3 style={{ fontSize: 18, color: '#1565C0', margin: '0 0 5px 0' }}>{lv.icon} {lv.name}</h3>
-        <p style={{ fontSize: 12, color: '#888', margin: '0 0 10px 0' }}>Tap a shape, then tap its matching hole!</p>
+        <h3 style={{ fontSize: 18, color: '#0984e3', margin: '0 0 5px 0', fontWeight: 800 }}>{lv.icon} {lv.name}</h3>
+        <p style={{ fontSize: 12, color: '#636e72', margin: '0 0 10px 0' }}>Tap a shape, then tap its matching hole!</p>
 
         {/* Progress bar */}
-        <div style={{ background: '#E0E0E0', borderRadius: 10, height: 8, marginBottom: 12, overflow: 'hidden' }}>
-          <div style={{ background: 'linear-gradient(90deg, #42A5F5, #1E88E5)', height: '100%', width: `${(sorted.length / picked.length) * 100}%`, borderRadius: 10, transition: 'width 0.3s' }} />
+        <div style={{ background: 'rgba(0,0,0,0.06)', borderRadius: 10, height: 8, marginBottom: 12, overflow: 'hidden' }}>
+          <div style={{ background: '#0984e3', height: '100%', width: `${(sorted.length / picked.length) * 100}%`, borderRadius: 10, transition: 'width 0.3s' }} />
         </div>
 
         {/* Shapes to pick */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', marginBottom: 18, padding: 12, background: 'rgba(255,255,255,0.7)', borderRadius: 18 }}>
           {picked.filter(s => !sorted.includes(s.id)).map(shape => (
             <button key={shape.id} onClick={() => handleTapShape(shape.id)} style={{
-              background: dragging === shape.id ? '#FFF9C4' : hintShape === shape.id ? '#C8E6C9' : '#fff',
-              border: `3px solid ${dragging === shape.id ? '#FFA000' : hintShape === shape.id ? '#4CAF50' : shape.color}`,
-              borderRadius: 16, padding: 8, cursor: 'pointer',
-              transform: dragging === shape.id ? 'scale(1.15)' : hintShape === shape.id ? 'scale(1.1)' : 'scale(1)',
-              transition: 'all 0.2s', boxShadow: dragging === shape.id ? '0 6px 20px rgba(0,0,0,0.2)' : '0 2px 6px rgba(0,0,0,0.08)',
+              background: dragging === shape.id ? 'rgba(253,203,110,0.15)' : hintShape === shape.id ? 'rgba(0,184,148,0.1)' : 'rgba(255,255,255,0.8)',
+              border: `2px solid ${dragging === shape.id ? '#e17055' : hintShape === shape.id ? '#00b894' : 'rgba(0,0,0,0.06)'}`,
+              borderRadius: 14, padding: 8, cursor: 'pointer',
+              transform: dragging === shape.id ? 'scale(1.12)' : hintShape === shape.id ? 'scale(1.08)' : 'scale(1)',
+              transition: 'all 0.2s', boxShadow: dragging === shape.id ? '0 4px 16px rgba(0,0,0,0.12)' : '0 2px 8px rgba(0,0,0,0.04)',
               animation: hintShape === shape.id ? 'hintPulse 0.6s ease infinite' : undefined
             }}>
               {renderSvg(shape, shape.color, 48)}
-              <div style={{ fontSize: 10, fontWeight: 'bold', color: '#555', marginTop: 2 }}>{shape.name}</div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: '#636e72', marginTop: 2 }}>{shape.name}</div>
             </button>
           ))}
           {picked.filter(s => !sorted.includes(s.id)).length === 0 && <div style={{ fontSize: 14, color: '#999', padding: 15 }}>All sorted! 🎉</div>}
         </div>
 
         {/* Holes */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', padding: 12, background: 'rgba(0,0,0,0.05)', borderRadius: 18, border: '3px dashed #90CAF9' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', padding: 12, background: 'rgba(9,132,227,0.04)', borderRadius: 18, border: '2px dashed rgba(9,132,227,0.25)' }}>
           <div style={{ width: '100%', fontSize: 12, color: '#888', marginBottom: 4 }}>⬇️ Drop here ⬇️</div>
           {holes.map((shape, i) => {
             const done = sorted.includes(shape.id)
@@ -246,7 +246,7 @@ export default function ShapeSorter({ onBack, pet }: { onBack: () => void; pet?:
             return (
               <button key={shape.id} onClick={() => handleTapHole(shape.id)} disabled={done} style={{
                 background: done ? shape.color + '33' : isHint ? '#C8E6C9' : 'rgba(255,255,255,0.5)',
-                border: `3px dashed ${done ? shape.color : isHint ? '#4CAF50' : '#BDBDBD'}`,
+                border: `2px dashed ${done ? shape.color : isHint ? '#00b894' : 'rgba(0,0,0,0.12)'}`,
                 borderRadius: 16, padding: 8, cursor: done ? 'default' : 'pointer',
                 opacity: done ? 0.6 : 1, minWidth: 65, minHeight: 65,
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',

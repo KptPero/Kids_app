@@ -203,27 +203,27 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
   const freeName = findClosestName(freeR, freeG, freeB)
 
   return (
-    <div style={{ background: 'linear-gradient(135deg, #FCE4EC 0%, #F3E5F5 50%, #E8EAF6 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+    <div style={{ background: 'linear-gradient(135deg, #fce4ec 0%, #f3eeff 50%, #eef0ff 100%)', minHeight: '100vh', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.95)', border: '3px solid #7B1FA2', borderRadius: 25, padding: '12px 20px', cursor: 'pointer', fontSize: 16, fontWeight: 'bold', color: '#7B1FA2' }}>← Back</button>
+        <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
         <div style={{ display: 'flex', gap: 6 }}>
-          <button onClick={() => { setMode('mix'); playSound('click') }} style={{ background: mode === 'mix' ? '#7B1FA2' : '#E1BEE7', color: mode === 'mix' ? '#fff' : '#7B1FA2', border: 'none', borderRadius: 15, padding: '8px 14px', fontSize: 13, fontWeight: 'bold', cursor: 'pointer' }}>🎨 Mix</button>
-          <button onClick={() => { setMode('free'); playSound('click') }} style={{ background: mode === 'free' ? '#7B1FA2' : '#E1BEE7', color: mode === 'free' ? '#fff' : '#7B1FA2', border: 'none', borderRadius: 15, padding: '8px 14px', fontSize: 13, fontWeight: 'bold', cursor: 'pointer' }}>🌈 Free</button>
+          <button onClick={() => { setMode('mix'); playSound('click') }} style={{ background: mode === 'mix' ? '#6c5ce7' : 'rgba(108,92,231,0.12)', color: mode === 'mix' ? '#fff' : '#6c5ce7', border: 'none', borderRadius: 14, padding: '8px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>🎨 Mix</button>
+          <button onClick={() => { setMode('free'); playSound('click') }} style={{ background: mode === 'free' ? '#6c5ce7' : 'rgba(108,92,231,0.12)', color: mode === 'free' ? '#fff' : '#6c5ce7', border: 'none', borderRadius: 14, padding: '8px 14px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>🌈 Free</button>
         </div>
         {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
       </div>
 
       <div style={{ maxWidth: 420, margin: '0 auto', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 22, color: '#7B1FA2', margin: '0 0 8px 0' }}>🎨 Color Mixer</h2>
+        <h2 style={{ fontSize: 22, color: '#6c5ce7', margin: '0 0 8px 0', fontWeight: 800 }}>🎨 Color Mixer</h2>
 
         {mode === 'free' ? (
           /* Free color creator mode */
           <div>
             <p style={{ fontSize: 13, color: '#666', margin: '0 0 12px 0' }}>Slide to make any colour!</p>
-            <div style={{ background: '#fff', borderRadius: 25, padding: 20, marginBottom: 15, boxShadow: '0 4px 15px rgba(0,0,0,0.08)' }}>
-              <div style={{ width: 100, height: 100, borderRadius: '50%', margin: '0 auto 15px', background: freeHex, boxShadow: `0 6px 20px ${freeHex}66`, border: '4px solid #fff' }} />
-              {freeName && <div style={{ fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 10 }}>{freeName.emoji} {freeName.name}</div>}
-              <div style={{ fontSize: 12, color: '#999', marginBottom: 15 }}>{freeHex}</div>
+            <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 20, marginBottom: 15, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
+              <div style={{ width: 100, height: 100, borderRadius: '50%', margin: '0 auto 15px', background: freeHex, boxShadow: `0 6px 20px ${freeHex}66`, border: '2px solid #fff' }} />
+              {freeName && <div style={{ fontSize: 18, fontWeight: 700, color: '#2d3436', marginBottom: 10 }}>{freeName.emoji} {freeName.name}</div>}
+              <div style={{ fontSize: 12, color: '#b2bec3', marginBottom: 15 }}>{freeHex}</div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {[
@@ -232,7 +232,7 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
                   { label: '🔵 Blue', value: freeB, set: setFreeB, color: '#2196F3' },
                 ].map(s => (
                   <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ fontSize: 13, fontWeight: 'bold', width: 75, textAlign: 'left' }}>{s.label}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, width: 75, textAlign: 'left' }}>{s.label}</span>
                     <input type="range" min={0} max={255} value={s.value}
                       onChange={e => s.set(Number(e.target.value))}
                       style={{ flex: 1, accentColor: s.color, height: 24 }} />
@@ -254,12 +254,12 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
                   <button key={color.id} onClick={() => handleColorTap(color)} style={{
                     width: 60, height: 60, borderRadius: '50%',
                     background: `radial-gradient(circle at 35% 35%, ${hex}cc, ${hex})`,
-                    border: selCount > 0 ? '4px solid #333' : '3px solid rgba(255,255,255,0.8)',
+                    border: selCount > 0 ? '3px solid #2d3436' : '2px solid rgba(255,255,255,0.7)',
                     cursor: 'pointer', transition: 'all 0.2s', position: 'relative',
                     transform: selCount > 0 ? 'scale(1.1)' : 'scale(1)',
                     boxShadow: selCount > 0 ? `0 4px 16px ${hex}88` : `0 2px 8px ${hex}44`
                   }}>
-                    {selCount > 1 && <span style={{ position: 'absolute', top: -6, right: -6, background: '#333', color: '#fff', borderRadius: '50%', width: 20, height: 20, fontSize: 11, fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>x{selCount}</span>}
+                    {selCount > 1 && <span style={{ position: 'absolute', top: -6, right: -6, background: '#2d3436', color: '#fff', borderRadius: '50%', width: 20, height: 20, fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>x{selCount}</span>}
                   </button>
                 )
               })}
@@ -270,18 +270,18 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
                 {selected.map((c, i) => (
                   <React.Fragment key={i}>
-                    {i > 0 && <span style={{ fontSize: 20, color: '#7B1FA2' }}>+</span>}
+                    {i > 0 && <span style={{ fontSize: 20, color: '#6c5ce7' }}>+</span>}
                     <div style={{ width: 36, height: 36, borderRadius: '50%', background: toHex(c.r, c.g, c.b), border: '2px solid #fff', boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }} />
                   </React.Fragment>
                 ))}
-                <span style={{ fontSize: 20, color: '#7B1FA2', marginLeft: 6 }}>=</span>
-                <div style={{ width: 44, height: 44, borderRadius: '50%', background: mixHex, border: '3px solid #fff', boxShadow: `0 4px 12px ${mixHex}66` }} />
+                <span style={{ fontSize: 20, color: '#6c5ce7', marginLeft: 6 }}>=</span>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', background: mixHex, border: '2px solid #fff', boxShadow: `0 4px 12px ${mixHex}66` }} />
               </div>
             )}
 
             {/* Result */}
             {showResult && (
-              <div style={{ background: '#fff', borderRadius: 25, padding: 20, marginBottom: 15, boxShadow: '0 8px 30px rgba(0,0,0,0.1)', animation: 'fadeIn 0.4s ease' }}>
+              <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 20, marginBottom: 15, boxShadow: '0 4px 16px rgba(0,0,0,0.06)', animation: 'fadeIn 0.4s ease' }}>
                 <div style={{ width: 80, height: 80, borderRadius: '50%', margin: '0 auto 10px', background: `radial-gradient(circle at 35% 35%, ${mixHex}cc, ${mixHex})`, boxShadow: `0 6px 20px ${mixHex}66` }} />
                 {mix.name ? (
                   <h3 style={{ color: mixHex, margin: '0 0 5px 0', fontSize: 20 }}>{mix.emoji} {mix.name}!</h3>
@@ -290,8 +290,8 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
                 )}
                 <p style={{ color: '#888', margin: 0, fontSize: 13 }}>{mixHex}</p>
                 <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 12 }}>
-                  <button onClick={resetMix} style={{ background: 'linear-gradient(135deg, #AB47BC, #7B1FA2)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 22px', fontSize: 14, fontWeight: 'bold', cursor: 'pointer' }}>🔄 New Mix</button>
-                  {selected.length < 4 && <button onClick={addMore} style={{ background: 'linear-gradient(135deg, #4CAF50, #66BB6A)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 22px', fontSize: 14, fontWeight: 'bold', cursor: 'pointer' }}>+ Add More</button>}
+                  <button onClick={resetMix} style={{ background: '#6c5ce7', color: '#fff', border: 'none', borderRadius: 14, padding: '10px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>🔄 New Mix</button>
+                  {selected.length < 4 && <button onClick={addMore} style={{ background: '#00b894', color: '#fff', border: 'none', borderRadius: 14, padding: '10px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>+ Add More</button>}
                 </div>
               </div>
             )}
@@ -300,7 +300,7 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
 
         {/* Discovered */}
         <div style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 20, padding: 12, marginTop: 8 }}>
-          <h3 style={{ color: '#7B1FA2', margin: '0 0 8px 0', fontSize: 15 }}>🏆 Discovered ({discovered.length}/{NAMED_COLORS.length})</h3>
+          <h3 style={{ color: '#6c5ce7', margin: '0 0 8px 0', fontSize: 15, fontWeight: 700 }}>🏆 Discovered ({discovered.length}/{NAMED_COLORS.length})</h3>
           <div style={{ display: 'flex', gap: 6, justifyContent: 'center', flexWrap: 'wrap' }}>
             {NAMED_COLORS.map(nc => (
               <div key={nc.name} title={nc.name} style={{

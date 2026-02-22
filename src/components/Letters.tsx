@@ -183,50 +183,46 @@ export default function Letters({ onBack, pet }:{onBack:()=>void, pet?:string}){
   function toggleCase(){ const newUpper = !isUpper; setIsUpper(newUpper); const idx = Math.max(0, currentIndex); setLetter((newUpper ? upperLetters : lowerLetters)[idx]); clearCanvas() }
 
   return (
-    <div style={{background:'linear-gradient(135deg, #FFB6D9 0%, #FFDEE9 50%, #B5FFFC 100%)', minHeight:'100vh', padding:'15px', position:'relative', overflow:'hidden'}}>
-      <div style={{position:'absolute',top:20,left:20,fontSize:60,opacity:0.08,transform:'rotate(-15deg)'}}>📝</div>
-      <div style={{position:'absolute',top:80,right:30,fontSize:50,opacity:0.08,transform:'rotate(10deg)'}}>✏️</div>
-      <div style={{position:'absolute',bottom:100,left:10,fontSize:70,opacity:0.06}}>🔤</div>
-      <div style={{position:'absolute',bottom:40,right:40,fontSize:45,opacity:0.08}}>🌟</div>
+    <div style={{background:'linear-gradient(135deg, #fce4ec 0%, #fff0f5 50%, #e8f8f5 100%)', minHeight:'100vh', padding:'15px', position:'relative', overflow:'hidden'}}>
 
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12, position:'relative', zIndex:2}}>
-        <button onClick={() => { playSound('click'); onBack() }} style={{background:'rgba(255,255,255,0.95)', border:'3px solid #FF6B9D', borderRadius:'25px', padding:'12px 20px', cursor:'pointer', fontSize:16, fontWeight:'bold', color:'#FF6B9D'}}>← Back</button>
-        <h2 style={{margin:0, fontSize:22, color:'#fff',textShadow:'2px 2px 4px rgba(0,0,0,0.2)'}}>✏️ Letter Tracing</h2>
+        <button onClick={() => { playSound('click'); onBack() }} style={{background:'rgba(255,255,255,0.55)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:16, padding:'10px 18px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#2d3436'}}>← Back</button>
+        <h2 style={{margin:0, fontSize:20, color:'#2d3436', fontWeight:800}}>✏️ Letter Tracing</h2>
         {pet && <div style={{fontSize:32}}>{pet}</div>}
       </div>
 
-      <div style={{background:'rgba(255,255,255,0.9)', borderRadius:'25px', padding:'10px', marginBottom:12, boxShadow:'0 4px 12px rgba(0,0,0,0.1)', position:'relative', zIndex:2}}>
+      <div style={{background:'rgba(255,255,255,0.6)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:20, padding:'10px', marginBottom:12, boxShadow:'0 4px 16px rgba(0,0,0,0.06)', position:'relative', zIndex:2}}>
         <div style={{display:'flex', gap:8, marginBottom:8, justifyContent:'center'}}>
-          <button onClick={toggleCase} style={{background: isUpper ? 'linear-gradient(135deg, #FF6B9D, #FFB6D9)' : 'linear-gradient(135deg, #7B68EE, #9B89FF)', color:'#fff', border:'none', borderRadius:'20px', padding:'10px 18px', cursor:'pointer', fontSize:15, fontWeight:'bold'}}>
+          <button onClick={toggleCase} style={{background: isUpper ? '#e84393' : '#6c5ce7', color:'#fff', border:'none', borderRadius:14, padding:'10px 18px', cursor:'pointer', fontSize:15, fontWeight:700}}>
             {isUpper ? 'ABC ▸ abc' : 'abc ▸ ABC'}
           </button>
-          <button onClick={prevLetter} style={{background:'#FF6B9D', color:'#fff', border:'none', borderRadius:'50%', width:44, height:44, cursor:'pointer', fontWeight:'bold', fontSize:20}}>‹</button>
-          <button onClick={nextLetter} style={{background:'#FF6B9D', color:'#fff', border:'none', borderRadius:'50%', width:44, height:44, cursor:'pointer', fontWeight:'bold', fontSize:20}}>›</button>
+          <button onClick={prevLetter} style={{background:'#e84393', color:'#fff', border:'none', borderRadius:'50%', width:42, height:42, cursor:'pointer', fontWeight:700, fontSize:20}}>‹</button>
+          <button onClick={nextLetter} style={{background:'#e84393', color:'#fff', border:'none', borderRadius:'50%', width:42, height:42, cursor:'pointer', fontWeight:700, fontSize:20}}>›</button>
         </div>
         <div style={{display:'flex', gap:4, overflowX:'auto', justifyContent:'center', flexWrap:'wrap'}}>
           {allLetters.map(l => (
             <button key={l} onClick={() => { playSound('click'); setLetter(l); clearCanvas() }} style={{
-              padding:'6px 9px', fontSize:14, fontWeight:letter===l?'bold':'normal',
-              background:letter===l?'#FF6B9D':'#f5f5f5', color:letter===l?'#fff':'#555',
-              border:'none', borderRadius:'14px', cursor:'pointer', minWidth:32
+              padding:'6px 9px', fontSize:14, fontWeight:letter===l?700:500,
+              background:letter===l?'#e84393':'rgba(255,255,255,0.5)', color:letter===l?'#fff':'#636e72',
+              border:'none', borderRadius:12, cursor:'pointer', minWidth:32
             }}>{l}</button>
           ))}
         </div>
       </div>
 
-      <div style={{background:'rgba(255,255,255,0.95)', borderRadius:'30px', padding:'20px', boxShadow:'0 6px 20px rgba(0,0,0,0.1)', position:'relative', zIndex:2}}>
-        <div style={{fontSize:100, fontWeight:'bold', textAlign:'center', color:'#FF6B9D', marginBottom:10, textShadow:'3px 3px 6px rgba(255,107,157,0.2)'}}>{letter}</div>
+      <div style={{background:'rgba(255,255,255,0.7)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:24, padding:'20px', boxShadow:'0 4px 16px rgba(0,0,0,0.06)', position:'relative', zIndex:2}}>
+        <div style={{fontSize:100, fontWeight:800, textAlign:'center', color:'#e84393', marginBottom:10}}>{letter}</div>
 
         <div style={{display:'flex', gap:10, justifyContent:'center', marginBottom:15}}>
-          <button onClick={sayLetterName} style={{background:'linear-gradient(135deg, #4CAF50, #81C784)', color:'#fff', border:'none', borderRadius:'25px', padding:'12px 18px', fontSize:14, fontWeight:'bold', cursor:'pointer', boxShadow:'0 4px 12px rgba(76,175,80,0.3)', flex:1, maxWidth:155}}>
+          <button onClick={sayLetterName} style={{background:'#00b894', color:'#fff', border:'none', borderRadius:16, padding:'12px 18px', fontSize:14, fontWeight:700, cursor:'pointer', flex:1, maxWidth:155}}>
             🗣️ Name "{letter.toUpperCase()}"
           </button>
-          <button onClick={sayLetterSound} style={{background:'linear-gradient(135deg, #FF9800, #FFB74D)', color:'#fff', border:'none', borderRadius:'25px', padding:'12px 18px', fontSize:14, fontWeight:'bold', cursor:'pointer', boxShadow:'0 4px 12px rgba(255,152,0,0.3)', flex:1, maxWidth:155}}>
+          <button onClick={sayLetterSound} style={{background:'#e17055', color:'#fff', border:'none', borderRadius:16, padding:'12px 18px', fontSize:14, fontWeight:700, cursor:'pointer', flex:1, maxWidth:155}}>
             🔊 Sound "/{letter.toLowerCase()}/"
           </button>
         </div>
 
-        <div style={{background:'#FFFBF0', borderRadius:'20px', padding:'8px', marginBottom:12, position:'relative', border:'3px dashed #FFD54F'}}>
+        <div style={{background:'#fefef9', borderRadius:16, padding:'8px', marginBottom:12, position:'relative', border:'2px dashed rgba(253,203,110,0.5)'}}>
           <p style={{fontSize:13, color:'#999', marginTop:0, marginBottom:4, textAlign:'center'}}>✏️ Trace over the dotted letter:</p>
           <div style={{position:'relative', height:220, borderRadius:'16px', overflow:'hidden'}}>
             <canvas ref={guideRef} style={{position:'absolute', top:0, left:0, width:'100%', height:'100%', pointerEvents:'none'}} />
@@ -242,11 +238,11 @@ export default function Letters({ onBack, pet }:{onBack:()=>void, pet?:string}){
         )}
 
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
-          <button onClick={() => { playSound('click'); clearCanvas() }} style={{background:'linear-gradient(135deg, #FF8A65, #FFBB86)', color:'#fff', border:'none', borderRadius:'20px', padding:'12px', cursor:'pointer', fontSize:14, fontWeight:'bold'}}>🗑️ Clear</button>
-          <button onClick={validateTracing} style={{background:'linear-gradient(135deg, #4CAF50, #81C784)', color:'#fff', border:'none', borderRadius:'20px', padding:'12px', cursor:'pointer', fontSize:14, fontWeight:'bold'}}>✅ Check</button>
+          <button onClick={() => { playSound('click'); clearCanvas() }} style={{background:'#e17055', color:'#fff', border:'none', borderRadius:14, padding:'12px', cursor:'pointer', fontSize:14, fontWeight:700}}>🗑️ Clear</button>
+          <button onClick={validateTracing} style={{background:'#00b894', color:'#fff', border:'none', borderRadius:14, padding:'12px', cursor:'pointer', fontSize:14, fontWeight:700}}>✅ Check</button>
         </div>
 
-        <button onClick={() => { playSound('click'); setShowGuide(!showGuide) }} style={{width:'100%', marginTop:8, background:showGuide?'#E0E0E0':'#FFF9C4', color:'#555', border:'none', borderRadius:'20px', padding:'10px', cursor:'pointer', fontSize:14, fontWeight:'bold'}}>
+        <button onClick={() => { playSound('click'); setShowGuide(!showGuide) }} style={{width:'100%', marginTop:8, background:showGuide?'rgba(0,0,0,0.06)':'rgba(253,203,110,0.2)', color:'#636e72', border:'none', borderRadius:14, padding:'10px', cursor:'pointer', fontSize:14, fontWeight:700}}>
           {showGuide?'🙈 Hide Guide':'👁️ Show Guide'}
         </button>
       </div>

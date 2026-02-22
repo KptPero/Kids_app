@@ -232,15 +232,15 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
   // ── Menu ──
   if (gameState === 'menu') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FFB347 50%, #FFF176 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+      <div style={{ background: 'linear-gradient(135deg, #fef5e7 0%, #ffecd2 50%, #fffde8 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={btnStyle('#FF6B35')}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={btnStyle('#e17055')}>← Back</button>
           {pet && <span style={{ fontSize: 32 }}>{pet}</span>}
         </div>
         <div style={{ maxWidth: 450, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ background: 'rgba(255,255,255,0.95)', borderRadius: 30, padding: 30, boxShadow: '0 6px 20px rgba(0,0,0,0.1)' }}>
+            <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 30, boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
             <div style={{ fontSize: 70, marginBottom: 10 }}>🚒</div>
-            <h1 style={{ fontSize: 32, color: '#FF6B35', margin: '0 0 10px 0' }}>Fire Fighter!</h1>
+            <h1 style={{ fontSize: 28, color: '#e17055', margin: '0 0 10px 0', fontWeight: 800 }}>Fire Fighter!</h1>
             <p style={{ fontSize: 16, color: '#666', marginBottom: 8 }}>Spray water to put out fires!</p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
               {Object.entries(POWERUP_INFO).map(([k, v]) => (
@@ -250,9 +250,8 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
               ))}
             </div>
             <button onClick={() => setGameState('levelselect')} style={{
-              background: 'linear-gradient(135deg, #FF6B35, #FF8C42)', color: '#fff', border: 'none',
-              borderRadius: 25, padding: '18px 50px', fontSize: 20, fontWeight: 'bold', cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(255,107,53,0.4)'
+              background: '#e17055', color: '#fff', border: 'none',
+              borderRadius: 18, padding: '18px 50px', fontSize: 20, fontWeight: 700, cursor: 'pointer'
             }}>🧑‍🚒 Select Level</button>
           </div>
         </div>
@@ -263,25 +262,25 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
   // ── Level Select ──
   if (gameState === 'levelselect') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FFB347 50%, #FFF176 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+      <div style={{ background: 'linear-gradient(135deg, #fef5e7 0%, #ffecd2 50%, #fffde8 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-          <button onClick={() => setGameState('menu')} style={btnStyle('#FF6B35')}>← Back</button>
-          <h2 style={{ color: '#fff', margin: 0, flex: 1, textAlign: 'center', fontSize: 22 }}>Choose Level</h2>
+          <button onClick={() => setGameState('menu')} style={btnStyle('#e17055')}>← Back</button>
+          <h2 style={{ color: '#2d3436', margin: 0, flex: 1, textAlign: 'center', fontSize: 20, fontWeight: 800 }}>Choose Level</h2>
         </div>
         <div style={{ maxWidth: 400, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
           {LEVELS.map((lv, i) => {
             const locked = i + 1 > unlockedLevels
             return (
               <button key={i} onClick={() => !locked && startLevel(i)} disabled={locked} style={{
-                background: locked ? '#ccc' : 'rgba(255,255,255,0.95)',
-                border: `3px solid ${locked ? '#999' : lv.bg}`,
-                borderRadius: 20, padding: '16px 20px', cursor: locked ? 'not-allowed': 'pointer',
+                background: locked ? 'rgba(0,0,0,0.04)' : 'rgba(255,255,255,0.65)',
+                border: locked ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.4)',
+                borderRadius: 18, padding: '16px 20px', cursor: locked ? 'not-allowed': 'pointer',
                 display: 'flex', alignItems: 'center', gap: 15, textAlign: 'left',
-                opacity: locked ? 0.6 : 1
+                opacity: locked ? 0.6 : 1, backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)'
               }}>
                 <span style={{ fontSize: 36 }}>{locked ? '🔒' : lv.icon}</span>
                 <div>
-                  <div style={{ fontWeight: 'bold', fontSize: 16, color: locked ? '#999' : '#333' }}>
+                  <div style={{ fontWeight: 700, fontSize: 16, color: locked ? '#b2bec3' : '#2d3436' }}>
                     Level {i + 1}: {lv.name}
                   </div>
                   <div style={{ fontSize: 12, color: '#888' }}>{lv.desc}</div>
@@ -300,10 +299,10 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
     const stars = flamePut >= level.target * 1.5 ? 3 : flamePut >= level.target * 1.2 ? 2 : 1
     const hasNext = levelIdx + 1 < LEVELS.length
     return (
-      <div style={{ background: `linear-gradient(135deg, ${level.bg}88, #FFF176)`, minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ background: 'rgba(255,255,255,0.95)', borderRadius: 30, padding: 40, textAlign: 'center', maxWidth: 400 }}>
+      <div style={{ background: `linear-gradient(135deg, ${level.bg}44, #fffde8)`, minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 40, textAlign: 'center', maxWidth: 400 }}>
           <div style={{ fontSize: 60 }}>{level.icon}</div>
-          <h2 style={{ color: '#FF6B35', margin: '10px 0' }}>Level Complete!</h2>
+          <h2 style={{ color: '#e17055', margin: '10px 0' }}>Level Complete!</h2>
           <div style={{ fontSize: 40, marginBottom: 10 }}>{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</div>
           <p style={{ fontSize: 18, fontWeight: 'bold', color: '#333' }}>Score: {score}</p>
           <p style={{ fontSize: 14, color: '#666' }}>Fires: {flamePut} / {level.target}</p>
@@ -322,10 +321,10 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
   // ── Game Over ──
   if (gameState === 'gameover') {
     return (
-      <div style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FFB347 50%, #FFF176 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ background: 'rgba(255,255,255,0.95)', borderRadius: 30, padding: 40, textAlign: 'center', maxWidth: 400 }}>
+      <div style={{ background: 'linear-gradient(135deg, #fef5e7 0%, #ffecd2 50%, #fffde8 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 40, textAlign: 'center', maxWidth: 400 }}>
           <div style={{ fontSize: 60, marginBottom: 10 }}>🚒</div>
-          <h2 style={{ color: '#FF6B35', margin: '0 0 10px 0' }}>Keep Trying!</h2>
+          <h2 style={{ color: '#e17055', margin: '0 0 10px 0' }}>Keep Trying!</h2>
           <p style={{ fontSize: 18, fontWeight: 'bold', color: '#333' }}>Score: {score}</p>
           <p style={{ fontSize: 14, color: '#666' }}>Fires: {flamePut} / {level.target}</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 20 }}>
@@ -345,7 +344,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
       style={{
         background: `linear-gradient(180deg, #1a1a2e 0%, ${level.bg}44 60%, ${level.bg}88 100%)`,
         minHeight: '100vh', position: 'relative', overflow: 'hidden',
-        touchAction: 'none', cursor: spraying ? 'none' : 'crosshair', fontFamily: "'Nunito', sans-serif"
+        touchAction: 'none', cursor: spraying ? 'none' : 'crosshair'
       }}>
       {/* HUD */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '10px 15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.5)', zIndex: 10 }}>
@@ -429,10 +428,11 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
 }
 
 const btnStyle = (c: string): React.CSSProperties => ({
-  background: 'rgba(255,255,255,0.95)', border: `3px solid ${c}`, borderRadius: 25,
-  padding: '12px 20px', cursor: 'pointer', fontSize: 16, fontWeight: 'bold', color: c
+  background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16,
+  padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436'
 })
 const playBtn: React.CSSProperties = {
-  background: 'linear-gradient(135deg, #FF6B35, #FF8C42)', color: '#fff', border: 'none',
-  borderRadius: 25, padding: '15px 30px', fontSize: 16, fontWeight: 'bold', cursor: 'pointer'
+  background: '#e17055', color: '#fff', border: 'none',
+  borderRadius: 16, padding: '15px 30px', fontSize: 16, fontWeight: 700, cursor: 'pointer'
 }

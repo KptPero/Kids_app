@@ -229,19 +229,19 @@ export default function Calming({ onBack, pet }: Props) {
   const bg = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)';
 
   if (mode === 'lullabies') return (
-    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: bg, padding: 16 }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
         <button onClick={() => { cancelTokenRef.current++; setPlayingIdx(null); setMode('menu'); }} style={backBtnStyle}>⬅️ Back</button>
-        <h2 style={{ margin: 0, fontSize: 20, color: '#ECEFF1', flex: 1, textAlign: 'center' }}>🎵 Lullabies</h2>
+        <h2 style={{ margin: 0, fontSize: 20, color: '#ECEFF1', flex: 1, textAlign: 'center', fontWeight: 800 }}>🎵 Lullabies</h2>
       </div>
       <div style={{ display: 'grid', gap: 12 }}>
         {LULLABIES.map((l, i) => (
           <button key={i} onClick={() => playLullaby(i)} style={{
-            border: playingIdx === i ? '3px solid #FFD54F' : '2px solid transparent',
-            borderRadius: 16, padding: 16, background: 'rgba(255,255,255,.1)',
+            border: playingIdx === i ? '2px solid #FFD54F' : '1px solid rgba(255,255,255,0.1)',
+            borderRadius: 16, padding: 16, background: 'rgba(255,255,255,.08)',
             color: 'white', fontSize: 18, cursor: 'pointer', display: 'flex',
-            alignItems: 'center', gap: 12, fontFamily: 'inherit'
+            alignItems: 'center', gap: 12
           }}>
             <span style={{ fontSize: 32 }}>{l.icon}</span>
             <span style={{ flex: 1, textAlign: 'left' }}>{l.name}</span>
@@ -257,11 +257,11 @@ export default function Calming({ onBack, pet }: Props) {
     const circleColor = breathPhase === 'inhale' ? '#81D4FA' : breathPhase === 'hold' ? '#CE93D8' : '#A5D6A7';
     const label = breathPhase === 'inhale' ? 'Breathe In...' : breathPhase === 'hold' ? 'Hold...' : 'Breathe Out...';
     return (
-      <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, width: '100%' }}>
-          <button onClick={() => { clearTimeout(breathTimerRef.current); setMode('menu'); }} style={backBtnStyle}>⬅️ Back</button>
-          <h2 style={{ margin: 0, fontSize: 20, color: '#ECEFF1', flex: 1, textAlign: 'center' }}>🫁 Breathing</h2>
+    <div style={{ minHeight: '100vh', background: bg, padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, width: '100%' }}>
+        <button onClick={() => { clearTimeout(breathTimerRef.current); setMode('menu'); }} style={backBtnStyle}>⬅️ Back</button>
+        <h2 style={{ margin: 0, fontSize: 20, color: '#ECEFF1', flex: 1, textAlign: 'center', fontWeight: 800 }}>🫁 Breathing</h2>
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{
@@ -280,11 +280,11 @@ export default function Calming({ onBack, pet }: Props) {
   }
 
   if (mode === 'soothing') return (
-    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ minHeight: '100vh', background: bg, padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, width: '100%' }}>
         <button onClick={() => { stopSoothing(); setMode('menu'); }} style={backBtnStyle}>⬅️ Back</button>
-        <h2 style={{ margin: 0, fontSize: 20, color: '#ECEFF1', flex: 1, textAlign: 'center' }}>🎶 Soothing Sounds</h2>
+        <h2 style={{ margin: 0, fontSize: 20, color: '#ECEFF1', flex: 1, textAlign: 'center', fontWeight: 800 }}>🎶 Soothing Sounds</h2>
       </div>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 30 }}>
         <div style={{
@@ -307,11 +307,11 @@ export default function Calming({ onBack, pet }: Props) {
 
   // ===== MENU =====
   return (
-    <div style={{ minHeight: '100vh', background: bg, padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: bg, padding: 16 }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
         <button onClick={onBack} style={backBtnStyle}>⬅️ Back</button>
-        <h2 style={{ margin: 0, fontSize: 22, color: '#ECEFF1', flex: 1, textAlign: 'center' }}>😴 Calming Zone</h2>
+        <h2 style={{ margin: 0, fontSize: 22, color: '#ECEFF1', flex: 1, textAlign: 'center', fontWeight: 800 }}>😴 Calming Zone</h2>
       </div>
       <div style={{ display: 'grid', gap: 16 }}>
         {([
@@ -320,13 +320,13 @@ export default function Calming({ onBack, pet }: Props) {
           { m: 'soothing' as Mode, icon: '🎶', label: 'Soothing Sounds', desc: 'Gentle ambient tones', color: '#7E57C2' },
         ]).map(item => (
           <button key={item.m} onClick={() => setMode(item.m)} style={{
-            border: 'none', borderRadius: 20, padding: 20, cursor: 'pointer',
+            border: 'none', borderRadius: 18, padding: 20, cursor: 'pointer',
             background: item.color, color: 'white', textAlign: 'left',
-            display: 'flex', alignItems: 'center', gap: 16, fontFamily: 'inherit'
+            display: 'flex', alignItems: 'center', gap: 16
           }}>
             <span style={{ fontSize: 42 }}>{item.icon}</span>
             <div>
-              <div style={{ fontSize: 20, fontWeight: 'bold' }}>{item.label}</div>
+              <div style={{ fontSize: 20, fontWeight: 700 }}>{item.label}</div>
               <div style={{ fontSize: 14, opacity: .85 }}>{item.desc}</div>
             </div>
           </button>
@@ -337,7 +337,6 @@ export default function Calming({ onBack, pet }: Props) {
 }
 
 const backBtnStyle: React.CSSProperties = {
-  border: 'none', borderRadius: 20, padding: '12px 20px', fontSize: 16,
-  background: 'linear-gradient(135deg, #5C6BC0, #7986CB)', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: "'Nunito', 'Quicksand', sans-serif"
+  border: '1px solid rgba(255,255,255,0.12)', borderRadius: 16, padding: '10px 18px', fontSize: 14,
+  background: 'rgba(255,255,255,0.08)', color: '#B0BEC5', fontWeight: 700, cursor: 'pointer'
 };

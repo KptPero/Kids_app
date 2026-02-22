@@ -64,20 +64,18 @@ export default function FidgetSpinner({ onBack, pet }:{ onBack:()=>void, pet?:st
   const rpmDisplay = Math.round(speed * 10)
 
   return (
-    <div style={{background:'linear-gradient(135deg, #FFF9C4 0%, #FFE4B5 50%, #FFCCBC 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
-      <div style={{position:'absolute',top:30,left:20,fontSize:55,opacity:0.08}}>🌀</div>
-      <div style={{position:'absolute',bottom:60,right:30,fontSize:50,opacity:0.08}}>💫</div>
+    <div style={{background:'linear-gradient(135deg, #fffde8 0%, #fef5e7 50%, #fff0f0 100%)', minHeight:'100vh', padding:'20px', position:'relative', overflow:'hidden'}}>
 
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:15, position:'relative', zIndex:2}}>
-        <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.95)', border:'3px solid #FF9800', borderRadius:'25px', padding:'12px 20px', cursor:'pointer', fontSize:16, fontWeight:'bold', color:'#FF9800'}}>← Back</button>
-        <h2 style={{margin:0, fontSize:22, color:'#FF9800', textShadow:'1px 1px 2px rgba(0,0,0,0.1)'}}>🌀 Fidget Spinner</h2>
+        <button onClick={()=>{playSound('click');onBack()}} style={{background:'rgba(255,255,255,0.55)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:16, padding:'10px 18px', cursor:'pointer', fontSize:14, fontWeight:700, color:'#2d3436'}}>← Back</button>
+        <h2 style={{margin:0, fontSize:20, color:'#2d3436', fontWeight:800}}>🌀 Fidget Spinner</h2>
         {pet && <div style={{fontSize:32}}>{pet}</div>}
       </div>
 
       {/* Speed Display */}
       <div style={{textAlign:'center', marginBottom:15, position:'relative', zIndex:2}}>
-        <div style={{background:'rgba(255,255,255,0.9)', borderRadius:'20px', padding:'10px 20px', display:'inline-block', boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>
-          <span style={{fontSize:24, fontWeight:'bold', color: spinning ? '#FF9800' : '#999'}}>{rpmDisplay} RPM</span>
+        <div style={{background:'rgba(255,255,255,0.6)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:18, padding:'10px 20px', display:'inline-block', boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}>
+          <span style={{fontSize:24, fontWeight:700, color: spinning ? '#e17055' : '#b2bec3'}}>{rpmDisplay} RPM</span>
         </div>
       </div>
 
@@ -103,14 +101,14 @@ export default function FidgetSpinner({ onBack, pet }:{ onBack:()=>void, pet?:st
 
       {/* Design Picker */}
       <div style={{maxWidth:400, margin:'20px auto 0', position:'relative', zIndex:2}}>
-        <div style={{background:'rgba(255,255,255,0.9)', borderRadius:'20px', padding:'15px', boxShadow:'0 4px 12px rgba(0,0,0,0.1)'}}>
+        <div style={{background:'rgba(255,255,255,0.6)', backdropFilter:'blur(16px)', WebkitBackdropFilter:'blur(16px)', border:'1px solid rgba(255,255,255,0.4)', borderRadius:18, padding:'15px', boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}>
           <p style={{fontSize:15, color:'#888', margin:'0 0 8px 0', textAlign:'center'}}>Choose a spinner:</p>
           <div style={{display:'flex', gap:8, justifyContent:'center'}}>
             {spinnerDesigns.map((d, i) => (
               <button key={i} onClick={()=>{playSound('click');setDesignIdx(i)}} style={{
-                background: designIdx===i ? 'linear-gradient(135deg, #FF9800, #FFB74D)' : '#f5f5f5',
-                color: designIdx===i ? '#fff' : '#666', border:'none', borderRadius:'18px',
-                padding:'10px 16px', fontSize:14, fontWeight:'bold', cursor:'pointer'
+                background: designIdx===i ? '#e17055' : 'rgba(0,0,0,0.04)',
+                color: designIdx===i ? '#fff' : '#636e72', border:'none', borderRadius:14,
+                padding:'10px 16px', fontSize:14, fontWeight:700, cursor:'pointer'
               }}>{d.name}</button>
             ))}
           </div>

@@ -231,18 +231,19 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
   // Level Select
   if (screen === 'select') {
     return (
-      <div style={{ background: 'linear-gradient(180deg, #B3E5FC 0%, #E1F5FE 40%, #F3E5F5 80%, #FCE4EC 100%)', minHeight: '100vh', padding: 20, fontFamily: "'Nunito', sans-serif" }}>
+      <div style={{ background: 'linear-gradient(180deg, #eaf6ff 0%, #f0f8ff 40%, #faf0ff 80%, #fff0f5 100%)', minHeight: '100vh', padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.95)', border: '2px solid #0288D1', borderRadius: 20, padding: '10px 18px', cursor: 'pointer', fontSize: 16, fontWeight: 'bold', color: '#0288D1' }}>← Back</button>
+          <button onClick={() => { playSound('click'); onBack() }} style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436' }}>← Back</button>
           {pet && <span style={{ fontSize: 28 }}>{pet}</span>}
         </div>
-        <h2 style={{ textAlign: 'center', color: '#0288D1', fontSize: 24, margin: '0 0 20px 0' }}>🫧 Bubble Pop</h2>
+        <h2 style={{ textAlign: 'center', color: '#0984e3', fontSize: 22, margin: '0 0 20px 0', fontWeight: 800 }}>🫧 Bubble Pop</h2>
         <div style={{ maxWidth: 400, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {LEVELS.map((lv, i) => (
             <button key={lv.name} onClick={() => unlocked[i] && startLevel(i)} disabled={!unlocked[i]} style={{
-              background: unlocked[i] ? '#fff' : '#E0E0E0', borderRadius: 20, padding: 16, border: 'none',
+              background: unlocked[i] ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.04)', borderRadius: 18, padding: 16, border: '1px solid rgba(255,255,255,0.4)',
               cursor: unlocked[i] ? 'pointer' : 'not-allowed', opacity: unlocked[i] ? 1 : 0.5,
-              boxShadow: unlocked[i] ? '0 4px 15px rgba(0,0,0,0.1)' : 'none', textAlign: 'center'
+              boxShadow: unlocked[i] ? '0 2px 8px rgba(0,0,0,0.06)' : 'none', textAlign: 'center',
+              backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)'
             }}>
               <div style={{ fontSize: 32 }}>{unlocked[i] ? lv.icon : '🔒'}</div>
               <div style={{ fontSize: 15, fontWeight: 'bold', color: '#333', marginTop: 4 }}>{lv.name}</div>
@@ -257,16 +258,16 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
   // Level Complete
   if (screen === 'complete') {
     return (
-      <div style={{ background: 'linear-gradient(180deg, #B3E5FC 0%, #F3E5F5 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ background: '#fff', borderRadius: 30, padding: 35, textAlign: 'center', boxShadow: '0 8px 30px rgba(0,0,0,0.1)', maxWidth: 380 }}>
+      <div style={{ background: 'linear-gradient(180deg, #eaf6ff 0%, #faf0ff 100%)', minHeight: '100vh', padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 24, padding: 35, textAlign: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', maxWidth: 380 }}>
           <div style={{ fontSize: 55 }}>🎉</div>
-          <h2 style={{ color: '#0288D1', margin: '8px 0' }}>Level Complete!</h2>
+          <h2 style={{ color: '#0984e3', margin: '8px 0' }}>Level Complete!</h2>
           <div style={{ fontSize: 36, marginBottom: 5 }}>{'⭐'.repeat(stars)}{'☆'.repeat(3 - stars)}</div>
           <p style={{ color: '#888', fontSize: 14, margin: '0 0 15px 0' }}>Score: {score} • Popped: {popsCount}</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => startLevel(levelIdx)} style={{ background: 'linear-gradient(135deg, #42A5F5, #0288D1)', color: '#fff', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>🔄 Retry</button>
-            {levelIdx < LEVELS.length - 1 && <button onClick={() => startLevel(levelIdx + 1)} style={{ background: 'linear-gradient(135deg, #66BB6A, #43A047)', color: '#fff', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>Next ➜</button>}
-            <button onClick={() => setScreen('select')} style={{ background: '#E0E0E0', color: '#555', border: 'none', borderRadius: 20, padding: '12px 24px', fontSize: 15, fontWeight: 'bold', cursor: 'pointer' }}>📋 Levels</button>
+            <button onClick={() => startLevel(levelIdx)} style={{ background: '#0984e3', color: '#fff', border: 'none', borderRadius: 16, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>🔄 Retry</button>
+            {levelIdx < LEVELS.length - 1 && <button onClick={() => startLevel(levelIdx + 1)} style={{ background: '#00b894', color: '#fff', border: 'none', borderRadius: 16, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>Next ➜</button>}
+            <button onClick={() => setScreen('select')} style={{ background: 'rgba(0,0,0,0.06)', color: '#636e72', border: 'none', borderRadius: 16, padding: '12px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>📋 Levels</button>
           </div>
         </div>
       </div>
@@ -278,20 +279,20 @@ export default function BubbleGame({ onBack, pet }: { onBack: () => void; pet?: 
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #B3E5FC 0%, #E1F5FE 40%, #F3E5F5 80%, #FCE4EC 100%)',
-      minHeight: '100vh', position: 'relative', overflow: 'hidden', touchAction: 'none', fontFamily: "'Nunito', sans-serif"
+      background: 'linear-gradient(180deg, #eaf6ff 0%, #f0f8ff 40%, #faf0ff 80%, #fff0f5 100%)',
+      minHeight: '100vh', position: 'relative', overflow: 'hidden', touchAction: 'none'
     }}>
       {/* Top bar */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, padding: '10px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10,
-        background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)', borderRadius: '0 0 20px 20px', boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
+        background: 'rgba(255,255,255,0.6)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '0 0 18px 18px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
       }}>
         <button onClick={() => { setScreen('select'); playSound('click') }} style={{
-          background: 'linear-gradient(135deg, #fff, #E1F5FE)', border: '2px solid #0288D1', borderRadius: 20, padding: '8px 14px', cursor: 'pointer', fontSize: 14, fontWeight: 'bold', color: '#0288D1'
+          background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '8px 14px', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2d3436'
         }}>← Levels</button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 22 }}>🫧</span>
-          <span style={{ fontSize: 18, fontWeight: 'bold', color: '#0288D1' }}>{score}</span>
+          <span style={{ fontSize: 18, fontWeight: 700, color: '#0984e3' }}>{score}</span>
         </div>
         <div style={{ fontSize: 12, color: '#888' }}>{popsCount}/{lv.target}</div>
         {pet && <div style={{ fontSize: 28 }}>{pet}</div>}

@@ -64,14 +64,14 @@ export default function Settings({ onBack, pet }: Props) {
 
   return (
     <div style={{
-      minHeight: '100vh', padding: 16, fontFamily: "'Nunito', 'Quicksand', sans-serif",
-      background: 'linear-gradient(135deg, #E8F5E9 0%, #FFF9C4 50%, #F3E5F5 100%)'
+      minHeight: '100vh', padding: 16,
+      background: 'linear-gradient(135deg, #e8f5e9 0%, #fffde8 50%, #faf0ff 100%)'
     }}>
       {pet && <div style={{ position: 'fixed', bottom: 70, right: 12, fontSize: 36, zIndex: 50, opacity: .85 }}>{pet}</div>}
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
         <button onClick={onBack} style={backBtn}>⬅️ Back</button>
-        <h2 style={{ margin: 0, fontSize: 24, color: '#FF6B9D', flex: 1, textAlign: 'center' }}>⚙️ Settings</h2>
+        <h2 style={{ margin: 0, fontSize: 22, color: '#e84393', flex: 1, textAlign: 'center', fontWeight: 800 }}>⚙️ Settings</h2>
       </div>
 
       <div style={{ maxWidth: 500, margin: '0 auto' }}>
@@ -100,10 +100,10 @@ export default function Settings({ onBack, pet }: Props) {
               { val: 1.2, label: '🏃 Fast' },
             ].map(opt => (
               <button key={opt.val} onClick={() => handleSpeechRate(opt.val)} style={{
-                border: speechRate === opt.val ? '3px solid #1976D2' : '2px solid #B0BEC5',
-                borderRadius: 12, padding: '10px 16px', fontSize: 15,
-                background: speechRate === opt.val ? '#E3F2FD' : 'white',
-                cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold',
+              border: speechRate === opt.val ? '2px solid #0984e3' : '1px solid rgba(0,0,0,0.08)',
+              borderRadius: 14, padding: '10px 16px', fontSize: 15,
+              background: speechRate === opt.val ? 'rgba(9,132,227,0.08)' : 'rgba(255,255,255,0.6)',
+              cursor: 'pointer', fontWeight: 700,
                 flex: 1, minWidth: 80
               }}>
                 {opt.label}
@@ -122,10 +122,10 @@ export default function Settings({ onBack, pet }: Props) {
               { val: 1.5, label: '⬆️ High' },
             ].map(opt => (
               <button key={opt.val} onClick={() => handleSpeechPitch(opt.val)} style={{
-                border: speechPitch === opt.val ? '3px solid #1976D2' : '2px solid #B0BEC5',
-                borderRadius: 12, padding: '10px 16px', fontSize: 15,
-                background: speechPitch === opt.val ? '#E3F2FD' : 'white',
-                cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold',
+              border: speechPitch === opt.val ? '2px solid #0984e3' : '1px solid rgba(0,0,0,0.08)',
+              borderRadius: 14, padding: '10px 16px', fontSize: 15,
+              background: speechPitch === opt.val ? 'rgba(9,132,227,0.08)' : 'rgba(255,255,255,0.6)',
+              cursor: 'pointer', fontWeight: 700,
                 flex: 1, minWidth: 80
               }}>
                 {opt.label}
@@ -144,8 +144,8 @@ export default function Settings({ onBack, pet }: Props) {
               { val: 'forest', label: '🌲 Forest', bg: 'linear-gradient(135deg, #56ab2f, #a8e063)' },
             ].map(opt => (
               <button key={opt.val} onClick={() => handleTheme(opt.val)} style={{
-                border: theme === opt.val ? '3px solid #333' : '2px solid #B0BEC5',
-                borderRadius: 12, padding: '12px 16px', fontSize: 15,
+              border: theme === opt.val ? '2px solid #2d3436' : '1px solid rgba(0,0,0,0.08)',
+              borderRadius: 14, padding: '12px 16px', fontSize: 15,
                 background: opt.bg, color: 'white',
                 cursor: 'pointer', fontFamily: 'inherit', fontWeight: 'bold',
                 flex: 1, minWidth: 90, textShadow: '0 1px 2px rgba(0,0,0,.4)'
@@ -160,16 +160,16 @@ export default function Settings({ onBack, pet }: Props) {
         <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
           <button onClick={handleSave} style={{
             border: 'none', borderRadius: 16, padding: '14px 20px', fontSize: 18,
-            background: saved ? '#4CAF50' : '#1976D2', color: 'white',
-            fontWeight: 'bold', cursor: 'pointer', fontFamily: 'inherit',
+            background: saved ? '#00b894' : '#0984e3', color: 'white',
+            fontWeight: 700, cursor: 'pointer',
             flex: 1
           }}>
             {saved ? '✅ Saved!' : '💾 Save'}
           </button>
           <button onClick={handleReset} style={{
             border: 'none', borderRadius: 16, padding: '14px 20px', fontSize: 18,
-            background: '#757575', color: 'white',
-            fontWeight: 'bold', cursor: 'pointer', fontFamily: 'inherit',
+            background: '#636e72', color: 'white',
+            fontWeight: 700, cursor: 'pointer',
             flex: 1
           }}>
             🔄 Reset
@@ -182,8 +182,8 @@ export default function Settings({ onBack, pet }: Props) {
             <span style={{ fontSize: 18, fontWeight: 'bold', color: '#37474F' }}>📋 Error Log</span>
             <button onClick={() => { setShowLogs(!showLogs); if (!showLogs) setLogEntries(getLogEntries()); }} style={{
               border: 'none', borderRadius: 16, padding: '10px 18px', fontSize: 15,
-              background: showLogs ? '#EF5350' : '#7B68EE', color: 'white',
-              fontWeight: 'bold', cursor: 'pointer', fontFamily: 'inherit'
+              background: showLogs ? '#d63031' : '#6c5ce7', color: 'white',
+              fontWeight: 700, cursor: 'pointer'
             }}>
               {showLogs ? 'Hide' : 'Show'}
             </button>
@@ -194,8 +194,8 @@ export default function Settings({ onBack, pet }: Props) {
                 <span style={{ fontSize: 13, color: '#666' }}>{logEntries.length} entries</span>
                 <button onClick={() => { clearLogEntries(); setLogEntries([]); }} style={{
                   border: 'none', borderRadius: 12, padding: '8px 16px', fontSize: 14,
-                  background: '#EF5350', color: 'white', fontWeight: 'bold',
-                  cursor: 'pointer', fontFamily: 'inherit'
+                  background: '#d63031', color: 'white', fontWeight: 700,
+                  cursor: 'pointer'
                 }}>
                   🗑️ Clear All
                 </button>
@@ -239,12 +239,13 @@ export default function Settings({ onBack, pet }: Props) {
 }
 
 const backBtn: React.CSSProperties = {
-  border: 'none', borderRadius: 20, padding: '12px 20px', fontSize: 16,
-  background: 'linear-gradient(135deg, #FF6B9D, #FFB6D9)', color: 'white', fontWeight: 'bold', cursor: 'pointer',
-  fontFamily: "'Nunito', 'Quicksand', sans-serif"
+  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 16, padding: '10px 18px', fontSize: 14,
+  background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+  color: '#2d3436', fontWeight: 700, cursor: 'pointer'
 };
 
 const card: React.CSSProperties = {
-  background: 'white', borderRadius: 16, padding: 16, marginBottom: 12,
-  boxShadow: '0 2px 8px rgba(0,0,0,.1)'
+  background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(255,255,255,0.4)', borderRadius: 18, padding: 16, marginBottom: 12,
+  boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
 };
