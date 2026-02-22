@@ -49,20 +49,20 @@ interface LevelDef {
   icon: string
   target: number
   duration: number
-  spawnMs: number
-  maxFruits: number
+  wavePause: [number, number] // min/max pause between waves (ms)
+  waveSize: [number, number]  // min/max fruits per wave
   desc: string
 }
 
 const LEVELS: LevelDef[] = [
-  { name: 'Fruit Stand', icon: '🍎', target: 15, duration: 30, spawnMs: 1200, maxFruits: 4, desc: 'Slice 15 fruits!' },
-  { name: 'Fruit Market', icon: '🍊', target: 25, duration: 30, spawnMs: 1000, maxFruits: 5, desc: 'Faster fruits!' },
-  { name: 'Fruit Storm', icon: '🍉', target: 40, duration: 35, spawnMs: 800, maxFruits: 6, desc: 'A storm of fruit!' },
-  { name: 'Fruit Frenzy', icon: '🍇', target: 55, duration: 35, spawnMs: 650, maxFruits: 7, desc: 'Frenzy mode!' },
-  { name: 'Fruit Master', icon: '👑', target: 70, duration: 40, spawnMs: 500, maxFruits: 8, desc: 'Ultimate challenge!' },
+  { name: 'Fruit Stand', icon: '🍎', target: 15, duration: 35, wavePause: [1800, 2800], waveSize: [2, 3], desc: 'Slice 15 fruits!' },
+  { name: 'Fruit Market', icon: '🍊', target: 25, duration: 35, wavePause: [1500, 2400], waveSize: [2, 4], desc: 'Faster fruits!' },
+  { name: 'Fruit Storm', icon: '🍉', target: 40, duration: 40, wavePause: [1200, 2000], waveSize: [3, 5], desc: 'A storm of fruit!' },
+  { name: 'Fruit Frenzy', icon: '🍇', target: 55, duration: 40, wavePause: [1000, 1600], waveSize: [3, 6], desc: 'Frenzy mode!' },
+  { name: 'Fruit Master', icon: '👑', target: 70, duration: 45, wavePause: [800, 1400], waveSize: [4, 7], desc: 'Ultimate challenge!' },
 ]
 
-const GRAVITY = 0.18
+const GRAVITY = 0.09
 
 export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: string }) {
   const [screen, setScreen] = useState<'select' | 'play' | 'complete' | 'timeup'>('select')
@@ -110,25 +110,44 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
     return id
   }
 
-  const spawnFruit = useCallback(() => {
-    const template = FRUITS[Math.floor(Math.random() * FRUITS.length)]
-    const fromLeft = Math.random() > 0.5
-    const x = fromLeft ? 20 + Math.random() * (gameWidth * 0.3) : gameWidth * 0.5 + Math.random() * (gameWidth * 0.3)
-    const vx = fromLeft ? 1.5 + Math.random() * 2.5 : -(1.5 + Math.random() * 2.5)
-    const vy = -(6 + Math.random() * 4) // launch upward
-    const fruit: Fruit = {
-      id: nextId.current++,
-      emoji: template.emoji,
-      name: template.name,
-      x,
-      y: gameHeight + 20,
-      vx,
-      vy,
-      size: 38 + Math.random() * 12,
-      sliced: false,
-      points: template.points,
+  // Spawn patterns like real Fruit Ninja: fruits thrown up from bottom in bursts
+  const spawnWave = useCallback((count: number) => {
+    // Pick a launch zone: left third, center, or right third
+    const zones = [
+      { xMin: 0.05, xMax: 0.3 },   // left
+      { xMin: 0.3, xMax: 0.7 },    // center
+      { xMin: 0.7, xMax: 0.95 },   // right
+    ]
+    // Use 1-2 zones per wave for clustering
+    const zoneCount = count <= 2 ? 1 : (Math.random() > 0.5 ? 2 : 1)
+    const chosenZones = [...zones].sort(() => Math.random() - 0.5).slice(0, zoneCount)
+
+    for (let i = 0; i < count; i++) {
+      const zone = chosenZones[i % chosenZones.length]
+      const template = FRUITS[Math.floor(Math.random() * FRUITS.length)]
+      const x = gameWidth * (zone.xMin + Math.random() * (zone.xMax - zone.xMin))
+      // Aim fruits toward center with gentle arcs
+      const centerX = gameWidth / 2
+      const vx = (centerX - x) * (0.005 + Math.random() * 0.01) + (Math.random() - 0.5) * 0.8
+      const vy = -(3.5 + Math.random() * 2) // slower upward launch
+
+      // Stagger each fruit in the wave slightly
+      safeTimeout(() => {
+        const fruit: Fruit = {
+          id: nextId.current++,
+          emoji: template.emoji,
+          name: template.name,
+          x,
+          y: gameHeight + 20,
+          vx,
+          vy,
+          size: 40 + Math.random() * 10,
+          sliced: false,
+          points: template.points,
+        }
+        fruitsRef.current = [...fruitsRef.current, fruit]
+      }, i * (80 + Math.random() * 120)) // stagger 80-200ms apart
     }
-    fruitsRef.current = [...fruitsRef.current, fruit]
   }, [gameWidth, gameHeight])
 
   function startLevel(idx: number) {
@@ -145,17 +164,21 @@ export default function FruitNinja({ onBack, pet }: { onBack: () => void; pet?: 
     playSound('click')
     speakText(`${lv.name}! ${lv.desc}`)
 
-    // Spawn loop
+    // Wave-based spawn loop like real Fruit Ninja
     if (spawnTimer.current) clearInterval(spawnTimer.current)
-    spawnTimer.current = setInterval(() => {
-      if (fruitsRef.current.filter(f => !f.sliced).length < lv.maxFruits) {
-        // Spawn 1-3 at once for variety
-        const count = Math.random() > 0.6 ? (Math.random() > 0.5 ? 3 : 2) : 1
-        for (let i = 0; i < count; i++) {
-          safeTimeout(() => spawnFruit(), i * 150)
-        }
-      }
-    }, lv.spawnMs)
+    const scheduleWave = () => {
+      const pause = lv.wavePause[0] + Math.random() * (lv.wavePause[1] - lv.wavePause[0])
+      spawnTimer.current = setTimeout(() => {
+        const count = lv.waveSize[0] + Math.floor(Math.random() * (lv.waveSize[1] - lv.waveSize[0] + 1))
+        spawnWave(count)
+        scheduleWave()
+      }, pause) as unknown as ReturnType<typeof setInterval>
+    }
+    // First wave comes quickly
+    safeTimeout(() => {
+      spawnWave(lv.waveSize[0])
+      scheduleWave()
+    }, 600)
   }
 
   // Timer
