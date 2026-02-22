@@ -13,8 +13,14 @@ import MusicKeyboard from './components/MusicKeyboard'
 import Settings from './components/Settings'
 import Drawing from './components/Drawing'
 import FireFighter from './components/FireFighter'
+import AnimalSounds from './components/AnimalSounds'
+import ShapeSorter from './components/ShapeSorter'
+import ColorMixer from './components/ColorMixer'
+import CatchStars from './components/CatchStars'
+import PeekaBoo from './components/PeekaBoo'
+import StickerBook from './components/StickerBook'
 
-type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'|'firefighter'
+type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'|'firefighter'|'animalsounds'|'shapesorter'|'colormixer'|'catchstars'|'peekaboo'|'stickerbook'
 
 export default function App() {
   const [route, setRoute] = useState<Route>('home')
@@ -39,6 +45,12 @@ export default function App() {
         {route === 'settings' && <Settings onBack={back} pet={pet} />}
         {route === 'drawing' && <Drawing onBack={back} pet={pet} />}
         {route === 'firefighter' && <FireFighter onBack={back} pet={pet} />}
+        {route === 'animalsounds' && <AnimalSounds onBack={back} pet={pet} />}
+        {route === 'shapesorter' && <ShapeSorter onBack={back} pet={pet} />}
+        {route === 'colormixer' && <ColorMixer onBack={back} pet={pet} />}
+        {route === 'catchstars' && <CatchStars onBack={back} pet={pet} />}
+        {route === 'peekaboo' && <PeekaBoo onBack={back} pet={pet} />}
+        {route === 'stickerbook' && <StickerBook onBack={back} pet={pet} />}
       </main>
       <footer className="nav">
         <button onClick={() => setRoute('home')}>🏠</button>

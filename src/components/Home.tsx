@@ -102,11 +102,21 @@ export default function Home({ onNavigate, onPetChange, pet }: Props) {
           <GameBtn icon="🚒" label="Fire Fighter" onClick={() => handleNav('firefighter')} bg="#FFCCBC" border="#FF6B35" />
           <GameBtn icon="🌀" label="Fidget Spinner" onClick={() => handleNav('fidget')} bg="#F3E5F5" border="#9C27B0" />
           <GameBtn icon="🎹" label="Music Piano" onClick={() => handleNav('music')} bg="#E8EAF6" border="#3F51B5" />
+          <GameBtn icon="🐾" label="Animal Sounds" onClick={() => handleNav('animalsounds')} bg="#C8E6C9" border="#388E3C" />
+          <GameBtn icon="👀" label="Peek-a-Boo" onClick={() => handleNav('peekaboo')} bg="#FFF9C4" border="#F9A825" />
+          <GameBtn icon="⭐" label="Catch Stars" onClick={() => handleNav('catchstars')} bg="#E8EAF6" border="#1565C0" />
+        </Section>
+
+        {/* Learn & Explore */}
+        <Section title="🧩 Learn & Explore" color="#00838F">
+          <GameBtn icon="🔵" label="Shape Sorter" onClick={() => handleNav('shapesorter')} bg="#B2EBF2" border="#00838F" />
+          <GameBtn icon="🎨" label="Color Mixer" onClick={() => handleNav('colormixer')} bg="#F3E5F5" border="#7B1FA2" />
         </Section>
 
         {/* Creative */}
         <Section title="🎨 Creative Time" color="#9C27B0">
           <GameBtn icon="🖌️" label="Draw & Color" onClick={() => handleNav('drawing')} bg="#E1BEE7" border="#9C27B0" />
+          <GameBtn icon="📒" label="Sticker Book" onClick={() => handleNav('stickerbook')} bg="#F3E5F5" border="#7B1FA2" />
           <GameBtn icon="😴" label="Calming Zone" onClick={() => handleNav('calming')} bg="#B3E5FC" border="#0288D1" />
         </Section>
 
