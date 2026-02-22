@@ -81,12 +81,13 @@ function selectNaturalVoice() {
   // Use cached voices (handles async loading)
   const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices()
   if (voices.length === 0) return null
-  // Prioritize natural-sounding voices for story narration
-  let preferred = voices.find(v => v.name.includes('Google UK English Female')) ||
+  // Prioritize Australian English voices
+  let preferred = voices.find(v => v.lang === 'en-AU' && v.name.includes('Karen')) ||
+                  voices.find(v => v.lang === 'en-AU' && v.name.includes('Catherine')) ||
+                  voices.find(v => v.lang === 'en-AU' && v.name.includes('Google')) ||
+                  voices.find(v => v.lang === 'en-AU') ||
+                  voices.find(v => v.name.includes('Google UK English Female')) ||
                   voices.find(v => v.name.includes('Victoria')) ||
-                  voices.find(v => v.name.includes('Zira')) ||
-                  voices.find(v => v.name.includes('Google UK English')) ||
-                  voices.find(v => v.name.includes('Google US English Female')) ||
                   voices.find(v => v.name.includes('Google Neural')) ||
                   voices[0]
   return preferred || null
@@ -120,7 +121,7 @@ export function speakText(text: string, onEnd?: (() => void) | number, pitch?: n
     u.pitch = pitch ?? ttsPitch
   }
   u.volume = 1
-  u.lang = 'en-US'
+  u.lang = 'en-AU'
   
   const voice = selectNaturalVoice()
   if (voice) {
@@ -144,7 +145,11 @@ export function speakText(text: string, onEnd?: (() => void) | number, pitch?: n
   }
   u.onerror = (ev) => {
     if (keepAlive) clearInterval(keepAlive)
-    logError(ErrorCode.SPK_UTTERANCE, 'SpeechSynthesisUtterance error', { detail: (ev as any)?.error || 'unknown' })
+    const errType = (ev as any)?.error || 'unknown'
+    // "interrupted" and "canceled" are normal (e.g. user navigated away) — don't log as errors
+    if (errType === 'interrupted' || errType === 'canceled') return
+    // On mobile standalone mode, speech may not be available — log as warning not error
+    logWarn(ErrorCode.SPK_UTTERANCE, 'SpeechSynthesisUtterance error', { detail: errType })
   }
   
   try {
@@ -163,33 +168,34 @@ export function playPhoneticSound(letter: string) {
   
   // Real phonetic pronunciations using speech synthesis
   // Each maps to the actual sound the letter makes
+  // Australian English phonetic sounds
   const phoneticSounds: Record<string, string> = {
-    'A': 'aah',
+    'A': 'ah',
     'B': 'buh',
     'C': 'kuh',
     'D': 'duh',
     'E': 'eh',
-    'F': 'fff',
+    'F': 'fuh',
     'G': 'guh',
     'H': 'huh',
     'I': 'ih',
     'J': 'juh',
     'K': 'kuh',
-    'L': 'lll',
-    'M': 'mmm',
-    'N': 'nnn',
-    'O': 'awe',
+    'L': 'luh',
+    'M': 'muh',
+    'N': 'nuh',
+    'O': 'oh',
     'P': 'puh',
     'Q': 'kwuh',
-    'R': 'rrr',
-    'S': 'sss',
+    'R': 'ruh',
+    'S': 'suh',
     'T': 'tuh',
     'U': 'uh',
-    'V': 'vvv',
+    'V': 'vuh',
     'W': 'wuh',
     'X': 'ks',
     'Y': 'yuh',
-    'Z': 'zzz'
+    'Z': 'zed'
   }
 
   const sound = phoneticSounds[letterUpper]

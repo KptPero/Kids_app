@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { playSound, speakText, playPhoneticSound } from '../utils/sounds'
 
+// Australian English phonetic names
 const phoneticNames: Record<string, string> = {
-  A:'ah', B:'buh', C:'kuh', D:'duh', E:'eh', F:'fff', G:'guh', H:'huh',
-  I:'ih', J:'juh', K:'kuh', L:'lll', M:'mmm', N:'nnn', O:'aw', P:'puh',
-  Q:'kwuh', R:'rrr', S:'sss', T:'tuh', U:'uh', V:'vvv', W:'wuh', X:'ks', Y:'yuh', Z:'zzz'
+  A:'ah', B:'buh', C:'kuh', D:'duh', E:'eh', F:'fuh', G:'guh', H:'huh',
+  I:'ih', J:'juh', K:'kuh', L:'luh', M:'muh', N:'nuh', O:'oh', P:'puh',
+  Q:'kwuh', R:'ruh', S:'suh', T:'tuh', U:'uh', V:'vuh', W:'wuh', X:'ks', Y:'yuh', Z:'zed'
 }
 
 export default function PhonicsGame({ onBack, pet }: { onBack: () => void, pet?:string }) {

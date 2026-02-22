@@ -17,14 +17,17 @@ html, body {
 }
 
 body {
-  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+  font-family: 'Nunito', 'Quicksand', 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   background-attachment: fixed;
   color: #333;
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .app {
