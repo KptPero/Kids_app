@@ -6,7 +6,7 @@ interface Flame {
   type: 'normal' | 'big' | 'fast'
 }
 interface Splash { id: number; x: number; y: number }
-interface Powerup { id: number; x: number; y: number; type: 'waterbomb' | 'freeze' | 'superhose' | 'extralife'; timer: number }
+interface Powerup { id: number; x: number; y: number; type: 'waterbomb' | 'superhose' | 'extralife'; timer: number }
 
 const LEVELS = [
   { name: 'Backyard BBQ', bg: '#4CAF50', icon: '🏡', target: 5, maxFlames: 5, spawnMs: 3000, flameHp: 3, desc: 'Put out 5 small fires!' },
@@ -81,7 +81,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
   function spawnPowerup() {
     const gameEl = gameRef.current; if (!gameEl) return
     const rect = gameEl.getBoundingClientRect()
-    const types: Powerup['type'][] = ['waterbomb', 'freeze', 'superhose', 'extralife']
+    const types: Powerup['type'][] = ['waterbomb', 'superhose', 'extralife']
     const type = types[Math.floor(Math.random() * types.length)]
     const x = 60 + Math.random() * (rect.width - 120)
     const y = 80 + Math.random() * (rect.height - 180)
@@ -149,17 +149,7 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
         })
         speakText('Water bomb!')
         break
-      case 'freeze':
-        setActivePowerup('freeze'); setPowerupTime(5)
-        if (spawnTimerRef.current) clearInterval(spawnTimerRef.current)
-        safeTimeout(() => {
-          setActivePowerup(null)
-          spawnTimerRef.current = setInterval(() => {
-            setFlames(prev => { if (prev.length < level.maxFlames) safeTimeout(() => spawnFlame(), 0); return prev })
-          }, level.spawnMs)
-        }, 5000)
-        speakText('Freeze!')
-        break
+
       case 'superhose':
         setActivePowerup('superhose'); setPowerupTime(8); setSprayRadius(120); setSprayDamage(3)
         safeTimeout(() => { setActivePowerup(null); setSprayRadius(55); setSprayDamage(1) }, 8000)
@@ -235,7 +225,6 @@ export default function FireFighter({ onBack, pet }: { onBack: () => void; pet?:
 
   const POWERUP_INFO: Record<string, { emoji: string; label: string }> = {
     waterbomb: { emoji: '💣', label: 'Water Bomb' },
-    freeze: { emoji: '❄️', label: 'Freeze' },
     superhose: { emoji: '🌊', label: 'Super Hose' },
     extralife: { emoji: '💖', label: 'Extra Life' },
   }

@@ -18,8 +18,9 @@ import ShapeSorter from './components/ShapeSorter'
 import ColorMixer from './components/ColorMixer'
 import CatchStars from './components/CatchStars'
 import StickerBook from './components/StickerBook'
+import FruitNinja from './components/FruitNinja'
 
-type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'|'firefighter'|'animalsounds'|'shapesorter'|'colormixer'|'catchstars'|'stickerbook'
+type Route = 'home'|'letters'|'numbers'|'calming'|'stories'|'bedtime'|'phonics'|'memory'|'bubble'|'fidget'|'music'|'settings'|'drawing'|'firefighter'|'animalsounds'|'shapesorter'|'colormixer'|'catchstars'|'stickerbook'|'fruitninja'
 
 export default function App() {
   const [route, setRoute] = useState<Route>('home')
@@ -49,6 +50,7 @@ export default function App() {
         {route === 'colormixer' && <ColorMixer onBack={back} pet={pet} />}
         {route === 'catchstars' && <CatchStars onBack={back} pet={pet} />}
         {route === 'stickerbook' && <StickerBook onBack={back} pet={pet} />}
+        {route === 'fruitninja' && <FruitNinja onBack={back} pet={pet} />}
       </main>
       <footer className="nav">
         <button onClick={() => setRoute('home')}>🏠</button>

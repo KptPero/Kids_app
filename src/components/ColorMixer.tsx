@@ -14,42 +14,123 @@ const PALETTE: ColorDef[] = [
   { id: 'purple', name: 'Purple', r: 150, g: 50, b: 200, emoji: '🟣' },
 ]
 
+// Recipe-based paint mixing (subtractive color mixing like real paint!)
+interface MixResult { r: number; g: number; b: number; name: string; emoji: string; paletteId: string }
+
+const MIX_RECIPES: Record<string, MixResult> = {
+  // Primary paint mixes
+  'blue+red': { r: 150, g: 50, b: 200, name: 'Purple', emoji: '🟣', paletteId: 'purple' },
+  'blue+yellow': { r: 50, g: 180, b: 60, name: 'Green', emoji: '🟢', paletteId: 'green' },
+  'red+yellow': { r: 255, g: 140, b: 30, name: 'Orange', emoji: '🟠', paletteId: 'orange' },
+  // White mixes (tinting)
+  'red+white': { r: 240, g: 150, b: 150, name: 'Pink', emoji: '🩷', paletteId: 'red' },
+  'blue+white': { r: 145, g: 175, b: 240, name: 'Light Blue', emoji: '🩵', paletteId: 'blue' },
+  'green+white': { r: 150, g: 215, b: 150, name: 'Mint', emoji: '🟢', paletteId: 'green' },
+  'purple+white': { r: 190, g: 150, b: 220, name: 'Lavender', emoji: '🟣', paletteId: 'purple' },
+  'orange+white': { r: 255, g: 200, b: 160, name: 'Peach', emoji: '🟠', paletteId: 'orange' },
+  'yellow+white': { r: 255, g: 255, b: 200, name: 'Cream', emoji: '🟡', paletteId: 'yellow' },
+  'black+white': { r: 140, g: 140, b: 140, name: 'Gray', emoji: '⚪', paletteId: 'white' },
+  // Black mixes (shading)
+  'black+red': { r: 128, g: 40, b: 40, name: 'Maroon', emoji: '🔴', paletteId: 'red' },
+  'black+blue': { r: 35, g: 35, b: 128, name: 'Navy', emoji: '🔵', paletteId: 'blue' },
+  'black+green': { r: 40, g: 90, b: 30, name: 'Dark Green', emoji: '🟢', paletteId: 'green' },
+  'black+yellow': { r: 128, g: 128, b: 0, name: 'Olive', emoji: '🟢', paletteId: 'green' },
+  'black+orange': { r: 139, g: 69, b: 19, name: 'Brown', emoji: '🟤', paletteId: 'orange' },
+  'black+purple': { r: 75, g: 25, b: 100, name: 'Dark Purple', emoji: '🟣', paletteId: 'purple' },
+  // Secondary combinations
+  'green+red': { r: 140, g: 90, b: 40, name: 'Brown', emoji: '🟤', paletteId: 'orange' },
+  'blue+orange': { r: 100, g: 90, b: 80, name: 'Brown', emoji: '🟤', paletteId: 'orange' },
+  'purple+yellow': { r: 140, g: 90, b: 40, name: 'Brown', emoji: '🟤', paletteId: 'orange' },
+  'blue+green': { r: 45, g: 140, b: 145, name: 'Teal', emoji: '🩵', paletteId: 'blue' },
+  'green+yellow': { r: 152, g: 205, b: 55, name: 'Lime', emoji: '🟢', paletteId: 'green' },
+  'orange+yellow': { r: 255, g: 200, b: 0, name: 'Gold', emoji: '🟡', paletteId: 'yellow' },
+  'orange+red': { r: 220, g: 80, b: 30, name: 'Red Orange', emoji: '🟠', paletteId: 'orange' },
+  'purple+red': { r: 200, g: 30, b: 150, name: 'Magenta', emoji: '🟣', paletteId: 'purple' },
+  'blue+purple': { r: 60, g: 50, b: 200, name: 'Indigo', emoji: '🔵', paletteId: 'blue' },
+  'green+orange': { r: 140, g: 130, b: 30, name: 'Olive', emoji: '🟢', paletteId: 'green' },
+  'green+purple': { r: 100, g: 80, b: 80, name: 'Brown', emoji: '🟤', paletteId: 'orange' },
+  'orange+purple': { r: 160, g: 70, b: 90, name: 'Plum', emoji: '🟣', paletteId: 'purple' },
+}
+
+function getMixKey(a: string, b: string): string {
+  return [a, b].sort().join('+')
+}
+
+function mixColors(colors: ColorDef[]): { r: number; g: number; b: number; name: string; emoji: string } {
+  if (colors.length === 0) return { r: 200, g: 200, b: 200, name: '', emoji: '' }
+  if (colors.length === 1) return { r: colors[0].r, g: colors[0].g, b: colors[0].b, name: '', emoji: '' }
+  // All same color → no mix
+  if (colors.every(c => c.id === colors[0].id)) {
+    return { r: colors[0].r, g: colors[0].g, b: colors[0].b, name: '', emoji: '' }
+  }
+
+  let curId = colors[0].id
+  let curR = colors[0].r, curG = colors[0].g, curB = colors[0].b
+  let curName = '', curEmoji = ''
+
+  for (let i = 1; i < colors.length; i++) {
+    const nextId = colors[i].id
+    if (curId === nextId) continue
+    const key = getMixKey(curId, nextId)
+    const recipe = MIX_RECIPES[key]
+    if (recipe) {
+      curR = recipe.r; curG = recipe.g; curB = recipe.b
+      curName = recipe.name; curEmoji = recipe.emoji
+      curId = recipe.paletteId
+    } else {
+      curR = Math.round((curR + colors[i].r) / 2)
+      curG = Math.round((curG + colors[i].g) / 2)
+      curB = Math.round((curB + colors[i].b) / 2)
+      curName = 'Mystery Mix'; curEmoji = '🎨'
+      curId = closestPaletteId(curR, curG, curB)
+    }
+  }
+  return { r: curR, g: curG, b: curB, name: curName, emoji: curEmoji }
+}
+
+function closestPaletteId(r: number, g: number, b: number): string {
+  let bestId = 'red', bestDist = Infinity
+  for (const c of PALETTE) {
+    const d = colorDist(r, g, b, c.r, c.g, c.b)
+    if (d < bestDist) { bestDist = d; bestId = c.id }
+  }
+  return bestId
+}
+
 // Named colors for discovery
 interface NamedColor { name: string; r: number; g: number; b: number; emoji: string; threshold: number }
 const NAMED_COLORS: NamedColor[] = [
+  // Primary mixes
+  { name: 'Purple', r: 150, g: 50, b: 200, emoji: '🟣', threshold: 60 },
+  { name: 'Green', r: 50, g: 180, b: 60, emoji: '🟢', threshold: 60 },
+  { name: 'Orange', r: 255, g: 140, b: 30, emoji: '🟠', threshold: 50 },
+  // White mixes
   { name: 'Pink', r: 240, g: 150, b: 150, emoji: '🩷', threshold: 60 },
   { name: 'Light Blue', r: 145, g: 175, b: 240, emoji: '🩵', threshold: 60 },
-  { name: 'Orange', r: 242, g: 140, b: 50, emoji: '🟠', threshold: 50 },
-  { name: 'Purple', r: 135, g: 75, b: 215, emoji: '🟣', threshold: 60 },
-  { name: 'Green', r: 145, g: 190, b: 55, emoji: '🟢', threshold: 60 },
-  { name: 'Brown', r: 140, g: 90, b: 40, emoji: '🟤', threshold: 55 },
-  { name: 'Teal', r: 45, g: 140, b: 145, emoji: '🩵', threshold: 55 },
-  { name: 'Coral', r: 240, g: 128, b: 128, emoji: '🩷', threshold: 50 },
-  { name: 'Lime', r: 152, g: 205, b: 55, emoji: '🟢', threshold: 50 },
-  { name: 'Lavender', r: 190, g: 150, b: 220, emoji: '🟣', threshold: 50 },
+  { name: 'Mint', r: 150, g: 215, b: 150, emoji: '🟢', threshold: 55 },
+  { name: 'Lavender', r: 190, g: 150, b: 220, emoji: '🟣', threshold: 55 },
   { name: 'Peach', r: 255, g: 200, b: 160, emoji: '🟠', threshold: 50 },
-  { name: 'Sky Blue', r: 100, g: 175, b: 240, emoji: '🔵', threshold: 55 },
-  { name: 'Olive', r: 128, g: 128, b: 0, emoji: '🟢', threshold: 55 },
+  { name: 'Cream', r: 255, g: 255, b: 200, emoji: '🟡', threshold: 55 },
+  { name: 'Gray', r: 140, g: 140, b: 140, emoji: '⚪', threshold: 55 },
+  // Black mixes
   { name: 'Maroon', r: 128, g: 40, b: 40, emoji: '🔴', threshold: 50 },
   { name: 'Navy', r: 35, g: 35, b: 128, emoji: '🔵', threshold: 50 },
+  { name: 'Dark Green', r: 40, g: 90, b: 30, emoji: '🟢', threshold: 55 },
+  { name: 'Olive', r: 128, g: 128, b: 0, emoji: '🟢', threshold: 55 },
+  { name: 'Brown', r: 140, g: 90, b: 40, emoji: '🟤', threshold: 55 },
+  { name: 'Dark Purple', r: 75, g: 25, b: 100, emoji: '🟣', threshold: 50 },
+  // Secondary mixes
+  { name: 'Teal', r: 45, g: 140, b: 145, emoji: '🩵', threshold: 55 },
+  { name: 'Lime', r: 152, g: 205, b: 55, emoji: '🟢', threshold: 50 },
   { name: 'Gold', r: 255, g: 200, b: 0, emoji: '🟡', threshold: 50 },
-  { name: 'Turquoise', r: 64, g: 224, b: 208, emoji: '🩵', threshold: 55 },
-  { name: 'Magenta', r: 255, g: 0, b: 255, emoji: '🟣', threshold: 55 },
+  { name: 'Red Orange', r: 220, g: 80, b: 30, emoji: '🟠', threshold: 50 },
+  { name: 'Magenta', r: 200, g: 30, b: 150, emoji: '🟣', threshold: 55 },
+  { name: 'Indigo', r: 60, g: 50, b: 200, emoji: '🔵', threshold: 55 },
+  { name: 'Plum', r: 160, g: 70, b: 90, emoji: '🟣', threshold: 50 },
 ]
 
 function colorDist(r1: number, g1: number, b1: number, r2: number, g2: number, b2: number) {
   return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2)
-}
-
-function mixRGB(colors: ColorDef[]): { r: number; g: number; b: number } {
-  if (colors.length === 0) return { r: 200, g: 200, b: 200 }
-  // Subtractive color mixing approximation
-  let r = 0, g = 0, b = 0
-  colors.forEach(c => { r += c.r; g += c.g; b += c.b })
-  r = Math.round(r / colors.length)
-  g = Math.round(g / colors.length)
-  b = Math.round(b / colors.length)
-  return { r, g, b }
 }
 
 function findClosestName(r: number, g: number, b: number): NamedColor | null {
@@ -94,12 +175,11 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
       setAnimating(true)
       safeTimeout(() => {
         setShowResult(true)
-        const mix = mixRGB(newSel)
-        const match = findClosestName(mix.r, mix.g, mix.b)
-        if (match) {
+        const mix = mixColors(newSel)
+        if (mix.name && mix.name !== 'Mystery Mix') {
           playSound('tada')
-          speakText(`You made ${match.name}!`)
-          if (!discovered.includes(match.name)) setDiscovered(d => [...d, match.name])
+          speakText(`You made ${mix.name}!`)
+          if (!discovered.includes(mix.name)) setDiscovered(d => [...d, mix.name])
         } else {
           playSound('success')
           speakText('Interesting colour!')
@@ -117,9 +197,8 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
     setShowResult(false)
   }
 
-  const mix = mixRGB(selected)
+  const mix = mixColors(selected)
   const mixHex = toHex(mix.r, mix.g, mix.b)
-  const matchedName = findClosestName(mix.r, mix.g, mix.b)
   const freeHex = toHex(freeR, freeG, freeB)
   const freeName = findClosestName(freeR, freeG, freeB)
 
@@ -204,8 +283,8 @@ export default function ColorMixer({ onBack, pet }: { onBack: () => void; pet?: 
             {showResult && (
               <div style={{ background: '#fff', borderRadius: 25, padding: 20, marginBottom: 15, boxShadow: '0 8px 30px rgba(0,0,0,0.1)', animation: 'fadeIn 0.4s ease' }}>
                 <div style={{ width: 80, height: 80, borderRadius: '50%', margin: '0 auto 10px', background: `radial-gradient(circle at 35% 35%, ${mixHex}cc, ${mixHex})`, boxShadow: `0 6px 20px ${mixHex}66` }} />
-                {matchedName ? (
-                  <h3 style={{ color: mixHex, margin: '0 0 5px 0', fontSize: 20 }}>{matchedName.emoji} {matchedName.name}!</h3>
+                {mix.name ? (
+                  <h3 style={{ color: mixHex, margin: '0 0 5px 0', fontSize: 20 }}>{mix.emoji} {mix.name}!</h3>
                 ) : (
                   <h3 style={{ color: '#666', margin: '0 0 5px 0', fontSize: 18 }}>New Colour!</h3>
                 )}

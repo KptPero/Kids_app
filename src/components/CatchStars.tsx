@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { playSound, speakText } from '../utils/sounds'
 
 interface FallingItem {
-  id: number; x: number; y: number; emoji: string; speed: number; size: number; points: number; type: 'good' | 'bad' | 'power'
+  id: number; x: number; y: number; emoji: string; speed: number; size: number; points: number; type: 'good' | 'power'
 }
 
 const GOOD_ITEMS = [
@@ -10,22 +10,20 @@ const GOOD_ITEMS = [
   { emoji: '🍎', points: 3 }, { emoji: '🍪', points: 3 }, { emoji: '🧁', points: 5 }, { emoji: '🌈', points: 5 },
   { emoji: '🍬', points: 2 }, { emoji: '🎁', points: 4 }, { emoji: '💎', points: 6 }, { emoji: '🦋', points: 3 },
 ]
-const BAD_ITEMS = [{ emoji: '💣', points: -5 }, { emoji: '🌵', points: -3 }, { emoji: '🦠', points: -2 }]
 const POWER_ITEMS = [
   { emoji: '⏱️', points: 0, effect: 'time' },     // +5s
   { emoji: '🧲', points: 0, effect: 'magnet' },   // slow items
-  { emoji: '🛡️', points: 0, effect: 'shield' },   // block next bad
   { emoji: '2️⃣', points: 0, effect: 'double' },   // double pts 5s
 ]
 
-interface WaveDef { name: string; icon: string; duration: number; spawnMs: number; badChance: number; powerChance: number; speedMul: number }
+interface WaveDef { name: string; icon: string; duration: number; spawnMs: number; powerChance: number; speedMul: number }
 
 const WAVES: WaveDef[] = [
-  { name: 'Starlight', icon: '✨', duration: 25, spawnMs: 700, badChance: 0, powerChance: 0.05, speedMul: 1 },
-  { name: 'Comet Shower', icon: '☄️', duration: 25, spawnMs: 550, badChance: 0.1, powerChance: 0.08, speedMul: 1.2 },
-  { name: 'Meteor Storm', icon: '🌠', duration: 30, spawnMs: 450, badChance: 0.15, powerChance: 0.1, speedMul: 1.4 },
-  { name: 'Galaxy Rush', icon: '🌌', duration: 30, spawnMs: 350, badChance: 0.2, powerChance: 0.12, speedMul: 1.6 },
-  { name: 'Supernova', icon: '💥', duration: 35, spawnMs: 300, badChance: 0.25, powerChance: 0.15, speedMul: 1.8 },
+  { name: 'Starlight', icon: '✨', duration: 25, spawnMs: 700, powerChance: 0.05, speedMul: 1 },
+  { name: 'Comet Shower', icon: '☄️', duration: 25, spawnMs: 550, powerChance: 0.08, speedMul: 1.2 },
+  { name: 'Meteor Storm', icon: '🌠', duration: 30, spawnMs: 450, powerChance: 0.1, speedMul: 1.4 },
+  { name: 'Galaxy Rush', icon: '🌌', duration: 30, spawnMs: 350, powerChance: 0.12, speedMul: 1.6 },
+  { name: 'Supernova', icon: '💥', duration: 35, spawnMs: 300, powerChance: 0.15, speedMul: 1.8 },
 ]
 
 export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: string }) {
@@ -39,7 +37,6 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   const [highScore, setHighScore] = useState(0)
   const [activePower, setActivePower] = useState<string | null>(null)
   const [powerTimer, setPowerTimer] = useState(0)
-  const [shield, setShield] = useState(false)
   const [stars, setStars] = useState(0)
   const [caught, setCaught] = useState(0)
   const [missed, setMissed] = useState(0)
@@ -50,7 +47,6 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   const frameRef = useRef<number>(0)
   const lastSpawn = useRef(0)
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
-  const shieldRef = useRef(false)
   const activePowerRef = useRef<string | null>(null)
   const caughtRef = useRef(0)
   const missedRef = useRef(0)
@@ -64,9 +60,8 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
 
   const spawn = useCallback((wave: WaveDef) => {
     const r = Math.random()
-    let template: any, type: 'good' | 'bad' | 'power' = 'good'
+    let template: any, type: 'good' | 'power' = 'good'
     if (r < wave.powerChance) { template = POWER_ITEMS[Math.floor(Math.random() * POWER_ITEMS.length)]; type = 'power' }
-    else if (r < wave.powerChance + wave.badChance) { template = BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)]; type = 'bad' }
     else { template = GOOD_ITEMS[Math.floor(Math.random() * GOOD_ITEMS.length)] }
 
     const speedBase = 1.5 + Math.random() * 2
@@ -81,7 +76,7 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   function startWave(idx: number) {
     const wave = WAVES[idx]
     setWaveIdx(idx); setScore(0); scoreRef.current = 0; setTimeLeft(wave.duration); setItems([]); nextId.current = 0; lastSpawn.current = 0
-    setActivePower(null); activePowerRef.current = null; setPowerTimer(0); setShield(false); shieldRef.current = false
+    setActivePower(null); activePowerRef.current = null; setPowerTimer(0)
     setCaught(0); caughtRef.current = 0; setMissed(0); missedRef.current = 0
     setGameState('playing'); playSound('click'); speakText(`Wave ${idx + 1}: ${wave.name}!`)
   }
@@ -156,21 +151,11 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
   function catchItem(item: FallingItem, e: React.MouseEvent | React.TouchEvent) {
     e.preventDefault(); e.stopPropagation()
 
-    if (item.type === 'bad') {
-      if (shieldRef.current) {
-        setShield(false); shieldRef.current = false
-        playSound('click'); setCatchAnim({ x: item.x, y: item.y, emoji: '🛡️' })
-      } else {
-        playSound('click')
-        setScore(s => { const n = Math.max(0, s + item.points); scoreRef.current = n; return n })
-        setCatchAnim({ x: item.x, y: item.y, emoji: `${item.points}` })
-      }
-    } else if (item.type === 'power') {
+    if (item.type === 'power') {
       playSound('tada')
       const pw = POWER_ITEMS.find(p => p.emoji === item.emoji)
       if (pw) {
         if (pw.effect === 'time') { setTimeLeft(t => t + 5); setCatchAnim({ x: item.x, y: item.y, emoji: '+5s ⏱️' }) }
-        else if (pw.effect === 'shield') { setShield(true); shieldRef.current = true; setCatchAnim({ x: item.x, y: item.y, emoji: '🛡️' }) }
         else { setActivePower(pw.effect); activePowerRef.current = pw.effect; setPowerTimer(5); setCatchAnim({ x: item.x, y: item.y, emoji: pw.emoji }) }
       }
     } else {
@@ -257,7 +242,6 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
         <button onClick={() => { setGameState('select'); playSound('click') }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: 15, padding: '6px 12px', color: '#B0BEC5', fontSize: 13, cursor: 'pointer' }}>← Back</button>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <span style={{ color: '#FFD54F', fontSize: 18, fontWeight: 'bold' }}>⭐ {score}</span>
-          {shield && <span style={{ fontSize: 16 }}>🛡️</span>}
           {activePower && <span style={{ fontSize: 13, color: '#4FC3F7' }}>{activePower === 'magnet' ? '🧲' : '2️⃣'} {powerTimer}s</span>}
         </div>
         <span style={{ color: timeLeft <= 5 ? '#EF5350' : '#B0BEC5', fontSize: 16, fontWeight: 'bold' }}>⏱ {timeLeft}s</span>
@@ -276,7 +260,7 @@ export default function CatchStars({ onBack, pet }: { onBack: () => void; pet?: 
           <div key={item.id} onMouseDown={e => catchItem(item, e)} onTouchStart={e => catchItem(item, e)} style={{
             position: 'absolute', left: item.x, top: item.y, fontSize: item.size, cursor: 'pointer', userSelect: 'none',
             WebkitUserSelect: 'none', touchAction: 'none',
-            filter: item.type === 'bad' ? 'none' : item.type === 'power' ? 'drop-shadow(0 2px 8px rgba(79,195,247,0.6))' : 'drop-shadow(0 2px 6px rgba(255,215,0,0.5))',
+            filter: item.type === 'power' ? 'drop-shadow(0 2px 8px rgba(79,195,247,0.6))' : 'drop-shadow(0 2px 6px rgba(255,215,0,0.5))',
           }}>{item.emoji}</div>
         ))}
 

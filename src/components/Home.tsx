@@ -93,6 +93,7 @@ export default function Home({ onNavigate, onPetChange, pet }: Props) {
           <GameBtn icon="🎹" label="Music Piano" onClick={() => handleNav('music')} bg="#E8EAF6" border="#3F51B5" />
           <GameBtn icon="🐾" label="Animal Sounds" onClick={() => handleNav('animalsounds')} bg="#C8E6C9" border="#388E3C" />
           <GameBtn icon="⭐" label="Catch Stars" onClick={() => handleNav('catchstars')} bg="#E8EAF6" border="#1565C0" />
+          <GameBtn icon="🍉" label="Fruit Ninja" onClick={() => handleNav('fruitninja')} bg="#C8E6C9" border="#E64A19" />
         </Section>
 
         <Section title="🧩 Learn & Explore" color="#00838F">
