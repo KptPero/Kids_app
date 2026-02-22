@@ -218,6 +218,49 @@ function speakWithWebSpeechAPI(text: string, rate: number, pitch: number, callba
   }
 }
 
+/**
+ * Speak long text by splitting into sentences and chaining utterances.
+ * This fixes mobile browsers silently stopping speech after a short amount of text.
+ * Returns a cancel function.
+ */
+let _longTextCancelled = false
+let _longTextTimeout: ReturnType<typeof setTimeout> | null = null
+
+export function speakLongText(text: string, onEnd?: () => void): () => void {
+  _longTextCancelled = false
+  if (_longTextTimeout) { clearTimeout(_longTextTimeout); _longTextTimeout = null }
+  if (isMuted) { if (onEnd) onEnd(); return () => {} }
+
+  // Split into sentences (by . ! ? or newlines), keeping delimiters
+  const chunks = text
+    .split(/(?<=[.!?\n])\s+/)
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+
+  if (chunks.length === 0) { if (onEnd) onEnd(); return () => {} }
+
+  let idx = 0
+  function speakNext() {
+    if (_longTextCancelled || idx >= chunks.length) {
+      if (onEnd && !_longTextCancelled) onEnd()
+      return
+    }
+    const chunk = chunks[idx]
+    idx++
+    speakText(chunk, () => {
+      // Small gap between sentences for naturalness
+      _longTextTimeout = setTimeout(speakNext, 150)
+    })
+  }
+  speakNext()
+
+  return () => {
+    _longTextCancelled = true
+    if (_longTextTimeout) { clearTimeout(_longTextTimeout); _longTextTimeout = null }
+    cancelSpeech()
+  }
+}
+
 export function playPhoneticSound(letter: string) {
   if (isMuted || typeof window === 'undefined') return
   try {

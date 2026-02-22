@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { STORIES, Story } from '../data/stories';
-import { speakText } from '../utils/sounds';
+import { speakLongText, cancelSpeech } from '../utils/sounds';
 
 interface Props { onBack: () => void; pet?: string }
 
@@ -17,14 +17,14 @@ export default function Stories({ onBack, pet }: Props) {
   const [selected, setSelected] = useState<Story | null>(null);
   const [reading, setReading] = useState(false);
   const [page, setPage] = useState(0);
-  const synthRef = useRef(window.speechSynthesis);
+  const cancelRef = useRef<(() => void) | null>(null);
 
   const filtered = genre === 'all' ? STORIES : STORIES.filter(s => s.genre === genre);
 
   // split story into pages of ~120 words
   const pages = selected ? splitPages(selected.text, 120) : [];
 
-  useEffect(() => { return () => synthRef.current.cancel(); }, []);
+  useEffect(() => { return () => { if (cancelRef.current) cancelRef.current(); cancelSpeech(); }; }, []);
 
   function splitPages(text: string, wordsPerPage: number): string[] {
     const paragraphs = text.split('\n\n');
@@ -43,24 +43,27 @@ export default function Stories({ onBack, pet }: Props) {
   }
 
   function readAloud() {
-    synthRef.current.cancel();
+    if (cancelRef.current) { cancelRef.current(); cancelRef.current = null; }
+    cancelSpeech();
     if (reading) { setReading(false); return; }
     const text = pages[page];
     if (!text) return;
     setReading(true);
-    // speakText already handles Chrome 15s keepalive
-    speakText(text, () => setReading(false));
+    // Chunk into sentences so mobile browsers don't cut off speech
+    cancelRef.current = speakLongText(text, () => { setReading(false); cancelRef.current = null; });
   }
 
   function openStory(story: Story) {
-    synthRef.current.cancel();
+    if (cancelRef.current) { cancelRef.current(); cancelRef.current = null; }
+    cancelSpeech();
     setReading(false);
     setSelected(story);
     setPage(0);
   }
 
   function goBack() {
-    synthRef.current.cancel();
+    if (cancelRef.current) { cancelRef.current(); cancelRef.current = null; }
+    cancelSpeech();
     setReading(false);
     if (selected) { setSelected(null); setPage(0); }
     else onBack();
@@ -100,12 +103,12 @@ export default function Stories({ onBack, pet }: Props) {
 
         {/* Page nav */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginBottom: 12 }}>
-          <button onClick={() => { setPage(p => Math.max(0, p - 1)); synthRef.current.cancel(); setReading(false); }}
+          <button onClick={() => { setPage(p => Math.max(0, p - 1)); if (cancelRef.current) { cancelRef.current(); cancelRef.current = null; } cancelSpeech(); setReading(false); }}
             disabled={page === 0} style={{ ...pageBtn, opacity: page === 0 ? .4 : 1 }}>⬅️ Prev</button>
           <span style={{ fontSize: 16, color: '#5D4037', alignSelf: 'center' }}>
             Page {page + 1} of {pages.length}
           </span>
-          <button onClick={() => { setPage(p => Math.min(pages.length - 1, p + 1)); synthRef.current.cancel(); setReading(false); }}
+          <button onClick={() => { setPage(p => Math.min(pages.length - 1, p + 1)); if (cancelRef.current) { cancelRef.current(); cancelRef.current = null; } cancelSpeech(); setReading(false); }}
             disabled={page === pages.length - 1} style={{ ...pageBtn, opacity: page === pages.length - 1 ? .4 : 1 }}>Next ➡️</button>
         </div>
 
